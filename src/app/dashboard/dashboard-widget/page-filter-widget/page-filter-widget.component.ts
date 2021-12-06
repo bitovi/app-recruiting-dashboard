@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {DashboardFilters, FilterDateRange, FiltersLabels} from "../../shared/dashboard-model";
 
 
@@ -7,7 +7,7 @@ import {DashboardFilters, FilterDateRange, FiltersLabels} from "../../shared/das
   templateUrl: './page-filter-widget.component.html',
   styleUrls: ['./page-filter-widget.component.scss']
 })
-export class PageFilterWidgetComponent implements OnInit {
+export class PageFilterWidgetComponent {
 
   options: DashboardFilters[] = [
     {durationCount: 7, label: FiltersLabels.SEVEN_DAYS},
@@ -22,9 +22,6 @@ export class PageFilterWidgetComponent implements OnInit {
   filtersLabels = FiltersLabels;
 
   constructor() {
-  }
-
-  ngOnInit(): void {
   }
 
   doFilter() {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
 import {AuthService} from "@auth0/auth0-angular";
 import {Router} from "@angular/router";
 
@@ -7,19 +7,18 @@ import {Router} from "@angular/router";
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
   constructor(public authService: AuthService,
-              private router: Router) { }
-
-  ngOnInit(): void {
+              private router: Router) {
   }
+
 
   onSubmit(): void {
     this.authService.loginWithRedirect().subscribe(resp => {
       console.log('response', resp);
       this.router.navigate([`dashboard`]).then();
-    }, error =>  {
+    }, error => {
       console.log('response', error);
     });
   }

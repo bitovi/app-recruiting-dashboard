@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {ChartData, ChartDataset, ChartOptions, ChartType} from 'chart.js';
 
 @Component({
@@ -7,7 +7,7 @@ import {ChartData, ChartDataset, ChartOptions, ChartType} from 'chart.js';
   styleUrls: ['./dashboard-bar-chart.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DashboardBarChartComponent implements OnInit {
+export class DashboardBarChartComponent {
 
   barChartDataSets: ChartDataset[] = [
     {
@@ -47,7 +47,5 @@ export class DashboardBarChartComponent implements OnInit {
   constructor() {
   }
 
-  ngOnInit(): void {
-  }
 
 }
