@@ -1,0 +1,14 @@
+<section class="slds-box" style="padding: 0">
+    <table class="slds-table slds-table_fixed-layout slds-table_resizable-cols tables"
+           ngl-datatable [data]="data" trackByKey="current_stage"
+           [loading]="loadingData" [(sort)]="sort" (sortChange)="onSort($event)"
+           (rowClick)="onClickRow($event)">
+
+        <ngl-datatable-column heading="Current Stage" key="current_stage" [sortable]="true" [truncate]="true"></ngl-datatable-column>
+        <ngl-datatable-column heading="Full Name" key="name" [sortable]="true" [truncate]="true"></ngl-datatable-column>
+        <ngl-datatable-column heading="Position" key="position" [sortable]="true" [truncate]="true"></ngl-datatable-column>
+        <ngl-datatable-column heading="Comments" key="comments" [sortable]="true" [truncate]="true"></ngl-datatable-column>
+
+    </table>
+</section>
+

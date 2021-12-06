@@ -1,0 +1,55 @@
+<div id="left">
+  <div class="slds-grid slds-grid_vertical-align-center slds-is-relative">
+    <div class="slds-card slds-medium-size_7-of-12 slds-size_12-of-12 container">
+      <div class="slds-card__header slds-grid">
+        <header class="slds-media slds-media_center slds-has-flexi-truncate slds-p-top--large">
+          <div class="slds-media__figure">
+                        <span class="slds-icon_container slds-icon-standard-thanks" title="login">
+                            <svg aria-hidden="true" class="slds-icon slds-icon_small">
+                                <use xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#account"></use>
+                            </svg>
+                        </span>
+          </div>
+          <div class="slds-media__body">
+            <h2 class="slds-card__header-title">
+              <span class="slds-card__header-link slds-truncate" title="Login">Login</span>
+            </h2>
+          </div>
+        </header>
+      </div>
+      <div class="slds-card__body slds-card__body_inner ">
+        <div class="slds-grid slds-grid_pull-padded slds-grid_vertical slds-m-vertical_x-large">
+          <div class="slds-col_padded slds-m-vertical_medium">
+            <ng-template #labelUsername><i> Username </i></ng-template>
+            <ngl-input [label]="labelUsername" fieldLevelHelpTooltip="Username">
+              <input ngl placeholder="Username" required type="text">
+            </ngl-input>
+          </div>
+          <div class="slds-col_padded">
+            <ng-template #customInput><i> Password </i></ng-template>
+            <ngl-input [label]="customInput">
+              <input ngl placeholder="*********" required type="password">
+            </ngl-input>
+          </div>
+
+        </div>
+        <div class="slds-align--absolute-center sdl_outline-button-bitovi ">
+          <span class="slds-box slds-box_x-small slds-icon-standard-thanks login-submit"> &nbsp; Submit &nbsp;</span>
+        </div>
+      </div>
+      <div class="sdl-col slds-align--absolute-center slds-p-around--x-small or-other-login">
+        <i class="slds-p-top--x-small or-section ">&nbsp; OR &nbsp; </i>
+      </div>
+      <div class=" sdl-col slds-align--absolute-center slds-size_12-of-12 slds-p-around--medium">
+            <span (click)="onSubmit()" class="slds-box slds-box_x-small slds-card__footer-action sso-sign-in">
+                 SignIn With SSO
+            </span>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="right">
+  <img alt="_logo" class="logo" src="assets/images/logo.png">
+</div>
+
+

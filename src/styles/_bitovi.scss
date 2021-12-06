@@ -1,0 +1,61 @@
+$bitovi_red : #cb3036;
+
+/* App Container */
+section.app-container {
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: 90px;
+}
+
+.app-filter {
+
+}
+// override context bar
+.slds-context-bar {
+  border-bottom: 3px solid $bitovi_red;
+}
+
+.logo-img {
+  height: auto;
+  width: 7.5rem;
+  padding: .5rem .75rem;
+}
+
+.slds-icon-standard-store-group {
+  background: $bitovi_red;
+}
+
+.slds-context-bar__item.slds-is-active:before {
+  background: $bitovi_red;
+}
+
+.slds-button_outline-brand, .slds-button_outline-brand:focus, .slds-button_outline-brand:hover {
+  /* default outline button bitovi*/
+  border-color: $bitovi_red;
+  color: $bitovi_red;
+}
+
+
+/* Style  Tables */
+.tables {
+  thead{
+    tr {
+      font-size: 16px;
+      height: 50px;
+    }
+    th{
+      background: #f5f1f5;
+    }
+  }
+  tr {
+    height: 45px;
+  }
+  tr:nth-child(even)
+  {
+    background-color: rgba(201, 207, 207, 0.3);
+  }
+  td {
+    //border-top: 1px solid #17a0db;
+  }
+}

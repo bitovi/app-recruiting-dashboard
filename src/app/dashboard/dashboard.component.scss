@@ -1,0 +1,29 @@
+$layout-small: 960px;
+
+.table {
+  min-height: 40vh;
+  max-height: 40vh;
+  overflow: scroll;
+}
+
+.line-bar-chart {
+  min-height: 35vh;
+}
+
+.pie-doughnut-chart {
+  min-height: 35vh;
+  height: 35vh;
+}
+
+.other-info {
+  min-height: 60vh;
+}
+
+@media (min-width: $layout-small) {
+  .pie-doughnut-chart {
+    min-height: 35vh;
+    height: auto;
+  }
+}
+
+

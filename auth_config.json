@@ -1,0 +1,7 @@
+{
+  "domain": "dev-tpf5ukg7.us.auth0.com",
+  "clientId": "gdVuxH0DD0mFOB3SOkhHbiB0RyUBxCud",
+  "apiUri": "http://localhost:3333/api",
+  "appUri": "http://localhost:4224",
+  "errorPath": "/error"
+}
