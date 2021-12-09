@@ -1,7 +1,7 @@
 import config from '../../auth_config.json';
-import {Environment} from "./environment";
+import { Environment } from './environment.model';
 
-const {domain, clientId, audience, apiUri, errorPath} = config as {
+const { domain, clientId, apiUri, errorPath } = config as {
   domain: string;
   clientId: string;
   audience?: string;
