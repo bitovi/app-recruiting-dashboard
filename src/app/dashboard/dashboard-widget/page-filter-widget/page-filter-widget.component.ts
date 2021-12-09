@@ -1,42 +1,58 @@
-import {Component} from '@angular/core';
-import {DashboardFilters, FilterDateRange, FiltersLabels} from "../../shared/dashboard-model";
-
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FilterState, getDateMinusDays } from '../../filter.store';
+import { DashboardFilters, FiltersLabels } from '../../shared/dashboard-model';
 
 @Component({
   selector: 'brd-page-filter-widget',
   templateUrl: './page-filter-widget.component.html',
-  styleUrls: ['./page-filter-widget.component.scss']
+  styleUrls: ['./page-filter-widget.component.scss'],
 })
 export class PageFilterWidgetComponent {
+  @Input() startDate: Date = new Date();
+  @Input() endDate: Date = new Date();
+  @Output() selected = new EventEmitter<FilterState>();
 
   options: DashboardFilters[] = [
-    {durationCount: 7, label: FiltersLabels.SEVEN_DAYS},
-    {durationCount: 30, label: FiltersLabels.THIRTY_DAYS},
-    {durationCount: 60, label: FiltersLabels.SIXTY_DAYS},
-    {durationCount: 90, label: FiltersLabels.NINETY_DAYS},
-    {durationCount: Number.POSITIVE_INFINITY, label: FiltersLabels.CUSTOM},
+    { durationCount: 7, label: FiltersLabels.SEVEN_DAYS },
+    { durationCount: 30, label: FiltersLabels.THIRTY_DAYS },
+    { durationCount: 60, label: FiltersLabels.SIXTY_DAYS },
+    { durationCount: 90, label: FiltersLabels.NINETY_DAYS },
+    { durationCount: Number.POSITIVE_INFINITY, label: FiltersLabels.CUSTOM },
   ];
-  selected = FiltersLabels.THIRTY_DAYS;
-  openFilters = false;
-  filterDateRange: FilterDateRange = {startDate: new Date(), endDate: new Date()};
+
+  selectedInput = FiltersLabels.THIRTY_DAYS;
   filtersLabels = FiltersLabels;
+  isCustomFilterPopoverOpen = false;
 
-  constructor() {
-  }
-
-  doFilter() {
-    this.openFilters = false;
+  closeCustomFilterPopover() {
+    this.isCustomFilterPopoverOpen = false;
   }
 
   onChange(selected: string) {
-    const findOption = this.options.find(val => val.label === selected);
-    const currentDay = new Date();
-    if (findOption && findOption.label !== FiltersLabels.CUSTOM) {
-      const startDate = new Date().setDate(currentDay.getDate() - findOption.durationCount);
-      this.filterDateRange.startDate = new Date(startDate);
-      this.filterDateRange.endDate = new Date();
-      console.log(this.filterDateRange, ' humanity', startDate);
+    if (selected !== FiltersLabels.CUSTOM) {
+      const option = this.options.find((val) => val.label === selected);
+
+      if (option) {
+        const endDate = new Date();
+        const startDate = getDateMinusDays(endDate, option.durationCount);
+        this.selected.emit({ startDate, endDate });
+      }
     }
   }
 
+  onChangeCustomStartDate(date: string | Date): void {
+    if (typeof date === 'string') {
+      // documentation states that only Date is returned from valueChange event
+      return;
+    }
+    this.selected.emit({ startDate: date, endDate: this.endDate });
+  }
+
+  onChangeCustomEndDate(date: string | Date): void {
+    if (typeof date === 'string') {
+      // documentation states that only Date is returned from valueChange event
+      return;
+    }
+    this.selected.emit({ startDate: this.startDate, endDate: date });
+  }
 }

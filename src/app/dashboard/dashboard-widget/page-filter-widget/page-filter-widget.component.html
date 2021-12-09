@@ -1,83 +1,115 @@
 <div class="slds-page-header slds-page-header_record-home slds-m-bottom--small">
-    <div class="slds-page-header__row">
-        <div class="slds-page-header__col-title">
-            <div class="slds-media">
-                <div class="slds-media__figure">
+  <div class="slds-page-header__row">
+    <div class="slds-page-header__col-title">
+      <div class="slds-media">
+        <div class="slds-media__figure">
           <span class="slds-icon_container slds-icon-standard-opportunity">
             <svg class="slds-icon slds-page-header__icon" aria-hidden="true">
-              <use xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#opportunity"></use>
+              <use
+                xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#opportunity"
+              ></use>
             </svg>
           </span>
-                </div>
-                <div class="slds-media__body">
-                    <div class="slds-page-header__name">
-                        <div class="slds-page-header__name-title">
-                            <h1>
-                                <span>Applicants</span>
-                                <span class="slds-page-header__title slds-truncate" title="Total Applicants">Total Applicant - 1,200</span>
-                            </h1>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
-        <div class="slds-page-header__col-actions slds-show_medium">
-            <div class="slds-page-header__controls ">
-              <div class="slds-button-group" [(nglPick)]="selected"
-                   nglPickActiveClass="slds-button_brand"
-                   (nglPickChange)="onChange($event)"
-                   role="group">
-
-                <ng-container *ngFor="let option of options">
-                  <ng-container *ngIf="option.label !== filtersLabels.CUSTOM; else showCustom">
-                    <button type="button" nglButton [nglPickOption]="option.label" [title]="option.label">
-                      {{option.label}}
-                    </button>
-                  </ng-container>
-                  <ng-template #showCustom>
-                    <button nglButton type="button"
-                            [nglPickOption]="option.label"
-                            nglPopoverSize="large"
-                            [nglPopoverCloseVisible]="true"
-                            nglPopoverHeader="Set Date Range"
-                            nglPopoverPlacement="left"
-                            [title]="option.label"
-                            [nglPopoverFooter]="footerClose"
-                            (click)="openFilters = !openFilters"
-                            [nglPopover]="dateRange"
-                            [nglPopoverOpen]="openFilters"> {{option.label}} </button>
-                  </ng-template>
-                </ng-container>
-              </div>
+        <div class="slds-media__body">
+          <div class="slds-page-header__name">
+            <div class="slds-page-header__name-title">
+              <h1>
+                <span>Applicants</span>
+                <span
+                  class="slds-page-header__title slds-truncate"
+                  title="Total Applicants"
+                  >Total Applicant - 1,200</span
+                >
+              </h1>
             </div>
+          </div>
         </div>
+      </div>
     </div>
+    <div class="slds-page-header__col-actions slds-show_medium">
+      <div class="slds-page-header__controls">
+        <div
+          class="slds-button-group"
+          [(nglPick)]="selectedInput"
+          nglPickActiveClass="slds-button_brand"
+          (nglPickChange)="onChange($event)"
+          role="group"
+        >
+          <ng-container *ngFor="let option of options">
+            <ng-container
+              *ngIf="option.label !== filtersLabels.CUSTOM; else showCustom"
+            >
+              <button
+                type="button"
+                nglButton
+                [nglPickOption]="option.label"
+                [title]="option.label"
+              >
+                {{ option.label }}
+              </button>
+            </ng-container>
+            <ng-template #showCustom>
+              <button
+                nglButton
+                type="button"
+                [nglPickOption]="option.label"
+                nglPopoverSize="large"
+                [nglPopoverCloseVisible]="true"
+                nglPopoverHeader="Set Date Range"
+                nglPopoverPlacement="left"
+                [title]="option.label"
+                [nglPopoverFooter]="footerClose"
+                (click)="isCustomFilterPopoverOpen = !isCustomFilterPopoverOpen"
+                [nglPopover]="dateRange"
+                [nglPopoverOpen]="isCustomFilterPopoverOpen"
+              >
+                {{ option.label }}
+              </button>
+            </ng-template>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 <ng-template #dateRange>
-    <div class="slds-grid  slds-gutters_xx-small slds-p-bottom--large">
-        <div class="slds-col">
-            <ngl-datepicker-input label="Start Date"
-                                  [(value)]="filterDateRange.startDate"
-                                  format="little-endian"
-                                  [patternPlaceholder]="true">
-                <input nglDatepickerInput type="text">
-            </ngl-datepicker-input>
-        </div>
-
-        <div class="slds-col">
-            <ngl-datepicker-input label="End Date"
-                                  [(value)]="filterDateRange.endDate"
-                                  format="little-endian"
-                                  [patternPlaceholder]="true">
-                <input nglDatepickerInput type="text">
-            </ngl-datepicker-input>
-        </div>
+  <div class="slds-grid slds-gutters_xx-small slds-p-bottom--large">
+    <div class="slds-col">
+      <ngl-datepicker-input
+        label="Start Date"
+        [value]="startDate"
+        format="little-endian"
+        [patternPlaceholder]="true"
+        (valueChange)="onChangeCustomStartDate($event)"
+      >
+        <input nglDatepickerInput type="text" />
+      </ngl-datepicker-input>
     </div>
+
+    <div class="slds-col">
+      <ngl-datepicker-input
+        label="End Date"
+        [value]="endDate"
+        format="little-endian"
+        [patternPlaceholder]="true"
+        (valueChange)="onChangeCustomEndDate($event)"
+      >
+        <input nglDatepickerInput type="text" />
+      </ngl-datepicker-input>
+    </div>
+  </div>
 </ng-template>
 
 <ng-template #footerClose>
-    <div class="slds-align--absolute-center sdl_outline-button-bitovi ">
-        <button type="button" nglButton variant="neutral" (click)="doFilter()"> &nbsp; Filter &nbsp;</button>
-    </div>
+  <div class="slds-align--absolute-center sdl_outline-button-bitovi">
+    <button
+      type="button"
+      nglButton
+      variant="neutral"
+      (click)="closeCustomFilterPopover()"
+    >
+      &nbsp; Close &nbsp;
+    </button>
+  </div>
 </ng-template>
-

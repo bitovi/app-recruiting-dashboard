@@ -1,51 +1,89 @@
-
 <section class="slds-p-around_small slds-container_fluid app-container">
-    <brd-page-filter-widget></brd-page-filter-widget>
-    <div class="slds-grid slds-gutters_xxx-small slds-wrap">
-    <div class="slds-col slds-grid_vertical slds-grid_vertical-stretch slds-size_1-of-1 slds-large-size_8-of-12">
-        <div class="slds-grid slds-wrap">
-            <div class="slds-col slds-size_2-of-2">
-                <div class="slds-card table">
-                        <brd-data-table></brd-data-table>
-                </div>
-            </div>
-            <div class="slds-col slds-m-top_small slds-large-size_1-of-2 slds-size_2-of-2">
-                <div class="slds-card pie-doughnut-chart">
-                    <brd-dashboard-doughnut-chart></brd-dashboard-doughnut-chart>
-                </div>
-            </div>
-            <div class="slds-col slds-m-top_small slds-large-size_1-of-2 slds-size_2-of-2">
-                <div class="slds-card line-bar-chart">
-                    <brd-dashboard-bar-chart></brd-dashboard-bar-chart>
-                </div>
-            </div>
+  <brd-page-filter-widget
+    [startDate]="(startDate$ | async)!"
+    [endDate]="(endDate$ | async)!"
+    (selected)="setFilterState($event)"
+  ></brd-page-filter-widget>
+  <div class="slds-grid slds-gutters_xxx-small slds-wrap">
+    <div
+      class="
+        slds-col
+        slds-grid_vertical slds-grid_vertical-stretch
+        slds-size_1-of-1
+        slds-large-size_8-of-12
+      "
+    >
+      <div class="slds-grid slds-wrap">
+        <div class="slds-col slds-size_2-of-2">
+          <div class="slds-card table">
+            <brd-data-table></brd-data-table>
+          </div>
         </div>
+        <div
+          class="
+            slds-col
+            slds-m-top_small
+            slds-large-size_1-of-2
+            slds-size_2-of-2
+          "
+        >
+          <div class="slds-card pie-doughnut-chart">
+            <brd-dashboard-doughnut-chart></brd-dashboard-doughnut-chart>
+          </div>
+        </div>
+        <div
+          class="
+            slds-col
+            slds-m-top_small
+            slds-large-size_1-of-2
+            slds-size_2-of-2
+          "
+        >
+          <div class="slds-card line-bar-chart">
+            <brd-dashboard-bar-chart></brd-dashboard-bar-chart>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="slds-col slds-grid_vertical slds-grid_vertical-stretch slds-size_1-of-1  slds-large-size_4-of-12 ">
-        <div class="slds-m-top_small  slds-hide_small"></div>
-            <div class="slds-col slds-small-size_2-of-2">
-                <div class="slds-card pie-chart">
-                    <brd-dashboard-line-chart></brd-dashboard-line-chart>
-                </div>
-            </div>
-            <div class="slds-col slds-m-top_small slds-small-size_2-of-2">
-                <div class="slds-card other-info">
-                    <div class="slds-box_x-small slds-text-align_center slds-m-around_x-small">
-                        <!--<ngl-datepicker class="slds-box slds-box_x-small" [(date)]="date"></ngl-datepicker>-->
-                    </div>
-                </div>
-            </div>
+    <div
+      class="
+        slds-col
+        slds-grid_vertical slds-grid_vertical-stretch
+        slds-size_1-of-1
+        slds-large-size_4-of-12
+      "
+    >
+      <div class="slds-m-top_small slds-hide_small"></div>
+      <div class="slds-col slds-small-size_2-of-2">
+        <div class="slds-card pie-chart">
+          <brd-dashboard-line-chart></brd-dashboard-line-chart>
         </div>
+      </div>
+      <div class="slds-col slds-m-top_small slds-small-size_2-of-2">
+        <div class="slds-card other-info">
+          <div
+            class="
+              slds-box_x-small
+              slds-text-align_center
+              slds-m-around_x-small
+            "
+          >
+            <!--<ngl-datepicker class="slds-box slds-box_x-small" [(date)]="date"></ngl-datepicker>-->
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </section>
 
-
 <ngl-modal [(open)]="opened" [prompt]="'info'" [dismissOnClickOutside]="false">
-    <div class="slds-p-around_medium">
-        <brd-dashboard-doughnut-chart></brd-dashboard-doughnut-chart>
-    </div>
-    <ng-template nglModalFooter>
-        <button class="slds-button slds-button_neutral" (click)="opened = !opened">Okay</button>
-    </ng-template>
+  <div class="slds-p-around_medium">
+    <brd-dashboard-doughnut-chart></brd-dashboard-doughnut-chart>
+  </div>
+  <ng-template nglModalFooter>
+    <button class="slds-button slds-button_neutral" (click)="opened = !opened">
+      Okay
+    </button>
+  </ng-template>
 </ngl-modal>
