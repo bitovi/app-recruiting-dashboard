@@ -15,11 +15,7 @@ export class WidgetsFilterComponent {
   @Input() widgetFilterFields!: Partial<WidgetFilterFields>;
   @Output() showModal = new EventEmitter<ViewWidgetModal>();
 
-  constructor() {
-    setTimeout(() => {
-      console.log(this.widgetFilterFields, 'thanks ');
-    });
-  }
+  constructor() {}
 
   doFilter() {
     this.opened = false;
