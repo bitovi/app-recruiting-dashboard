@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {Observable} from 'rxjs';
 import {FilterState, FilterStore} from './filter.store';
-import {DashboardWidgets, ViewWidgetModal, WidgetFieldType, WidgetFilterFields,} from './shared/dashboard-model';
+import {DashboardWidgets, ViewWidgetModal, WidgetFieldType, WidgetFilterFields} from './shared/dashboard-model';
 
 @Component({
   selector: 'brd-dashboard',
