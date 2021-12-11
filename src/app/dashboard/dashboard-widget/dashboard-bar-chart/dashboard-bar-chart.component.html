@@ -1,8 +1,10 @@
 <div class="slds-box_x-small slds-text-align_center slds-m-around_x-small">
-    <canvas baseChart
-            [data]="barChartData"
-            [options]="barChartOptions"
-            [legend]="barChartLegend"
-            [type]="barChartType">
-    </canvas>
+  <canvas [data]="barChartData"
+          [legend]="barChartLegend"
+          [options]="barChartOptions"
+          [type]="barChartType"
+          baseChart>
+  </canvas>
 </div>
+
+

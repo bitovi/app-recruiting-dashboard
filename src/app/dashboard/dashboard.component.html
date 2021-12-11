@@ -1,8 +1,8 @@
 <section class="slds-p-around_small slds-container_fluid app-container">
   <brd-page-filter-widget
-    [startDate]="(startDate$ | async)!"
-    [endDate]="(endDate$ | async)!"
     (selected)="setFilterState($event)"
+    [endDate]="(endDate$ | async)!"
+    [startDate]="(startDate$ | async)!"
   ></brd-page-filter-widget>
   <div class="slds-grid slds-gutters_xxx-small slds-wrap">
     <div
@@ -28,6 +28,8 @@
           "
         >
           <div class="slds-card pie-doughnut-chart">
+            <brd-widgets-filter (showModal)="viewWidgetModal = $event"
+                                [widgetFilterFields]="doughnutChartFilterFields"></brd-widgets-filter>
             <brd-dashboard-doughnut-chart></brd-dashboard-doughnut-chart>
           </div>
         </div>
@@ -40,6 +42,8 @@
           "
         >
           <div class="slds-card line-bar-chart">
+            <brd-widgets-filter (showModal)="viewWidgetModal = $event"
+                                [widgetFilterFields]="barChartFilterFields"></brd-widgets-filter>
             <brd-dashboard-bar-chart></brd-dashboard-bar-chart>
           </div>
         </div>
@@ -77,12 +81,19 @@
   </div>
 </section>
 
-<ngl-modal [(open)]="opened" [prompt]="'info'" [dismissOnClickOutside]="false">
+<ngl-modal (close)="closeModal()" [(open)]="viewWidgetModal.openModal" [dismissOnClickOutside]="false" prompt="info"
+           size="large">
   <div class="slds-p-around_medium">
-    <brd-dashboard-doughnut-chart></brd-dashboard-doughnut-chart>
+    <brd-dashboard-bar-chart
+      *ngIf="viewWidgetModal.openedModal === dashboardWidgets.BAR_CHART">
+    </brd-dashboard-bar-chart>
+    <brd-dashboard-doughnut-chart
+      *ngIf="viewWidgetModal.openedModal === dashboardWidgets.DOUGHNUT_CHART">
+
+    </brd-dashboard-doughnut-chart>
   </div>
   <ng-template nglModalFooter>
-    <button class="slds-button slds-button_neutral" (click)="opened = !opened">
+    <button (click)="closeModal()" class="slds-button slds-button_neutral">
       Okay
     </button>
   </ng-template>

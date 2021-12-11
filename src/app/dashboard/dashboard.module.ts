@@ -8,8 +8,11 @@ import {DashboardBarChartComponent} from './dashboard-widget/dashboard-bar-chart
 import {DashboardLineChartComponent} from './dashboard-widget/dashboard-line-chart/dashboard-line-chart.component';
 import {DashboardPieChartComponent} from './dashboard-widget/dashboard-pie-chart/dashboard-pie-chart.component';
 import {NgChartsModule} from "ng2-charts";
-import {DashboardDoughnutChartComponent} from './dashboard-widget/dashboard-doughnut-chart/dashboard-doughnut-chart.component';
+import {
+  DashboardDoughnutChartComponent
+} from './dashboard-widget/dashboard-doughnut-chart/dashboard-doughnut-chart.component';
 import {PageFilterWidgetComponent} from './dashboard-widget/page-filter-widget/page-filter-widget.component';
+import {WidgetsFilterComponent} from './shared/widgets-filter/widgets-filter.component';
 
 const routes: Routes = [
   {path: '', component: DashboardComponent}
@@ -23,7 +26,8 @@ const routes: Routes = [
     DashboardLineChartComponent,
     DashboardPieChartComponent,
     DashboardDoughnutChartComponent,
-    PageFilterWidgetComponent],
+    PageFilterWidgetComponent,
+    WidgetsFilterComponent],
   imports: [
     CommonModule,
     NglModule,

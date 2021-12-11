@@ -1,0 +1,69 @@
+<div class="slds-card__header slds-m-bottom_none">
+
+  <div class="slds-media slds-media_center slds-has-flexi-truncate">
+    <div class="slds-media__body">
+      <button (click)="showModal.emit( {openModal: true , openedModal: widgetFilterFields.widgetType})"
+              iconName="utility:expand" nglButtonIcon title="expand Chart" type="button"
+              variant="bare"></button>
+    </div>
+    <ng-container *ngIf="widgetFilterFields.fieldType">
+
+      <button
+        (click)="opened = !opened"
+        *ngIf="widgetFilterFields?.fieldType === fieldTypes.DATE_RANGE"
+        [nglPopoverFooter]="closeFilter"
+        [nglPopoverOpen]="opened"
+        [nglPopover]="widgetFilter"
+        class="slds-button--icon-more"
+        nglButton
+        nglPopoverHeader="Filter Widget"
+        nglPopoverPlacement="bottom-right"
+        nglPopoverSize="large"
+        type="button">
+        <ngl-icon alternativeText="Filter" iconName="utility:filter" size="x-small"></ngl-icon>
+        <ngl-icon alternativeText="Filter" class="slds-m-left--x-small" iconName="utility:down"
+                  size="x-small"></ngl-icon>
+      </button>
+    </ng-container>
+  </div>
+</div>
+<ng-template #widgetFilter>
+  <div class="slds-p-around_small">
+    <div class="slds-grid slds-gutters_xx-small slds-p-bottom--large">
+      <div class="slds-col">
+        <ngl-datepicker-input
+          [patternPlaceholder]="true"
+          [value]="startDate"
+          format="little-endian"
+          label="Start Date"
+        >
+          <input nglDatepickerInput type="text">
+        </ngl-datepicker-input>
+      </div>
+
+      <div class="slds-col">
+        <ngl-datepicker-input
+          [patternPlaceholder]="true"
+          [value]="endDate"
+          format="little-endian"
+          label="End Date"
+        >
+          <input nglDatepickerInput type="text">
+        </ngl-datepicker-input>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #closeFilter>
+  <div class="slds-align--absolute-center sdl_outline-button-bitovi">
+    <button
+      (click)="doFilter()"
+      nglButton
+      type="button"
+      variant="neutral"
+    >
+      &nbsp; Filter &nbsp;
+    </button>
+  </div>
+</ng-template>
