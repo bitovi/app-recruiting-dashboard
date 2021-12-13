@@ -1,7 +1,15 @@
-import {Component} from '@angular/core';
-import {Observable} from 'rxjs';
-import {FilterState, FilterStore} from './filter.store';
-import {DashboardWidgets, ViewWidgetModal, WidgetFieldType, WidgetFilterFields} from './shared/dashboard-model';
+import { formatDate } from '@angular/common';
+import { Component, Inject, LOCALE_ID } from '@angular/core';
+import { combineLatest, Observable } from 'rxjs';
+import { FilterState, FilterStore } from './store/filter.store';
+import { ApplicantService } from './store/applicant.service';
+import {
+  DashboardWidgets,
+  ViewWidgetModal,
+  WidgetFieldType,
+  WidgetFilterFields,
+} from './shared/dashboard-model';
+import { map, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'brd-dashboard',
@@ -18,6 +26,8 @@ export class DashboardComponent {
   dashboardWidgets = DashboardWidgets;
   readonly startDate$: Observable<Date> = this.filterStore.startDate$;
   readonly endDate$: Observable<Date> = this.filterStore.endDate$;
+  readonly combinedDates$: Observable<[Date, Date]> =
+    this.filterStore.combinedDates$;
 
   barChartFilterFields: WidgetFilterFields = {
     widgetType: DashboardWidgets.BAR_CHART,
@@ -29,7 +39,63 @@ export class DashboardComponent {
     fieldType: undefined,
   };
 
-  constructor(private readonly filterStore: FilterStore) {}
+  readonly combinedDatesFormatted$ = this.combinedDates$.pipe(
+    map((combinedDates) => {
+      const startDate = formatDate(combinedDates[0], 'yyyy-MM-dd', this.locale);
+      const endDate = formatDate(combinedDates[1], 'yyyy-MM-dd', this.locale);
+      return [startDate, endDate];
+    })
+  );
+  readonly applicants$ = this.applicantService.applicants$;
+  readonly filteredApplicants$ = combineLatest([
+    this.combinedDatesFormatted$,
+    this.applicants$,
+  ]).pipe(
+    map(([[startDate, endDate], applicants]) => {
+      return applicants.filter((applicant) => {
+        const parsedApplyDate = Date.parse(applicant.apply_date);
+        const parsedStartDate = Date.parse(startDate);
+        const parsedEndDate = Date.parse(endDate);
+        return (
+          parsedApplyDate >= parsedStartDate && parsedApplyDate <= parsedEndDate
+        );
+      });
+    })
+  );
+  readonly applicantsLineChartDataSet$ = this.filteredApplicants$.pipe(
+    map((applicants) => {
+      const mapped: { [key: string]: number } = applicants.reduce(
+        (prev: { [key: string]: number }, curr) => {
+          const date = curr.apply_date;
+          const sum = prev[date];
+          return { ...prev, [date]: sum >= 0 ? sum + 1 : 0 };
+        },
+        {}
+      );
+
+      return Object.entries(mapped).map(([key, value]) => ({
+        x: Date.parse(key),
+        y: value,
+      }));
+    })
+  );
+
+  readonly getApplicants$ = this.combinedDatesFormatted$.pipe(
+    switchMap(([startDate, endDate]) => {
+      return this.applicantService.getWithQuery(
+        `from_apply_date=${startDate}&to_apply_date=${endDate}`
+      );
+    })
+    // TO-DO: takeUntil component is destroyed
+  );
+
+  constructor(
+    private readonly filterStore: FilterStore,
+    private readonly applicantService: ApplicantService,
+    @Inject(LOCALE_ID) private locale: string
+  ) {
+    this.getApplicants$.subscribe();
+  }
 
   setFilterState(state: FilterState) {
     this.filterStore.setState(state);

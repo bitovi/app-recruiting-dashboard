@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FilterState, getDateMinusDays } from '../../filter.store';
+import { FilterState, getDateMinusDays } from '../../store/filter.store';
 import { DashboardFilters, FiltersLabels } from '../../shared/dashboard-model';
 
 @Component({
@@ -10,6 +10,7 @@ import { DashboardFilters, FiltersLabels } from '../../shared/dashboard-model';
 export class PageFilterWidgetComponent {
   @Input() startDate: Date = new Date();
   @Input() endDate: Date = new Date();
+  @Input() totalApplicants: number = 0;
   @Output() selected = new EventEmitter<FilterState>();
 
   options: DashboardFilters[] = [
@@ -20,7 +21,7 @@ export class PageFilterWidgetComponent {
     { durationCount: Number.POSITIVE_INFINITY, label: FiltersLabels.CUSTOM },
   ];
 
-  selectedInput = FiltersLabels.THIRTY_DAYS;
+  selectedInput = FiltersLabels.SEVEN_DAYS;
   filtersLabels = FiltersLabels;
   isCustomFilterPopoverOpen = false;
 
