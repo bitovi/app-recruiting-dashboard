@@ -11,6 +11,8 @@ export const getDateMinusDays = (date: Date, days: number) => {
   return new Date(new Date().setDate(date.getDate() - days));
 };
 
+export const DEFAULT_LAST_N_DAYS = 7;
+
 @Injectable()
 export class FilterStore extends ComponentStore<FilterState> {
   readonly startDate$ = this.select((state) => state.startDate);
@@ -21,6 +23,9 @@ export class FilterStore extends ComponentStore<FilterState> {
   ]);
 
   constructor() {
-    super({ startDate: getDateMinusDays(new Date(), 30), endDate: new Date() });
+    super({
+      startDate: getDateMinusDays(new Date(), DEFAULT_LAST_N_DAYS),
+      endDate: new Date(),
+    });
   }
 }

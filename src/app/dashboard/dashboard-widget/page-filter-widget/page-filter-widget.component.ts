@@ -21,7 +21,7 @@ export class PageFilterWidgetComponent {
     { durationCount: Number.POSITIVE_INFINITY, label: FiltersLabels.CUSTOM },
   ];
 
-  selectedInput = FiltersLabels.THIRTY_DAYS;
+  selectedInput = FiltersLabels.SEVEN_DAYS;
   filtersLabels = FiltersLabels;
   isCustomFilterPopoverOpen = false;
 
