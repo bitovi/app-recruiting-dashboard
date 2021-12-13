@@ -2,15 +2,13 @@
 
   <div class="slds-media slds-media_center slds-has-flexi-truncate">
     <div class="slds-media__body">
-      <button (click)="showModal.emit( {openModal: true , openedModal: widgetFilterFields.widgetType})"
+      <button (click)="showModal.emit( {openModal: true , openedModal: widgetHeader.widgetType})"
               iconName="utility:expand" nglButtonIcon title="expand Chart" type="button"
               variant="bare"></button>
     </div>
-    <ng-container *ngIf="widgetFilterFields.fieldType">
-
+    <ng-container *ngIf="widgetHeader?.widgetFilterFields?.length">
       <button
         (click)="opened = !opened"
-        *ngIf="widgetFilterFields?.fieldType === fieldTypes.DATE_RANGE"
         [nglPopoverFooter]="closeFilter"
         [nglPopoverOpen]="opened"
         [nglPopover]="widgetFilter"
@@ -24,33 +22,48 @@
         <ngl-icon alternativeText="Filter" class="slds-m-left--x-small" iconName="utility:down"
                   size="x-small"></ngl-icon>
       </button>
+
     </ng-container>
   </div>
 </div>
 <ng-template #widgetFilter>
   <div class="slds-p-around_small">
     <div class="slds-grid slds-gutters_xx-small slds-p-bottom--large">
-      <div class="slds-col">
-        <ngl-datepicker-input
-          [patternPlaceholder]="true"
-          [value]="startDate"
-          format="little-endian"
-          label="Start Date"
-        >
-          <input nglDatepickerInput type="text">
-        </ngl-datepicker-input>
-      </div>
+      <ng-container *ngFor=" let widgetFilterField of widgetHeader.widgetFilterFields">
 
-      <div class="slds-col">
-        <ngl-datepicker-input
-          [patternPlaceholder]="true"
-          [value]="endDate"
-          format="little-endian"
-          label="End Date"
-        >
-          <input nglDatepickerInput type="text">
-        </ngl-datepicker-input>
-      </div>
+        <ng-container *ngIf="widgetFilterField?.fieldType === fieldTypes.DATE_RANGE">
+          <div class="slds-col">
+            <ngl-datepicker-input
+              [patternPlaceholder]="true"
+              [value]="startDate"
+              format="little-endian"
+              label="Start Date"
+            >
+              <input nglDatepickerInput type="text">
+            </ngl-datepicker-input>
+          </div>
+          <div class="slds-col">
+            <ngl-datepicker-input
+              [patternPlaceholder]="true"
+              [value]="endDate"
+              format="little-endian"
+              label="End Date"
+            >
+              <input nglDatepickerInput type="text">
+            </ngl-datepicker-input>
+          </div>
+        </ng-container>
+
+
+        <ng-container *ngIf="widgetFilterField?.fieldType === fieldTypes.CHECK_BOX">
+          <div class="slds-col_padded">
+            <ngl-checkbox label="Checkbox Label">
+              <input ngl type="checkbox">
+            </ngl-checkbox>
+          </div>
+        </ng-container>
+
+      </ng-container>
     </div>
   </div>
 </ng-template>

@@ -29,7 +29,7 @@
         >
           <div class="slds-card pie-doughnut-chart">
             <brd-widgets-filter (showModal)="viewWidgetModal = $event"
-                                [widgetFilterFields]="doughnutChartFilterFields"></brd-widgets-filter>
+                                [widgetHeader]="doughnutChartFilterFields"></brd-widgets-filter>
             <brd-dashboard-doughnut-chart></brd-dashboard-doughnut-chart>
           </div>
         </div>
@@ -43,7 +43,7 @@
         >
           <div class="slds-card line-bar-chart">
             <brd-widgets-filter (showModal)="viewWidgetModal = $event"
-                                [widgetFilterFields]="barChartFilterFields"></brd-widgets-filter>
+                                [widgetHeader]="barChartFilterFields"></brd-widgets-filter>
             <brd-dashboard-bar-chart></brd-dashboard-bar-chart>
           </div>
         </div>

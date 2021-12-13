@@ -28,13 +28,19 @@ export enum DashboardWidgets {
   DATATABLE = 'DataTable',
 }
 
-export enum WidgetFieldType {
-  DATE_RANGE = 'DateRange',
+export interface WidgetsHeader {
+  widgetType: DashboardWidgets;
+  widgetFilterFields?: WidgetFilterFields[];
 }
 
 export interface WidgetFilterFields {
-  widgetType: DashboardWidgets;
   fieldType: WidgetFieldType | undefined;
+  fields?: {};
+}
+
+export enum WidgetFieldType {
+  DATE_RANGE = 'DateRange',
+  CHECK_BOX = 'CheckBox',
 }
 
 export interface ViewWidgetModal {

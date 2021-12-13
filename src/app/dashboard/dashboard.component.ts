@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {Observable} from 'rxjs';
 import {FilterState, FilterStore} from './filter.store';
-import {DashboardWidgets, ViewWidgetModal, WidgetFieldType, WidgetFilterFields} from './shared/dashboard-model';
+import {DashboardWidgets, ViewWidgetModal, WidgetFieldType, WidgetsHeader,} from './shared/dashboard-model';
 
 @Component({
   selector: 'brd-dashboard',
@@ -19,14 +19,17 @@ export class DashboardComponent {
   readonly startDate$: Observable<Date> = this.filterStore.startDate$;
   readonly endDate$: Observable<Date> = this.filterStore.endDate$;
 
-  barChartFilterFields: WidgetFilterFields = {
+  barChartFilterFields: WidgetsHeader = {
     widgetType: DashboardWidgets.BAR_CHART,
-    fieldType: WidgetFieldType.DATE_RANGE,
+    widgetFilterFields: [
+      { fieldType: WidgetFieldType.DATE_RANGE },
+      { fieldType: WidgetFieldType.CHECK_BOX, fields: [{}] },
+    ],
   };
 
-  doughnutChartFilterFields: WidgetFilterFields = {
+  doughnutChartFilterFields: WidgetsHeader = {
     widgetType: DashboardWidgets.DOUGHNUT_CHART,
-    fieldType: undefined,
+    widgetFilterFields: [],
   };
 
   constructor(private readonly filterStore: FilterStore) {}
