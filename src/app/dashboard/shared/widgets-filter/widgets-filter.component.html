@@ -26,38 +26,43 @@
     </ng-container>
   </div>
 </div>
+
 <ng-template #widgetFilter>
   <div class="slds-p-around_small">
-    <div class="slds-grid slds-gutters_xx-small slds-p-bottom--large">
+    <div class="slds-grid slds-wrap slds-gutters_xx-small slds-p-bottom--large">
       <ng-container *ngFor=" let widgetFilterField of widgetHeader.widgetFilterFields">
-
         <ng-container *ngIf="widgetFilterField?.fieldType === fieldTypes.DATE_RANGE">
-          <div class="slds-col">
-            <ngl-datepicker-input
-              [patternPlaceholder]="true"
-              [value]="startDate"
-              format="little-endian"
-              label="Start Date"
-            >
-              <input nglDatepickerInput type="text">
-            </ngl-datepicker-input>
+
+          <div class="slds-grid slds-gutters">
+            <div class="slds-col">
+              <ngl-datepicker-input
+                [patternPlaceholder]="true"
+                [value]="startDate"
+                format="little-endian"
+                label="Start Date"
+              >
+                <input nglDatepickerInput type="text">
+              </ngl-datepicker-input>
+            </div>
+
+            <div class="slds-col">
+              <ngl-datepicker-input
+                [patternPlaceholder]="true"
+                [value]="endDate"
+                format="little-endian"
+                label="End Date"
+              >
+                <input nglDatepickerInput type="text">
+              </ngl-datepicker-input>
+            </div>
           </div>
-          <div class="slds-col">
-            <ngl-datepicker-input
-              [patternPlaceholder]="true"
-              [value]="endDate"
-              format="little-endian"
-              label="End Date"
-            >
-              <input nglDatepickerInput type="text">
-            </ngl-datepicker-input>
-          </div>
+
         </ng-container>
 
 
         <ng-container *ngIf="widgetFilterField?.fieldType === fieldTypes.CHECK_BOX">
-          <div class="slds-col_padded">
-            <ngl-checkbox label="Checkbox Label">
+          <div class="slds-col slds-p-top_small">
+            <ngl-checkbox label="Show/Hide">
               <input ngl type="checkbox">
             </ngl-checkbox>
           </div>

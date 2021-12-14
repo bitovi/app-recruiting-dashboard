@@ -1,14 +1,243 @@
-<section class="slds-box" style="padding: 0">
-    <table class="slds-table slds-table_fixed-layout slds-table_resizable-cols tables"
-           ngl-datatable [data]="data" trackByKey="current_stage"
-           [loading]="loadingData" [(sort)]="sort" (sortChange)="onSort($event)"
-           (rowClick)="onClickRow($event)">
+<section class="slds-box paginated-table" style="padding: 0">
+  <table (rowClick)="onClickRow($event)"
+         (sortChange)="onSort($event)" [(sort)]="sort" [data]="data"
+         [loading]="loadingData" class="slds-table slds-table_fixed-layout slds-table_resizable-cols tables"
+         ngl-datatable
+         trackByKey="current_stage">
 
-        <ngl-datatable-column heading="Current Stage" key="current_stage" [sortable]="true" [truncate]="true"></ngl-datatable-column>
-        <ngl-datatable-column heading="Full Name" key="name" [sortable]="true" [truncate]="true"></ngl-datatable-column>
-        <ngl-datatable-column heading="Position" key="position" [sortable]="true" [truncate]="true"></ngl-datatable-column>
-        <ngl-datatable-column heading="Comments" key="comments" [sortable]="true" [truncate]="true"></ngl-datatable-column>
+    <ngl-datatable-column [sortable]="true" [truncate]="true" heading="Current Stage"
+                          key="current_stage"></ngl-datatable-column>
+    <ngl-datatable-column [sortable]="true" [truncate]="true" heading="Full Name" key="name">
+      <ng-template let-row="row" nglDatatableCell>
+        <span class="slds-p-right_xx-small"> {{row.name}} </span>
+        <ngl-icon (click)="onClickInfo(row)" [nglPopoverFooter]="closeDialog"
+                  [nglPopoverHeader]="viewDetailsHeader"
+                  [nglPopoverOpen]="(selectedItem$ | async)?.id === row.id"
+                  [nglPopover]="viewDetails"
+                  [nglTooltipOpenAuto]="true"
+                  alternativeText="Click to View"
+                  class="slds-m-bottom--xx-small slds-datepicker_time__list"
+                  iconName="utility:info"
+                  nglPopoverSize="large"
+                  nglPopoverVariant="panel" nglTooltip="Click to View" nglTooltipPlacement="top"
+                  size="x-small"
+                  variant="warning"></ngl-icon>
+      </ng-template>
+    </ngl-datatable-column>
+    <ngl-datatable-column [sortable]="true" [truncate]="true" heading="Position" key="position"></ngl-datatable-column>
+    <ngl-datatable-column [sortable]="true" [truncate]="true" heading="Comments" key="comments"></ngl-datatable-column>
 
-    </table>
+  </table>
+  <ngl-pagination (pageChange)="onPageChange($event)" [page]="currentPage" [perPage]="itemPerPage" [total]="data.length"
+                  class="slds-float_right"></ngl-pagination>
 </section>
 
+
+<ng-template #viewDetailsHeader>
+  <div class="slds-media slds-media_center slds-m-bottom_small">
+    <span class="slds-icon_container slds-icon-standard-account slds-media__figure">
+      <ngl-icon iconName="standard:account"></ngl-icon></span>
+    <div class="slds-media__body">
+      <h2 class="slds-text-heading_medium slds-hyphenate">Applicant Details</h2>
+    </div>
+  </div>
+  <div class="slds-grid slds-wrap slds-grid_pull-padded">
+    <div class="slds-p-horizontal_small slds-size_1-of-1 slds-p-bottom_x-small">
+      <dl>
+        <dt>
+          <p class="slds-popover_panel__label slds-truncate" title="Name">Name</p>
+        </dt>
+        <dd>
+          <p class="slds-truncate slds-m-left--large" title="3500 Deer Creek Rd.">Kareem Abdul-Jabbar</p>
+        </dd>
+        <dt>
+          <p class="slds-popover_panel__label slds-truncate" title="Address">Address</p>
+        </dt>
+        <dd>
+          <p class="slds-truncate slds-m-left--large" title="3500 Deer Creek Rd.">Address 1 </p>
+          <p class="slds-truncate slds-m-left--large" title="3500 Deer Creek Rd.">Address 2</p>
+        </dd>
+        <dt>
+          <p class="slds-popover_panel__label slds-truncate" title="Phone">Phone</p>
+        </dt>
+        <dd>
+          <p class="slds-truncate slds-m-left--large" title="3500 Deer Creek Rd.">Phone</p>
+        </dd>
+      </dl>
+      <span class="slds-text-body_small slds-float--right slds-text-align_right"><a>View Resume</a></span>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #viewDetails>
+  <dl class="slds-popover__body-list">
+    <dt class="slds-m-bottom_small">
+      <div class="slds-media slds-media_center">
+        <div class="slds-media__figure"><span class="slds-icon_container slds-icon-standard-opportunity">
+            <ngl-icon iconName="standard:opportunity"></ngl-icon><span class="slds-assistive-text">Opportunities</span></span>
+        </div>
+        <div class="slds-media__body">
+          <p class="slds-text-heading_small slds-hyphenate">Recent Activity (2+)</p>
+        </div>
+      </div>
+    </dt>
+    <ul class="slds-timeline">
+
+      <li>
+        <div [class.slds-is-open]="activityTimelineIsOpened.activity"
+             class="slds-timeline__item_expandable slds-timeline__item_task ">
+          <div class="slds-media">
+            <div class="slds-media__figure">
+              <button (click)="activityTimelineIsOpened.activity = !activityTimelineIsOpened.activity"
+                      aria-controls="task-item-base-257"
+                      class="slds-button slds-button_icon"
+                      title="Toggle details for Review proposals for EBC deck with larger team and have marketing review this">
+                <svg class="slds-button__icon slds-timeline__details-action-icon">
+                  <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+                </svg>
+                <span class="slds-assistive-text">Toggle details for Review proposals for EBC deck with larger team and have marketing review this</span>
+              </button>
+              <div class="slds-icon_container slds-icon-standard-task slds-timeline__icon" title="task">
+                <svg class="slds-icon slds-icon_small">
+                  <use xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#task"></use>
+                </svg>
+              </div>
+            </div>
+            <div class="slds-media__body">
+              <div class="slds-grid slds-grid_align-spread slds-timeline__trigger">
+                <div class="slds-grid slds-grid_vertical-align-center slds-truncate_container_75 slds-no-space">
+                  <h3 class="slds-truncate"
+                      title="Review proposals for EBC deck with larger team and have marketing review this">
+                    <a href="#">
+                      <strong>Recent Activity</strong>
+                    </a>
+                  </h3>
+                </div>
+                <div class="slds-timeline__actions slds-timeline__actions_inline">
+                  <p class="slds-timeline__date">3/20/27</p>
+                  <button aria-haspopup="true"
+                          class="slds-button slds-button_icon slds-button_icon-border-filled slds-button_icon-x-small"
+                          title="More Options for this item">
+                    <svg aria-hidden="false" class="slds-button__icon">
+                      <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+                    </svg>
+                    <span class="slds-assistive-text">More Options for this item</span>
+                  </button>
+                </div>
+              </div>
+              <article
+                aria-hidden="true"
+                class="slds-box slds-timeline__item_details slds-theme_shade slds-m-top_x-small slds-m-horizontal_xx-small"
+                id="task-item-base-257">
+                <ul class="slds-list_horizontal slds-wrap">
+                  <li class="slds-grid slds-grid_vertical slds-size_1-of-2 slds-p-bottom_small">
+                    <span class="slds-text-title slds-p-bottom_x-small">Name</span>
+                    <span class="slds-text-body_medium slds-truncate" title="Charlie Gomez">
+<a href="#">Charlie Gomez</a>
+</span>
+                  </li>
+                  <li class="slds-grid slds-grid_vertical slds-size_1-of-2 slds-p-bottom_small">
+                    <span class="slds-text-title slds-p-bottom_x-small">Related To</span>
+                    <span class="slds-text-body_medium slds-truncate" title="Tesla Cloudhub + Anypoint Connectors">
+<a href="#">Tesla Cloudhub + Anypoint Connectors</a>
+</span>
+                  </li>
+                </ul>
+                <div>
+                  <span class="slds-text-title">Description</span>
+                  <p class="slds-p-top_x-small">Need to finalize proposals and brand details before the meeting</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div [class.slds-is-open]="activityTimelineIsOpened.comments"
+             class="slds-timeline__item_expandable slds-timeline__item_call">
+          <span class="slds-assistive-text">log_a_call</span>
+          <div class="slds-media">
+            <div class="slds-media__figure">
+              <button (click)="activityTimelineIsOpened.comments = !activityTimelineIsOpened.comments"
+                      aria-controls="call-item-base-258"
+                      class="slds-button slds-button_icon"
+                      title="Toggle details for Mobile conversation on Monday">
+                <svg aria-hidden="true" class="slds-button__icon slds-timeline__details-action-icon">
+                  <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+                </svg>
+                <span class="slds-assistive-text">Recent Comments</span>
+              </button>
+              <div class="slds-icon_container slds-icon-standard-log-a-call slds-timeline__icon" title="call">
+                <svg aria-hidden="true" class="slds-icon slds-icon_small">
+                  <use xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#log_a_call"></use>
+                </svg>
+              </div>
+            </div>
+            <div class="slds-media__body">
+              <div class="slds-grid slds-grid_align-spread slds-timeline__trigger">
+                <div class="slds-grid slds-grid_vertical-align-center slds-truncate_container_75 slds-no-space">
+                  <h3 class="slds-truncate" title="Mobile conversation on Monday">
+                    <a href="#">
+                      <strong>Recent Comments</strong>
+                    </a>
+                  </h3>
+                </div>
+                <div class="slds-timeline__actions slds-timeline__actions_inline">
+                  <p class="slds-timeline__date">3/23/27</p>
+                  <button aria-haspopup="true"
+                          class="slds-button slds-button_icon slds-button_icon-border-filled slds-button_icon-x-small"
+                          title="More Options for this item">
+                    <svg aria-hidden="true" class="slds-button__icon">
+                      <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+                    </svg>
+                    <span class="slds-assistive-text">More Options for this item</span>
+                  </button>
+                </div>
+              </div>
+              <p class="slds-m-horizontal_xx-small">
+                <a href="#">You</a> logged a call with
+                <a href="#">Adam Chan</a>
+              </p>
+              <article
+                aria-hidden="true"
+                class="slds-box slds-timeline__item_details slds-theme_shade slds-m-top_x-small slds-m-horizontal_xx-small"
+                id="call-item-base-258">
+                <ul class="slds-list_horizontal slds-wrap">
+                  <li class="slds-grid slds-grid_vertical slds-size_1-of-2 slds-p-bottom_small">
+                    <span class="slds-text-title slds-p-bottom_x-small">Name</span>
+                    <span class="slds-text-body_medium slds-truncate" title="Adam Chan">
+<a href="#">Adam Chan</a>
+</span>
+                  </li>
+                  <li class="slds-grid slds-grid_vertical slds-size_1-of-2 slds-p-bottom_small">
+                    <span class="slds-text-title slds-p-bottom_x-small">Related To</span>
+                    <span class="slds-text-body_medium slds-truncate" title="Tesla Cloudhub + Anypoint Connectors">
+<a href="#">Tesla Cloudhub + Anypoint Connectors</a>
+</span>
+                  </li>
+                </ul>
+                <div>
+                  <span class="slds-text-title">Description</span>
+                  <p class="slds-p-top_x-small">Adam seemed interested in closing this deal quickly! Let’s move.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </dl>
+</ng-template>
+
+<ng-template #closeDialog>
+  <div class="slds-align--absolute-center sdl_outline-button-bitovi">
+    <button
+      (click)="close()"
+      nglButton
+      type="button"
+      variant="neutral"
+    >
+      &nbsp; Close &nbsp;
+    </button>
+  </div>
+</ng-template>
