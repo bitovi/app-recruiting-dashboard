@@ -1,7 +1,7 @@
-import {Component} from '@angular/core';
-import {INglDatatableRowClick, INglDatatableSort} from 'ng-lightning';
-import {ApplicantDetails, DataTable} from './data-table';
-import {BehaviorSubject} from 'rxjs';
+import { Component } from '@angular/core';
+import { INglDatatableRowClick, INglDatatableSort } from 'ng-lightning';
+import { ApplicantDetails, DataTable } from './data-table';
+import { BehaviorSubject } from 'rxjs';
 
 const DATA = [
   {

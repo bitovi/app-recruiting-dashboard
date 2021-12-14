@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
-import {ComponentStore} from '@ngrx/component-store';
-import {Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { ComponentStore } from '@ngrx/component-store';
+import { Observable } from 'rxjs';
 
 export interface FilterState {
   startDate: Date;

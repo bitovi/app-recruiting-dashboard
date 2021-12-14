@@ -1,10 +1,15 @@
-import {formatDate} from '@angular/common';
-import {Component, Inject, LOCALE_ID} from '@angular/core';
-import {combineLatest, Observable} from 'rxjs';
-import {FilterState, FilterStore} from './store/filter.store';
-import {ApplicantService} from './store/applicant.service';
-import {map, switchMap} from 'rxjs/operators';
-import {DashboardWidgets, ViewWidgetModal, WidgetFieldType, WidgetsHeader,} from './shared/dashboard-model';
+import { formatDate } from '@angular/common';
+import { Component, Inject, LOCALE_ID } from '@angular/core';
+import { combineLatest, Observable } from 'rxjs';
+import { FilterState, FilterStore } from './store/filter.store';
+import { ApplicantService } from './store/applicant.service';
+import { map, switchMap } from 'rxjs/operators';
+import {
+  DashboardWidgets,
+  ViewWidgetModal,
+  WidgetFieldType,
+  WidgetsHeader,
+} from './shared/dashboard-model';
 import { JobService } from './store/job.service';
 import { BarChartDataSet } from './dashboard-widget/dashboard-bar-chart/dashboard-bar-chart.component';
 

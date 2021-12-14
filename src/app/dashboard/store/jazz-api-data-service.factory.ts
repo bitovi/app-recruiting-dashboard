@@ -1,12 +1,12 @@
-import {HttpClient} from '@angular/common/http';
-import {Injectable, Optional} from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Injectable, Optional } from '@angular/core';
 import {
   DefaultDataServiceConfig,
   DefaultDataServiceFactory,
   EntityCollectionDataService,
   HttpUrlGenerator,
 } from '@ngrx/data';
-import {JazzApiDataService} from './jazz-api-data.service';
+import { JazzApiDataService } from './jazz-api-data.service';
 
 @Injectable()
 export class JazzApiDataServiceFactory extends DefaultDataServiceFactory {

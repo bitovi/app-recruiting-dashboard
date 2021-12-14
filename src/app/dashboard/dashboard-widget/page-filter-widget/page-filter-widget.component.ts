@@ -1,6 +1,6 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {FilterState, getDateMinusDays} from '../../store/filter.store';
-import {DashboardFilters, FiltersLabels} from '../../shared/dashboard-model';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FilterState, getDateMinusDays } from '../../store/filter.store';
+import { DashboardFilters, FiltersLabels } from '../../shared/dashboard-model';
 
 @Component({
   selector: 'brd-page-filter-widget',

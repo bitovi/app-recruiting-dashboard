@@ -8,9 +8,8 @@ describe('PageFilterWidgetComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PageFilterWidgetComponent ]
-    })
-    .compileComponents();
+      declarations: [PageFilterWidgetComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

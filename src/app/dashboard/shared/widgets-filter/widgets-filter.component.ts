@@ -1,5 +1,9 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {ViewWidgetModal, WidgetFieldType, WidgetsHeader,} from '../dashboard-model';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ViewWidgetModal,
+  WidgetFieldType,
+  WidgetsHeader,
+} from '../dashboard-model';
 
 @Component({
   selector: 'brd-widgets-filter',

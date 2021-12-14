@@ -1,7 +1,12 @@
-import {HttpClient, HttpParams} from '@angular/common/http';
-import {DefaultDataService, DefaultDataServiceConfig, HttpUrlGenerator, QueryParams,} from '@ngrx/data';
-import {Observable, of} from 'rxjs';
-import {expand, reduce} from 'rxjs/operators';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import {
+  DefaultDataService,
+  DefaultDataServiceConfig,
+  HttpUrlGenerator,
+  QueryParams,
+} from '@ngrx/data';
+import { Observable, of } from 'rxjs';
+import { expand, reduce } from 'rxjs/operators';
 
 export class JazzApiDataService<T> extends DefaultDataService<T> {
   constructor(

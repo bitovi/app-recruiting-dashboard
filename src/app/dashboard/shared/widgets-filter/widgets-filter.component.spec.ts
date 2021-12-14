@@ -1,6 +1,6 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {WidgetsFilterComponent} from './widgets-filter.component';
+import { WidgetsFilterComponent } from './widgets-filter.component';
 
 describe('WidgetsFilterComponent', () => {
   let component: WidgetsFilterComponent;
@@ -8,9 +8,8 @@ describe('WidgetsFilterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ WidgetsFilterComponent ]
-    })
-    .compileComponents();
+      declarations: [WidgetsFilterComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

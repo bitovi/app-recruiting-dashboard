@@ -1,5 +1,5 @@
-import {TemplateRef} from '@angular/core';
-import {ApplicantJob} from '../../store/jazz-api.model';
+import { TemplateRef } from '@angular/core';
+import { ApplicantJob } from '../../store/jazz-api.model';
 
 interface TableConfig {
   heading: string;

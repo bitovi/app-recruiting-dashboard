@@ -1,4 +1,4 @@
-import {EntityDataModuleConfig, EntityMetadataMap} from '@ngrx/data';
+import { EntityDataModuleConfig, EntityMetadataMap } from '@ngrx/data';
 
 const entityMetadata: EntityMetadataMap = {
   Applicants: {},
