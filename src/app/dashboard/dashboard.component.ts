@@ -114,6 +114,9 @@ export class DashboardComponent {
 
   readonly getJobs$ = this.jobService.getWithQuery('status=open');
 
+  readonly applicantsLoading$ = this.applicantService.loading$;
+  readonly jobsLoading$ = this.jobService.loading$;
+
   constructor(
     private readonly filterStore: FilterStore,
     private readonly applicantService: ApplicantService,
