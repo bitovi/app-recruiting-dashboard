@@ -19,8 +19,10 @@
           class="slds-col slds-m-top_small slds-large-size_1-of-2 slds-size_2-of-2"
         >
           <div class="slds-card pie-doughnut-chart">
-            <brd-widgets-filter (showModal)="viewWidgetModal = $event"
-                                [widgetHeader]="doughnutChartFilterFields"></brd-widgets-filter>
+            <brd-widgets-filter
+              (showModal)="viewWidgetModal = $event"
+              [widgetHeader]="doughnutChartFilterFields"
+            ></brd-widgets-filter>
             <brd-dashboard-doughnut-chart></brd-dashboard-doughnut-chart>
           </div>
         </div>
@@ -28,15 +30,12 @@
           class="slds-col slds-m-top_small slds-large-size_1-of-2 slds-size_2-of-2"
         >
           <div class="slds-card line-bar-chart">
-            <brd-widgets-filter (showModal)="viewWidgetModal = $event"
-                                [widgetHeader]="barChartFilterFields"></brd-widgets-filter>
-            <brd-dashboard-bar-chart></brd-dashboard-bar-chart>
             <brd-widgets-filter
               (showModal)="viewWidgetModal = $event"
               [widgetHeader]="barChartFilterFields"
             ></brd-widgets-filter>
             <span *ngIf="(jobsLoading$ | async) || (applicantsLoading$ | async)"
-              >LOADING</span
+            >LOADING</span
             >
             <brd-dashboard-bar-chart
               [dataSet]="(jobBarChartDataSet$ | async)!"
@@ -68,6 +67,7 @@
         </div>
       </div>
     </div>
+
   </div>
 </section>
 
@@ -83,7 +83,7 @@
       *ngIf="viewWidgetModal.openedModal === dashboardWidgets.BAR_CHART"
     >
       <span *ngIf="(jobsLoading$ | async) || (applicantsLoading$ | async)"
-        >LOADING</span
+      >LOADING</span
       >
       <brd-dashboard-bar-chart
         [dataSet]="(jobBarChartDataSet$ | async)!"

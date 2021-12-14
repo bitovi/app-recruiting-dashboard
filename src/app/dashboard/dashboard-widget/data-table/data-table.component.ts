@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {INglDatatableRowClick, INglDatatableSort} from 'ng-lightning';
-import {DataTable} from './data-table';
-import {BehaviorSubject, combineLatest} from 'rxjs';
+import {ApplicantDetails, DataTable} from './data-table';
+import {BehaviorSubject} from 'rxjs';
 
 const DATA = [
   {
@@ -121,9 +121,9 @@ export class DataTableComponent {
 
   openInfo!: boolean;
   selected!: number;
-  private selectedItemSubject = new BehaviorSubject<Partial<DataTable>>({});
-  selectedItem$ = this.selectedItemSubject.asObservable();
-  applicantDetails$ = combineLatest([this.selectedItemSubject]);
+  selectedItem!: Partial<DataTable>;
+  private applicantDetailsSubject = new BehaviorSubject<ApplicantDetails>({});
+  applicantDetails$ = this.applicantDetailsSubject.asObservable();
 
   constructor() {}
 
@@ -141,11 +141,42 @@ export class DataTableComponent {
   }
 
   onClickInfo(row: DataTable) {
-    this.selectedItemSubject.next(row);
+    this.selectedItem = row;
+    // DUMMY DATA
+    const details: ApplicantDetails = {
+      id: 'prospect_20211213184816_OUE9OFKPJH8XLJWA',
+      first_name: 'Kareem',
+      last_name: 'Abdul-Jabbar',
+      email: 'kbcox001@gmail.com',
+      address: '833 Hackney Lane',
+      location:
+        '833 Hackney Lane Shelbyville, Kentucky, United States KY 40065',
+      phone: '+1 5029383453',
+      resume_link:
+        'https://s3.amazonaws.com/resumator/customer_20130208084208_HIRIKECRYT4FLQMF/resumes/resume_61b79570ae843.docx',
+      activities: [
+        {
+          id: '1',
+          activity:
+            'Adam seemed interested in the team lets get him here fast.',
+          date: new Date('2021-12-13').toLocaleDateString(),
+          time: '18:48:16',
+        },
+      ],
+      comments: [
+        {
+          id: '1',
+          date: new Date().toLocaleDateString(),
+          commentBy: 'J Sunny',
+          comment: 'This Is a test Comment',
+        },
+      ],
+    };
+    this.applicantDetailsSubject.next(details);
   }
 
   close() {
-    this.selectedItemSubject.next({});
+    this.selectedItem = {};
   }
 
   showDetails() {}
