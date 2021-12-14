@@ -34,7 +34,9 @@
               (showModal)="viewWidgetModal = $event"
               [widgetFilterFields]="barChartFilterFields"
             ></brd-widgets-filter>
-            <brd-dashboard-bar-chart></brd-dashboard-bar-chart>
+            <brd-dashboard-bar-chart
+              [dataSet]="(jobBarChartDataSet$ | async)!"
+            ></brd-dashboard-bar-chart>
           </div>
         </div>
       </div>
@@ -74,6 +76,7 @@
   <div class="slds-p-around_medium">
     <brd-dashboard-bar-chart
       *ngIf="viewWidgetModal.openedModal === dashboardWidgets.BAR_CHART"
+      [dataSet]="(jobBarChartDataSet$ | async)!"
     >
     </brd-dashboard-bar-chart>
     <brd-dashboard-doughnut-chart

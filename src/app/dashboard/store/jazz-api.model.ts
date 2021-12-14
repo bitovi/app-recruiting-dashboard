@@ -3,13 +3,14 @@ export interface Applicant {
   id: string;
   first_name: string;
   last_name: string;
-  prospect_phone?: string;
+  prospect_phone: string;
   apply_date: string;
-  job_id?: string;
-  job_title?: string;
+  job_id: string;
+  job_title: string;
   // end of /applicants
 
   // /applicants/applicant_id
+  // also includes properties:
   // id
   // first_name
   // last_name
@@ -110,3 +111,57 @@ export interface ApplicantEvaluation {
   comment: string;
 }
 export interface ApplicantCategory {}
+
+export interface Job {
+  // /jobs
+  id: string;
+  team_id: string;
+  title: string;
+  country_id: string;
+  city: string;
+  state: string;
+  zip: string;
+  department: string;
+  description: string;
+  minimum_salary: string;
+  maximum_salary: string;
+  notes: string;
+  original_open_date: string; // yyyy-mm-dd
+  type: string;
+  status: string;
+  send_to_job_boards: string;
+  hiring_lead: string;
+  board_code: string;
+  internal_code: string;
+  questionnaire: string;
+  // end of /jobs
+
+  // /jobs/job_id
+  // also includes properties:
+  // id
+  // team_id
+  // title
+  // country_id
+  // city
+  // state
+  // zip
+  // department
+  // description
+  // minimum_salary
+  // maximum_salary
+  // notes
+  // original_open_date
+  // type
+  // status
+  // send_to_job_boards
+  // hiring_lead
+  // board_code
+  // internal_code
+  // questionnaire
+  job_applicants?: JobApplicant[];
+}
+
+export interface JobApplicant {
+  prospect_id: string;
+  apply_date: string;
+}

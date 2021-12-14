@@ -10,6 +10,8 @@ import {
   WidgetFilterFields,
 } from './shared/dashboard-model';
 import { map, switchMap } from 'rxjs/operators';
+import { JobService } from './store/job.service';
+import { BarChartDataSet } from './dashboard-widget/dashboard-bar-chart/dashboard-bar-chart.component';
 
 @Component({
   selector: 'brd-dashboard',
@@ -68,7 +70,7 @@ export class DashboardComponent {
         (prev: { [key: string]: number }, curr) => {
           const date = curr.apply_date;
           const sum = prev[date];
-          return { ...prev, [date]: sum >= 0 ? sum + 1 : 0 };
+          return { ...prev, [date]: sum >= 0 ? sum + 1 : 1 };
         },
         {}
       );
@@ -77,6 +79,27 @@ export class DashboardComponent {
         x: Date.parse(key),
         y: value,
       }));
+    })
+  );
+
+  readonly jobs$ = this.jobService.entities$;
+
+  readonly jobBarChartDataSet$: Observable<BarChartDataSet> = combineLatest([
+    this.jobs$,
+    this.filteredApplicants$,
+  ]).pipe(
+    map(([jobs, applicants]) => {
+      const labels = jobs.map((job) => job.title);
+      const mapped = applicants.reduce(
+        (prev: { [key: string]: number }, curr) => {
+          const jobId = curr.job_id;
+          const sum = prev[jobId];
+          return { ...prev, [jobId]: sum >= 0 ? sum + 1 : 1 };
+        },
+        {}
+      );
+      const data = jobs.map((job) => mapped[job.id]);
+      return { data, labels };
     })
   );
 
@@ -89,12 +112,16 @@ export class DashboardComponent {
     // TO-DO: takeUntil component is destroyed
   );
 
+  readonly getJobs$ = this.jobService.getWithQuery('status=open');
+
   constructor(
     private readonly filterStore: FilterStore,
     private readonly applicantService: ApplicantService,
+    private readonly jobService: JobService,
     @Inject(LOCALE_ID) private locale: string
   ) {
     this.getApplicants$.subscribe();
+    this.getJobs$.subscribe();
   }
 
   setFilterState(state: FilterState) {
