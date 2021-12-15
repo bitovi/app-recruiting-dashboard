@@ -12,7 +12,7 @@ interface TableConfig {
 }
 
 export interface DataTable {
-  id: number;
+  id: string;
   current_stage?: string;
   name?: string;
   position?: string;
