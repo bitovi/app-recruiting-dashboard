@@ -1,116 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { INglDatatableRowClick, INglDatatableSort } from 'ng-lightning';
 import { ApplicantDetails, DataTable } from './data-table';
-import { BehaviorSubject } from 'rxjs';
-
-const DATA = [
-  {
-    id: 1,
-    current_stage: 'interview',
-    name: 'Kareem Abdul-Jabbar',
-    position: 'Angular',
-    comments: 'doing well',
-    tableConfig: { sortable: true },
-  },
-  {
-    id: 2,
-    current_stage: 'interview',
-    name: 'Kareem Abdul-Jabbar',
-    position: 'Angular',
-    comments: 'doing well',
-    tableConfig: { sortable: true },
-  },
-  {
-    id: 3,
-    current_stage: 'interview',
-    name: 'Kareem Abdul-Jabbar',
-    position: 'Angular',
-    comments: 'doing well',
-    tableConfig: { sortable: true },
-  },
-  {
-    id: 4,
-    current_stage: 'interview',
-    name: 'Kareem Abdul-Jabbar',
-    position: 'Angular',
-    comments: 'doing well',
-    tableConfig: { sortable: true },
-  },
-  {
-    id: 5,
-    current_stage: 'interview',
-    name: 'Kareem Abdul-Jabbar',
-    position: 'Angular',
-    comments: 'doing well',
-    tableConfig: { sortable: true },
-  },
-  {
-    id: 6,
-    current_stage: 'interview',
-    name: 'Kareem Abdul-Jabbar',
-    position: 'Angular',
-    comments: 'doing well',
-    tableConfig: { sortable: true },
-  },
-  {
-    id: 7,
-    current_stage: 'interview',
-    name: 'Kareem Abdul-Jabbar',
-    position: 'Angular',
-    comments: 'doing well',
-    tableConfig: { sortable: true },
-  },
-  {
-    id: 8,
-    current_stage: 'interview',
-    name: 'Kareem Abdul-Jabbar',
-    position: 'Angular',
-    comments: 'doing well',
-    tableConfig: { sortable: true },
-  },
-  {
-    id: 9,
-    current_stage: 'interview',
-    name: 'Kareem Abdul-Jabbar',
-    position: 'Angular',
-    comments: 'doing well',
-    tableConfig: { sortable: true },
-  },
-  {
-    id: 10,
-    current_stage: 'interview',
-    name: 'Kareem Abdul-Jabbar',
-    position: 'Angular',
-    comments: 'doing well',
-    tableConfig: { sortable: true },
-  },
-  {
-    id: 11,
-    current_stage: 'interview',
-    name: 'Kareem Abdul-Jabbar',
-    position: 'Angular',
-    comments: 'doing well',
-    tableConfig: { sortable: true },
-  },
-  {
-    id: 12,
-    current_stage: 'interview',
-    name: 'Kareem Abdul-Jabbar',
-    position: 'Angular',
-    comments: 'doing well',
-    tableConfig: { sortable: true },
-  },
-];
+import { BehaviorSubject, combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'brd-data-table',
   templateUrl: './data-table.component.html',
   styleUrls: ['./data-table.component.scss'],
 })
-export class DataTableComponent {
-  data: DataTable[] = [...DATA];
-  currentPage = 1;
-  itemPerPage = 7;
+export class DataTableComponent implements OnChanges {
+  @Input() dataSet: DataTable[] = [];
+  readonly currentPage$ = new BehaviorSubject<number>(1);
+  readonly dataSet$ = new BehaviorSubject<DataTable[]>([]);
+  readonly paginatedData$ = combineLatest([
+    this.currentPage$,
+    this.dataSet$,
+  ]).pipe(
+    map(([currentPage, dataSet]) => {
+      const startIndex = currentPage * this.pageSize - this.pageSize;
+      return dataSet.slice(startIndex, startIndex + this.pageSize);
+    })
+  );
+  pageSize = 10;
   hideName = false;
   loadingData = true;
   sort: INglDatatableSort = { key: 'current_stage', order: 'asc' };
@@ -125,7 +37,11 @@ export class DataTableComponent {
   private applicantDetailsSubject = new BehaviorSubject<ApplicantDetails>({});
   applicantDetails$ = this.applicantDetailsSubject.asObservable();
 
-  constructor() {}
+  ngOnChanges(): void {
+    if (this.dataSet) {
+      this.dataSet$.next(this.dataSet);
+    }
+  }
 
   onSort(event: INglDatatableSort) {
     console.log(event, 'sort');
@@ -136,8 +52,9 @@ export class DataTableComponent {
   }
 
   onPageChange(pageNumber: number) {
-    this.currentPage = pageNumber;
-    console.log(pageNumber);
+    if (pageNumber) {
+      this.currentPage$.next(pageNumber);
+    }
   }
 
   onClickInfo(row: DataTable) {

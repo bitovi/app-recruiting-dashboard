@@ -12,6 +12,7 @@ import {
 } from './shared/dashboard-model';
 import { JobService } from './store/job.service';
 import { BarChartDataSet } from './dashboard-widget/dashboard-bar-chart/dashboard-bar-chart.component';
+import { DataTable } from './dashboard-widget/data-table/data-table';
 
 @Component({
   selector: 'brd-dashboard',
@@ -105,6 +106,19 @@ export class DashboardComponent {
       return { data, labels };
     })
   );
+
+  readonly dataTableApplicantDataSet$: Observable<DataTable[]> =
+    this.filteredApplicants$.pipe(
+      map((applicants) =>
+        applicants.map((applicant) => ({
+          id: applicant.id,
+          current_stage: '-',
+          name: `${applicant.first_name} ${applicant.last_name}`,
+          position: applicant.job_title,
+          comments: '-',
+        }))
+      )
+    );
 
   readonly getApplicants$ = this.combinedDatesFormatted$.pipe(
     switchMap(([startDate, endDate]) => {
