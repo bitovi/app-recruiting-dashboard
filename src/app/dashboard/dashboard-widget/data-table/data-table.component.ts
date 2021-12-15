@@ -1,8 +1,9 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { INglDatatableRowClick, INglDatatableSort } from 'ng-lightning';
-import { ApplicantDetails, DataTable } from './data-table';
+import { DataTable } from './data-table';
 import { BehaviorSubject, combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, map, switchMap, tap } from 'rxjs/operators';
+import { ApplicantService } from '../../store/applicant.service';
 
 @Component({
   selector: 'brd-data-table',
@@ -22,6 +23,14 @@ export class DataTableComponent implements OnChanges {
       return dataSet.slice(startIndex, startIndex + this.pageSize);
     })
   );
+  readonly selectedId$ = new BehaviorSubject<string>('');
+  readonly selectedApplicant$ = this.selectedId$.pipe(
+    filter((id) => id !== ''),
+    tap((id) => this.applicantService.getByKey(id)),
+    switchMap((id) =>
+      this.applicantService.entityMap$.pipe(map((entities) => entities[id]))
+    )
+  );
   pageSize = 10;
   hideName = false;
   loadingData = true;
@@ -31,11 +40,7 @@ export class DataTableComponent implements OnChanges {
     comments: false,
   };
 
-  openInfo!: boolean;
-  selected!: number;
-  selectedItem!: Partial<DataTable>;
-  private applicantDetailsSubject = new BehaviorSubject<ApplicantDetails>({});
-  applicantDetails$ = this.applicantDetailsSubject.asObservable();
+  constructor(private applicantService: ApplicantService) {}
 
   ngOnChanges(): void {
     if (this.dataSet) {
@@ -57,44 +62,11 @@ export class DataTableComponent implements OnChanges {
     }
   }
 
-  onClickInfo(row: DataTable) {
-    this.selectedItem = row;
-    // DUMMY DATA
-    const details: ApplicantDetails = {
-      id: 'prospect_20211213184816_OUE9OFKPJH8XLJWA',
-      first_name: 'Kareem',
-      last_name: 'Abdul-Jabbar',
-      email: 'kbcox001@gmail.com',
-      address: '833 Hackney Lane',
-      location:
-        '833 Hackney Lane Shelbyville, Kentucky, United States KY 40065',
-      phone: '+1 5029383453',
-      resume_link:
-        'https://s3.amazonaws.com/resumator/customer_20130208084208_HIRIKECRYT4FLQMF/resumes/resume_61b79570ae843.docx',
-      activities: [
-        {
-          id: '1',
-          activity:
-            'Adam seemed interested in the team lets get him here fast.',
-          date: new Date('2021-12-13').toLocaleDateString(),
-          time: '18:48:16',
-        },
-      ],
-      comments: [
-        {
-          id: '1',
-          date: new Date().toLocaleDateString(),
-          commentBy: 'J Sunny',
-          comment: 'This Is a test Comment',
-        },
-      ],
-    };
-    this.applicantDetailsSubject.next(details);
+  onClickInfo(id: string) {
+    this.selectedId$.next(id);
   }
 
   close() {
-    this.selectedItem = {};
+    this.selectedId$.next('');
   }
-
-  showDetails() {}
 }

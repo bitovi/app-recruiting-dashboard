@@ -1,5 +1,4 @@
 import { TemplateRef } from '@angular/core';
-import { ApplicantJob } from '../../store/jazz-api.model';
 
 interface TableConfig {
   heading: string;
@@ -18,47 +17,4 @@ export interface DataTable {
   position?: string;
   comments?: string;
   tableConfig?: Partial<TableConfig>;
-}
-
-export interface ApplicantDetails {
-  id?: string;
-  first_name?: string;
-  last_name?: string;
-  email?: string;
-  address?: string;
-  location?: string;
-  phone?: string;
-  linkedin_url?: string;
-  eeo_gender?: string;
-  eeo_race?: string;
-  eeo_disability?: string;
-  website?: string;
-  desired_salary?: string;
-  desired_start_date?: Date;
-  referrer?: string;
-  job?: ApplicantJob;
-  languages?: string;
-  rating?: [];
-  resume_link?: string;
-  comments_count?: number;
-  comments?: ApplicationComments[];
-  evaluation?: [];
-  categories?: [];
-  activities?: ApplicantActivities[];
-  messages?: {};
-}
-
-interface ApplicantActivities {
-  id: string;
-  activity: string;
-  date: Date | string;
-  time: string;
-}
-
-// TODO USE CORRECT INTERFACE
-interface ApplicationComments {
-  id: string;
-  comment: string;
-  date: Date | string;
-  commentBy: string;
 }
