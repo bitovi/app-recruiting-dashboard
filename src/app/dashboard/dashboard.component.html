@@ -30,16 +30,21 @@
           class="slds-col slds-m-top_small slds-large-size_1-of-2 slds-size_2-of-2"
         >
           <div class="slds-card line-bar-chart">
-            <brd-widgets-filter
-              (showModal)="viewWidgetModal = $event"
-              [widgetHeader]="barChartFilterFields"
-            ></brd-widgets-filter>
-            <span *ngIf="(jobsLoading$ | async) || (applicantsLoading$ | async)"
-            >LOADING</span
-            >
-            <brd-dashboard-bar-chart
-              [dataSet]="(jobBarChartDataSet$ | async)!"
-            ></brd-dashboard-bar-chart>
+
+            <div *ngIf="(jobsLoading$ | async) || (applicantsLoading$ | async) else showBarChart">
+              <ngl-spinner size="large" variant="brand" alternativeText="Loading"></ngl-spinner>
+            </div>
+
+            <ng-template #showBarChart>
+              <brd-widgets-filter
+                (showModal)="viewWidgetModal = $event"
+                [widgetHeader]="barChartFilterFields"
+              ></brd-widgets-filter>
+              <brd-dashboard-bar-chart
+                [dataSet]="(jobBarChartDataSet$ | async)!"
+              ></brd-dashboard-bar-chart>
+            </ng-template>
+
           </div>
         </div>
       </div>
@@ -51,10 +56,14 @@
       <div class="slds-m-top_small slds-hide_small"></div>
       <div class="slds-col slds-small-size_2-of-2">
         <div class="slds-card pie-chart">
-          <span *ngIf="applicantsLoading$ | async">LOADING</span>
-          <brd-dashboard-line-chart
-            [dataSet]="(applicantsLineChartDataSet$ | async)!"
-          ></brd-dashboard-line-chart>
+          <div *ngIf="(applicantsLoading$ | async) else showLineChart">
+            <ngl-spinner size="large" variant="brand" alternativeText="Loading"></ngl-spinner>
+          </div>
+          <ng-template #showLineChart>
+            <brd-dashboard-line-chart
+              [dataSet]="(applicantsLineChartDataSet$ | async)!"
+            ></brd-dashboard-line-chart>
+          </ng-template>
         </div>
       </div>
       <div class="slds-col slds-m-top_small slds-small-size_2-of-2">
