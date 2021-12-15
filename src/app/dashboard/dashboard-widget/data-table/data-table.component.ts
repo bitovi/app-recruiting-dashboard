@@ -5,6 +5,8 @@ import { BehaviorSubject, combineLatest } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
 import { ApplicantService } from '../../store/applicant.service';
 
+type DataTableSortableKeys = 'current_stage' | 'name' | 'position' | 'comments';
+
 @Component({
   selector: 'brd-data-table',
   templateUrl: './data-table.component.html',
@@ -14,9 +16,27 @@ export class DataTableComponent implements OnChanges {
   @Input() dataSet: DataTable[] = [];
   readonly currentPage$ = new BehaviorSubject<number>(1);
   readonly dataSet$ = new BehaviorSubject<DataTable[]>([]);
+  readonly filter$ = new BehaviorSubject<INglDatatableSort | undefined>(
+    undefined
+  );
+  readonly filteredData$ = combineLatest([this.dataSet$, this.filter$]).pipe(
+    map(([dataSet, filter]) => {
+      if (!filter) {
+        return dataSet;
+      }
+      return dataSet.sort((a, b) => {
+        const x = a[filter.key as DataTableSortableKeys] || '';
+        const y = b[filter.key as DataTableSortableKeys] || '';
+        if (filter.order === 'asc') {
+          return y.localeCompare(x);
+        }
+        return x.localeCompare(y);
+      });
+    })
+  );
   readonly paginatedData$ = combineLatest([
     this.currentPage$,
-    this.dataSet$,
+    this.filteredData$,
   ]).pipe(
     map(([currentPage, dataSet]) => {
       const startIndex = currentPage * this.pageSize - this.pageSize;
@@ -49,7 +69,7 @@ export class DataTableComponent implements OnChanges {
   }
 
   onSort(event: INglDatatableSort) {
-    console.log(event, 'sort');
+    this.filter$.next(event);
   }
 
   onClickRow(event: INglDatatableRowClick) {
