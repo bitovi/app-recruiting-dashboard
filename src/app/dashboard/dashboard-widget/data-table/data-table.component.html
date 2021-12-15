@@ -24,9 +24,9 @@
       <ng-template let-row="row" nglDatatableCell>
         <span class="slds-p-right_xx-small"> {{ row.name }} </span>
         <ngl-icon
-          (click)="onClickInfo(row)"
+          (click)="onClickInfo(row.id)"
           [nglPopoverFooter]="closeDialog"
-          [nglPopoverOpen]="selectedItem?.id === row.id"
+          [nglPopoverOpen]="(selectedId$ | async) === row.id"
           [nglPopover]="viewDetails"
           [nglTooltipOpenAuto]="true"
           alternativeText="Click to View"
@@ -66,7 +66,7 @@
 </section>
 
 <ng-template #viewDetails>
-  <ng-container *ngIf="applicantDetails$ | async as applicant">
+  <ng-container *ngIf="selectedApplicant$ | async as applicant">
     <header>
       <div class="slds-page-header">
         <div class="slds-media slds-media_center slds-m-bottom_small">
@@ -324,11 +324,11 @@
                     <ng-container *ngFor="let comment of applicant.comments">
                       <li class="slds-item">
                         <div class="slds-p-around--xx-small">
-                          <span
+                          <!-- <span
                             class="slds-popover_panel__label slds-truncate"
                             >{{ comment.commentBy }}</span
                           >
-                          <p>{{ comment.comment }}</p>
+                          <p>{{ comment.comment }}</p> -->
                         </div>
                       </li>
                     </ng-container>
