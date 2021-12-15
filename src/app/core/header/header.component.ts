@@ -1,6 +1,5 @@
-import {AuthService} from "@auth0/auth0-angular";
-import {Component} from "@angular/core";
-
+import { AuthService } from '@auth0/auth0-angular';
+import { Component } from '@angular/core';
 
 interface MenuItems {
   value: string;
@@ -10,18 +9,17 @@ interface MenuItems {
 @Component({
   selector: 'brd-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
-
   items: MenuItems[] = [
-    {value: 'Settings', icon: 'utility:settings'},
-    {value: 'Logout', icon: 'utility:logout'}];
+    { value: 'Settings', icon: 'utility:settings' },
+    { value: 'Logout', icon: 'utility:logout' },
+  ];
   open = false;
   openAppList = false;
 
-  constructor(private authService: AuthService) {
-  }
+  constructor(private authService: AuthService) {}
 
   onClickMenuItem(type: string) {
     if (type === 'Logout') {

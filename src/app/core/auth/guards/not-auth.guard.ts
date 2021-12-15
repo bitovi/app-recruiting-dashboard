@@ -1,17 +1,14 @@
-import {Injectable} from '@angular/core';
-import {CanActivate, Router, UrlTree} from '@angular/router';
-import {Observable} from 'rxjs';
-import {AuthService} from "@auth0/auth0-angular";
-import {map, take} from "rxjs/operators";
+import { Injectable } from '@angular/core';
+import { CanActivate, Router, UrlTree } from '@angular/router';
+import { Observable } from 'rxjs';
+import { AuthService } from '@auth0/auth0-angular';
+import { map, take } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class NotAutGuard implements CanActivate {
-
-  constructor(private authService: AuthService,
-              private router: Router) {
-  }
+  constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(): Observable<boolean | UrlTree> {
     return this.authService.isAuthenticated$.pipe(
@@ -19,11 +16,10 @@ export class NotAutGuard implements CanActivate {
       map((isAuth: boolean) => {
         if (isAuth) {
           this.router.navigateByUrl(`/dashboard`).then();
-          return false
+          return false;
         }
-        return true
+        return true;
       })
-    )
+    );
   }
-
 }

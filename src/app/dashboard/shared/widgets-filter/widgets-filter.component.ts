@@ -1,5 +1,9 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {ViewWidgetModal, WidgetFieldType, WidgetFilterFields,} from '../dashboard-model';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ViewWidgetModal,
+  WidgetFieldType,
+  WidgetsHeader,
+} from '../dashboard-model';
 
 @Component({
   selector: 'brd-widgets-filter',
@@ -12,7 +16,7 @@ export class WidgetsFilterComponent {
 
   @Input() startDate: Date = new Date();
   @Input() endDate: Date = new Date();
-  @Input() widgetFilterFields!: Partial<WidgetFilterFields>;
+  @Input() widgetHeader!: WidgetsHeader;
   @Output() showModal = new EventEmitter<ViewWidgetModal>();
 
   constructor() {}

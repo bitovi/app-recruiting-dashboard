@@ -3,13 +3,13 @@ import { Component, Inject, LOCALE_ID } from '@angular/core';
 import { combineLatest, Observable } from 'rxjs';
 import { FilterState, FilterStore } from './store/filter.store';
 import { ApplicantService } from './store/applicant.service';
+import { map, switchMap } from 'rxjs/operators';
 import {
   DashboardWidgets,
   ViewWidgetModal,
   WidgetFieldType,
-  WidgetFilterFields,
+  WidgetsHeader,
 } from './shared/dashboard-model';
-import { map, switchMap } from 'rxjs/operators';
 import { JobService } from './store/job.service';
 import { BarChartDataSet } from './dashboard-widget/dashboard-bar-chart/dashboard-bar-chart.component';
 
@@ -31,14 +31,17 @@ export class DashboardComponent {
   readonly combinedDates$: Observable<[Date, Date]> =
     this.filterStore.combinedDates$;
 
-  barChartFilterFields: WidgetFilterFields = {
+  barChartFilterFields: WidgetsHeader = {
     widgetType: DashboardWidgets.BAR_CHART,
-    fieldType: WidgetFieldType.DATE_RANGE,
+    widgetFilterFields: [
+      { fieldType: WidgetFieldType.DATE_RANGE },
+      { fieldType: WidgetFieldType.CHECK_BOX, fields: [{}] },
+    ],
   };
 
-  doughnutChartFilterFields: WidgetFilterFields = {
+  doughnutChartFilterFields: WidgetsHeader = {
     widgetType: DashboardWidgets.DOUGHNUT_CHART,
-    fieldType: undefined,
+    widgetFilterFields: [],
   };
 
   readonly combinedDatesFormatted$ = this.combinedDates$.pipe(

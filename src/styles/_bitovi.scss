@@ -1,4 +1,4 @@
-$bitovi_red : #cb3036;
+$bitovi_red: #cb3036;
 
 /* App Container */
 section.app-container {
@@ -11,6 +11,7 @@ section.app-container {
 .app-filter {
 
 }
+
 // override context bar
 .slds-context-bar {
   border-bottom: 3px solid $bitovi_red;
@@ -36,25 +37,47 @@ section.app-container {
   color: $bitovi_red;
 }
 
+.table-fix-header {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+}
 
 /* Style  Tables */
 .tables {
-  thead{
+  thead {
     tr {
       font-size: 16px;
       height: 50px;
     }
-    th{
+
+    th {
       background: #f5f1f5;
     }
+
+    @extend .table-fix-header
   }
+
+  tbody {
+    @extend .table-fix-header;
+    display: block;
+    max-height: 31.3vh;
+    overflow-y: scroll;
+  }
+
   tr {
     height: 45px;
+    @extend .table-fix-header;
   }
-  tr:nth-child(even)
-  {
+
+  tr:nth-child(even) {
     background-color: rgba(201, 207, 207, 0.3);
   }
+
+  ngl-icon {
+    cursor: pointer;
+  }
+
   td {
     //border-top: 1px solid #17a0db;
   }

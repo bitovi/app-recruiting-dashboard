@@ -9,7 +9,7 @@ import 'chartjs-adapter-date-fns';
   styleUrls: ['./dashboard-line-chart.component.scss'],
 })
 export class DashboardLineChartComponent implements OnChanges {
-  // x: Date.parse(yyyy-mm-dd), y: ammount of applicants
+  // x: Date.parse(yyyy-mm-dd), y: amount of applicants
   @Input() dataSet: { x: number; y: number }[] = [];
 
   lineChartType: ChartType = 'line';
