@@ -8,7 +8,7 @@ import { ChartData, ChartOptions, ChartType } from 'chart.js';
 
 export interface BarChartDataSet {
   data: number[];
-  labels: string[];
+  labels: string[][];
 }
 
 @Component({
@@ -26,6 +26,16 @@ export class DashboardBarChartComponent implements OnChanges {
   };
   barChartOptions: ChartOptions = {
     responsive: true,
+    scales: {
+      x: {
+        ticks: {
+          autoSkip: false,
+          callback: function (value: number | string, index: number) {
+            return this.getLabelForValue(index);
+          },
+        },
+      },
+    },
     plugins: {
       legend: {
         title: {
