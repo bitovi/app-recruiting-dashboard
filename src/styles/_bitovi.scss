@@ -61,7 +61,8 @@ section.app-container {
   tbody {
     @extend .table-fix-header;
     display: block;
-    max-height: 31.3vh;
+    height: calc(40vh - 80px);
+    max-height: calc(40vh - 80px);
     overflow-y: scroll;
   }
 
@@ -80,5 +81,25 @@ section.app-container {
 
   td {
     //border-top: 1px solid #17a0db;
+  }
+}
+
+.paginated-table {
+  .slds-button {
+    border-bottom: none;
+  }
+
+  .slds-button-group .slds-button:last-child {
+    border-radius: 0;
+  }
+
+  .slds-button-group .slds-button:first-child, .slds-button-group-list li:first-child .slds-button {
+    border-radius: 0;
+    border-right: none;
+  }
+
+  .slds-button-group .slds-button:last-child {
+    border-radius: 0;
+    border-right: none;
   }
 }

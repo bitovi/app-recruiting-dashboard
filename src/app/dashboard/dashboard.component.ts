@@ -13,6 +13,7 @@ import {
 import { JobService } from './store/job.service';
 import { BarChartDataSet } from './dashboard-widget/dashboard-bar-chart/dashboard-bar-chart.component';
 import { DataTable } from './dashboard-widget/data-table/data-table';
+import { LabelToArrayPipe } from './shared/pipe/label-to-array.pipe';
 
 @Component({
   selector: 'brd-dashboard',
@@ -93,7 +94,9 @@ export class DashboardComponent {
     this.filteredApplicants$,
   ]).pipe(
     map(([jobs, applicants]) => {
-      const labels = jobs.map((job) => job.title);
+      const labels = jobs.map((job) =>
+        this.labelToArrayPipe.transform(job.title, 2)
+      );
       const mapped = applicants.reduce(
         (prev: { [key: string]: number }, curr) => {
           const jobId = curr.job_id;
@@ -138,6 +141,7 @@ export class DashboardComponent {
     private readonly filterStore: FilterStore,
     private readonly applicantService: ApplicantService,
     private readonly jobService: JobService,
+    private labelToArrayPipe: LabelToArrayPipe,
     @Inject(LOCALE_ID) private locale: string
   ) {
     this.getApplicants$.subscribe();

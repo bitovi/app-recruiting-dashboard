@@ -22,23 +22,27 @@
       key="name"
     >
       <ng-template let-row="row" nglDatatableCell>
-        <span class="slds-p-right_xx-small"> {{ row.name }} </span>
-        <ngl-icon
-          (click)="onClickInfo(row.id)"
-          [nglPopoverFooter]="closeDialog"
-          [nglPopoverOpen]="(selectedId$ | async) === row.id"
-          [nglPopover]="viewDetails"
-          [nglTooltipOpenAuto]="true"
-          alternativeText="Click to View"
-          class="slds-m-bottom--xx-small slds-datepicker_time__list"
-          iconName="utility:info"
-          nglPopoverSize="large"
-          nglPopoverVariant="panel"
-          nglTooltip="Click to View"
-          nglTooltipPlacement="top"
-          size="x-small"
-          variant="warning"
-        ></ngl-icon>
+        <div class="slds-grid">
+          <span class="slds-truncate slds-col slds-size_3-of-5"> {{ row.name }} </span>
+          <ngl-icon
+            (click)="onClickInfo(row.id)"
+            [nglPopoverFooter]="closeDialog"
+            [nglPopoverOpen]="(selectedId$ | async) === row.id"
+            [nglPopover]="viewDetails"
+            [nglTooltipOpenAuto]="true"
+            nglPopoverPlacement="right"
+            alternativeText="Click to View"
+            class="slds-m-bottom--xx-small slds-datepicker_time__list"
+            iconName="utility:info"
+            nglPopoverSize="large"
+            nglPopoverVariant="panel"
+            nglTooltip="Click to View"
+            nglTooltipPlacement="top"
+            size="x-small"
+            variant="warning"
+          ></ngl-icon>
+        </div>
+
       </ng-template>
     </ngl-datatable-column>
     <ngl-datatable-column
@@ -74,7 +78,7 @@
             class="slds-icon_container slds-icon-standard-account slds-media__figure"
           >
             <ngl-icon iconName="standard:account"></ngl-icon
-          ></span>
+            ></span>
           <div class="slds-media__body">
             <h2 class="slds-text-heading_medium slds-hyphenate">
               Applicant Details
@@ -131,9 +135,9 @@
             </dl>
             <span
               class="slds-text-body_small slds-float--right slds-text-align_right"
-              ><a [href]="applicant?.resume_link" target="_blank"
-                >View Resume</a
-              ></span
+            ><a [href]="applicant?.resume_link" target="_blank"
+            >View Resume</a
+            ></span
             >
           </div>
         </div>
@@ -205,7 +209,7 @@
                   <div
                     class="slds-timeline__actions slds-timeline__actions_inline"
                   >
-                    <p class="slds-timeline__date">3/20/27</p>
+                    <p class="slds-timeline__date">{{applicant.apply_date}}</p>
                     <button
                       aria-haspopup="true"
                       class="slds-button slds-button_icon slds-button_icon-border-filled slds-button_icon-x-small"
@@ -227,16 +231,22 @@
                   <ul
                     class="slds-has-dividers_around slds-has-block-links_space"
                   >
-                    <ng-container *ngFor="let activity of applicant.activities">
-                      <li class="slds-item">
-                        <div class="slds-p-around--xx-small">
-                          <i class="slds-text-body_small slds-truncate">
-                            {{ activity.date }}</i
-                          >
-                          <p>{{ activity.activity }}</p>
-                        </div>
-                      </li>
-                    </ng-container>
+                    <div *ngIf="!applicant?.activities?.length else showActivities">
+                      <span>No activity to display ...</span>
+                    </div>
+                    <ng-template #showActivities>
+                      <ng-container *ngFor="let activity of applicant.activities">
+                        <li class="slds-item">
+                          <div class="slds-p-around--xx-small">
+                            <i class="slds-text-body_small slds-truncate">
+                              {{ activity.date }}</i
+                            >
+                            <p>{{ activity.activity }}</p>
+                          </div>
+                        </li>
+                      </ng-container>
+
+                    </ng-template>
                   </ul>
                 </article>
               </div>
@@ -299,7 +309,6 @@
                   <div
                     class="slds-timeline__actions slds-timeline__actions_inline"
                   >
-                    <p class="slds-timeline__date">3/23/27</p>
                     <button
                       aria-haspopup="true"
                       class="slds-button slds-button_icon slds-button_icon-border-filled slds-button_icon-x-small"
@@ -321,17 +330,22 @@
                   <ul
                     class="slds-has-dividers_around slds-has-block-links_space"
                   >
-                    <ng-container *ngFor="let comment of applicant.comments">
-                      <li class="slds-item">
-                        <div class="slds-p-around--xx-small">
-                          <!-- <span
-                            class="slds-popover_panel__label slds-truncate"
-                            >{{ comment.commentBy }}</span
-                          >
-                          <p>{{ comment.comment }}</p> -->
-                        </div>
-                      </li>
-                    </ng-container>
+                    <div *ngIf="!applicant?.comments?.length else showComments">
+                      <span>No comment to display ...</span>
+                    </div>
+                    <ng-template #showComments>
+                      <ng-container *ngFor="let comment of applicant.comments">
+                        <li class="slds-item">
+                          <div class="slds-p-around--xx-small">
+                            <!-- <span
+                              class="slds-popover_panel__label slds-truncate"
+                              >{{ comment.commentBy }}</span
+                            >
+                            <p>{{ comment.comment }}</p> -->
+                          </div>
+                        </li>
+                      </ng-container>
+                    </ng-template>
                   </ul>
                 </article>
               </div>

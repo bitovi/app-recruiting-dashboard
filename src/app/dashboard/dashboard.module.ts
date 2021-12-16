@@ -11,6 +11,7 @@ import { NgChartsModule } from 'ng2-charts';
 import { DashboardDoughnutChartComponent } from './dashboard-widget/dashboard-doughnut-chart/dashboard-doughnut-chart.component';
 import { PageFilterWidgetComponent } from './dashboard-widget/page-filter-widget/page-filter-widget.component';
 import { WidgetsFilterComponent } from './shared/widgets-filter/widgets-filter.component';
+import { LabelToArrayPipe } from './shared/pipe/label-to-array.pipe';
 
 const routes: Routes = [{ path: '', component: DashboardComponent }];
 
@@ -24,6 +25,7 @@ const routes: Routes = [{ path: '', component: DashboardComponent }];
     DashboardDoughnutChartComponent,
     PageFilterWidgetComponent,
     WidgetsFilterComponent,
+    LabelToArrayPipe,
   ],
   imports: [
     CommonModule,
@@ -31,5 +33,6 @@ const routes: Routes = [{ path: '', component: DashboardComponent }];
     NgChartsModule,
     RouterModule.forChild(routes),
   ],
+  providers: [LabelToArrayPipe],
 })
 export class DashboardModule {}
