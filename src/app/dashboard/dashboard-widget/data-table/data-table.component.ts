@@ -1,13 +1,17 @@
-import { Component, Input, OnChanges } from '@angular/core';
-import { INglDatatableRowClick, INglDatatableSort } from 'ng-lightning';
-import { DataTable } from './data-table';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+} from '@angular/core';
+import { INglDatatableSort } from 'ng-lightning';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { filter, map, switchMap, tap } from 'rxjs/operators';
-import { ApplicantService } from '../../store/applicant.service';
+import { map, withLatestFrom } from 'rxjs/operators';
 import { JobService } from '../../store/job.service';
-import { Job } from '../../store/jazz-api.model';
+import { Applicant, Job } from '../../store/jazz-api.model';
 
-type DataTableSortableKeys = 'current_stage' | 'name' | 'position' | 'comments';
+type DataTableSortableKeys = 'first_name' | 'last_name' | 'job_title';
 
 @Component({
   selector: 'brd-data-table',
@@ -15,9 +19,12 @@ type DataTableSortableKeys = 'current_stage' | 'name' | 'position' | 'comments';
   styleUrls: ['./data-table.component.scss'],
 })
 export class DataTableComponent implements OnChanges {
-  @Input() dataSet: DataTable[] = [];
-  readonly currentPage$ = new BehaviorSubject<number>(1);
-  readonly dataSet$ = new BehaviorSubject<DataTable[]>([]);
+  @Input() dataSet: Applicant[] = [];
+  @Input() currentPage: number = 1;
+  @Input() pageSize: number = 10;
+  @Input() total: number = 0;
+  @Output() pageChange = new EventEmitter<number>();
+  readonly dataSet$ = new BehaviorSubject<Applicant[]>([]);
   readonly filter$ = new BehaviorSubject<INglDatatableSort | undefined>(
     undefined
   );
@@ -36,24 +43,14 @@ export class DataTableComponent implements OnChanges {
       });
     })
   );
-  readonly paginatedData$ = combineLatest([
-    this.currentPage$,
-    this.filteredData$,
-  ]).pipe(
-    map(([currentPage, dataSet]) => {
-      const startIndex = currentPage * this.pageSize - this.pageSize;
-      return dataSet.slice(startIndex, startIndex + this.pageSize);
-    })
-  );
+
   readonly selectedId$ = new BehaviorSubject<string>('');
   readonly selectedApplicant$ = this.selectedId$.pipe(
-    filter((id) => id !== ''),
-    tap((id) => this.applicantService.getByKey(id)),
-    switchMap((id) =>
-      this.applicantService.entityMap$.pipe(map((entities) => entities[id]))
+    withLatestFrom(this.dataSet$),
+    map(([selectedId, dataSet]) =>
+      dataSet.find((applicant) => applicant.id === selectedId)
     )
   );
-  pageSize = 10;
   hideName = false;
   @Input() showLoader: boolean | null = false;
   sort: INglDatatableSort = { key: 'name', order: 'asc' };
@@ -72,10 +69,7 @@ export class DataTableComponent implements OnChanges {
   );
   itemSelected: string[] = []; // dummy selected
 
-  constructor(
-    private applicantService: ApplicantService,
-    private readonly jobService: JobService
-  ) {}
+  constructor(private readonly jobService: JobService) {}
 
   ngOnChanges(): void {
     if (this.dataSet) {
@@ -87,13 +81,9 @@ export class DataTableComponent implements OnChanges {
     this.filter$.next(event);
   }
 
-  onClickRow(event: INglDatatableRowClick) {
-    console.log(event, 'row clicked');
-  }
-
   onPageChange(pageNumber: number) {
     if (pageNumber) {
-      this.currentPage$.next(pageNumber);
+      this.pageChange.emit(pageNumber);
     }
   }
 

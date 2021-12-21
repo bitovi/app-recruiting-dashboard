@@ -2,8 +2,8 @@ import { formatDate } from '@angular/common';
 import { Component, Inject, LOCALE_ID } from '@angular/core';
 import { combineLatest, Observable } from 'rxjs';
 import { FilterState, FilterStore } from './store/filter.store';
-import { ApplicantService } from './store/applicant.service';
-import { map, switchMap } from 'rxjs/operators';
+import { ApplicantsStore } from './store/applicants.store';
+import { map } from 'rxjs/operators';
 import {
   DashboardWidgets,
   ViewWidgetModal,
@@ -12,14 +12,13 @@ import {
 } from './shared/dashboard-model';
 import { JobService } from './store/job.service';
 import { BarChartDataSet } from './dashboard-widget/dashboard-bar-chart/dashboard-bar-chart.component';
-import { DataTable } from './dashboard-widget/data-table/data-table';
 import { LabelToArrayPipe } from './shared/pipe/label-to-array.pipe';
 
 @Component({
   selector: 'brd-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
-  providers: [FilterStore],
+  providers: [FilterStore, ApplicantsStore],
 })
 export class DashboardComponent {
   date: Date = new Date();
@@ -53,7 +52,12 @@ export class DashboardComponent {
       return [startDate, endDate];
     })
   );
-  readonly applicants$ = this.applicantService.applicants$;
+
+  readonly applicants$ = this.applicantsStore.applicants$;
+  readonly totalApplicants$ = this.applicantsStore.totalApplicants$;
+  readonly applicantsPageSize$ = this.applicantsStore.pageSize$;
+  readonly applicantsCurrentPage$ = this.applicantsStore.currentPage$;
+
   readonly filteredApplicants$ = combineLatest([
     this.combinedDatesFormatted$,
     this.applicants$,
@@ -110,41 +114,18 @@ export class DashboardComponent {
     })
   );
 
-  readonly dataTableApplicantDataSet$: Observable<DataTable[]> =
-    this.filteredApplicants$.pipe(
-      map((applicants) =>
-        applicants.map((applicant) => ({
-          id: applicant.id,
-          current_stage: '-',
-          name: `${applicant.first_name} ${applicant.last_name}`,
-          position: applicant.job_title,
-          comments: '-',
-        }))
-      )
-    );
-
-  readonly getApplicants$ = this.combinedDatesFormatted$.pipe(
-    switchMap(([startDate, endDate]) => {
-      return this.applicantService.getWithQuery(
-        `from_apply_date=${startDate}&to_apply_date=${endDate}`
-      );
-    })
-    // TO-DO: takeUntil component is destroyed
-  );
-
   readonly getJobs$ = this.jobService.getWithQuery('status=open');
 
-  readonly applicantsLoading$ = this.applicantService.loading$;
+  readonly applicantsLoading$ = this.applicantsStore.loading$;
   readonly jobsLoading$ = this.jobService.loading$;
 
   constructor(
     private readonly filterStore: FilterStore,
-    private readonly applicantService: ApplicantService,
+    private readonly applicantsStore: ApplicantsStore,
     private readonly jobService: JobService,
     private labelToArrayPipe: LabelToArrayPipe,
     @Inject(LOCALE_ID) private locale: string
   ) {
-    this.getApplicants$.subscribe();
     this.getJobs$.subscribe();
   }
 
@@ -154,5 +135,9 @@ export class DashboardComponent {
 
   closeModal() {
     this.viewWidgetModal = { openModal: false, openedModal: undefined };
+  }
+
+  onPageChange(page: number) {
+    this.applicantsStore.setPage(page);
   }
 }

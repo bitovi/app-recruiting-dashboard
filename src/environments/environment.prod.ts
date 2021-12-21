@@ -20,4 +20,5 @@ export const environment: Environment = {
   httpInterceptor: {
     allowedList: [`${apiUri}/*`],
   },
+  api: 'http://localhost:3030',
 };

@@ -3,7 +3,7 @@
     (selected)="setFilterState($event)"
     [endDate]="(endDate$ | async)!"
     [startDate]="(startDate$ | async)!"
-    [totalApplicants]="(filteredApplicants$ | async)!.length"
+    [totalApplicants]="(totalApplicants$ | async)!"
   ></brd-page-filter-widget>
   <div class="slds-grid slds-gutters_xxx-small slds-wrap">
     <div
@@ -12,8 +12,13 @@
       <div class="slds-grid slds-wrap">
         <div class="slds-col slds-size_2-of-2">
           <div class="slds-card table">
-            <brd-data-table [showLoader]="(applicantsLoading$ | async)"
-                            [dataSet]="(dataTableApplicantDataSet$ | async)!"
+            <brd-data-table
+              [showLoader]="applicantsLoading$ | async"
+              [dataSet]="(applicants$ | async)!"
+              [pageSize]="(applicantsPageSize$ | async)!"
+              [currentPage]="(applicantsCurrentPage$ | async)!"
+              [total]="(totalApplicants$ | async)!"
+              (pageChange)="onPageChange($event)"
             ></brd-data-table>
           </div>
         </div>
@@ -104,7 +109,7 @@
       *ngIf="viewWidgetModal.openedModal === dashboardWidgets.BAR_CHART"
     >
       <span *ngIf="(jobsLoading$ | async) || (applicantsLoading$ | async)"
-      >LOADING</span
+        >LOADING</span
       >
       <brd-dashboard-bar-chart
         [dataSet]="(jobBarChartDataSet$ | async)!"
