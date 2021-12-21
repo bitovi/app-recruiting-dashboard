@@ -12,6 +12,9 @@ import { DashboardDoughnutChartComponent } from './dashboard-widget/dashboard-do
 import { PageFilterWidgetComponent } from './dashboard-widget/page-filter-widget/page-filter-widget.component';
 import { WidgetsFilterComponent } from './shared/widgets-filter/widgets-filter.component';
 import { LabelToArrayPipe } from './shared/pipe/label-to-array.pipe';
+import { ComboboxComponent } from './shared/combobox/combobox.component';
+import { ClickOutsideToCloseDirective } from './shared/combobox/click-outside-to-close.directive';
+import { OptionIsSelectedPipe } from './shared/pipe/option-is-selected.pipe';
 
 const routes: Routes = [{ path: '', component: DashboardComponent }];
 
@@ -26,6 +29,9 @@ const routes: Routes = [{ path: '', component: DashboardComponent }];
     PageFilterWidgetComponent,
     WidgetsFilterComponent,
     LabelToArrayPipe,
+    ComboboxComponent,
+    ClickOutsideToCloseDirective,
+    OptionIsSelectedPipe,
   ],
   imports: [
     CommonModule,

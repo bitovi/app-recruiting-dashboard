@@ -1,9 +1,11 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { INglDatatableRowClick, INglDatatableSort } from 'ng-lightning';
 import { DataTable } from './data-table';
-import { BehaviorSubject, combineLatest } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
 import { ApplicantService } from '../../store/applicant.service';
+import { JobService } from '../../store/job.service';
+import { Job } from '../../store/jazz-api.model';
 
 type DataTableSortableKeys = 'current_stage' | 'name' | 'position' | 'comments';
 
@@ -53,14 +55,27 @@ export class DataTableComponent implements OnChanges {
   );
   pageSize = 10;
   hideName = false;
-  loadingData = true;
-  sort: INglDatatableSort = { key: 'current_stage', order: 'asc' };
+  @Input() showLoader: boolean | null = false;
+  sort: INglDatatableSort = { key: 'name', order: 'asc' };
   activityTimelineIsOpened: Record<string, boolean> = {
     activity: false,
     comments: false,
   };
 
-  constructor(private applicantService: ApplicantService) {}
+  openedFilter = false;
+  startDate!: Date;
+  endDate!: Date;
+  options: Observable<string[]> = this.jobService.entities$.pipe(
+    map((value: Job[]) => {
+      return value.map(({ title }) => title.trim());
+    })
+  );
+  itemSelected: string[] = []; // dummy selected
+
+  constructor(
+    private applicantService: ApplicantService,
+    private readonly jobService: JobService
+  ) {}
 
   ngOnChanges(): void {
     if (this.dataSet) {
@@ -88,5 +103,9 @@ export class DataTableComponent implements OnChanges {
 
   close() {
     this.selectedId$.next('');
+  }
+
+  onItemSelected(items: any[]) {
+    console.info(items, 'items selected');
   }
 }
