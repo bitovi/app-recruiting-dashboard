@@ -16,3 +16,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Added Global App Filters
 - Added Login Page
 - Added Package `@auth0/auth0-angular`
+
+[Added Changes] 2021-12-20
+
+- Added StyleLint
+- Implement ComboBox
+

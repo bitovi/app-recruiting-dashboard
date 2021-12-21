@@ -12,8 +12,8 @@
       <div class="slds-grid slds-wrap">
         <div class="slds-col slds-size_2-of-2">
           <div class="slds-card table">
-            <brd-data-table
-              [dataSet]="(dataTableApplicantDataSet$ | async)!"
+            <brd-data-table [showLoader]="(applicantsLoading$ | async)"
+                            [dataSet]="(dataTableApplicantDataSet$ | async)!"
             ></brd-data-table>
           </div>
         </div>
@@ -104,7 +104,7 @@
       *ngIf="viewWidgetModal.openedModal === dashboardWidgets.BAR_CHART"
     >
       <span *ngIf="(jobsLoading$ | async) || (applicantsLoading$ | async)"
-        >LOADING</span
+      >LOADING</span
       >
       <brd-dashboard-bar-chart
         [dataSet]="(jobBarChartDataSet$ | async)!"

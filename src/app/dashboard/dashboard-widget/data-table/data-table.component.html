@@ -1,10 +1,27 @@
 <section class="slds-box paginated-table" style="padding: 0">
+  <div class="loader-overlay" *ngIf="showLoader">
+    <ngl-spinner size="large" variant="brand" alternativeText="Loading"></ngl-spinner>
+  </div>
+  <div class="table-filter">
+    <button
+      [(nglPopoverOpen)]="openedFilter"
+      [nglPopover]="widgetFilter"
+      class="slds-button--icon-more"
+      nglButton
+      nglPopoverHeader="Filter Table"
+      nglPopoverPlacement="bottom-right"
+      nglPopoverSize="large"
+      type="button">
+      <ngl-icon alternativeText="Filter" iconName="utility:filter" size="x-small"></ngl-icon>
+      <ngl-icon alternativeText="Filter" class="slds-m-left--x-small" iconName="utility:down"
+                size="x-small"></ngl-icon>
+    </button>
+  </div>
   <table
     (rowClick)="onClickRow($event)"
     (sortChange)="onSort($event)"
     [(sort)]="sort"
     [data]="(paginatedData$ | async)!"
-    [loading]="loadingData"
     class="slds-table slds-table_fixed-layout slds-table_resizable-cols tables"
     ngl-datatable
     trackByKey="current_stage"
@@ -363,4 +380,42 @@
       &nbsp; Close &nbsp;
     </button>
   </div>
+</ng-template>
+
+<ng-template #widgetFilter>
+
+  <div class="slds-p-around_small">
+    <div class="slds-grid slds-wrap slds-p-bottom--large">
+      <div class="slds-grid slds-gutters">
+        <div class="slds-col">
+          <ngl-datepicker-input
+            [patternPlaceholder]="true"
+            [value]="startDate"
+            class="slds-p-around_none"
+            format="little-endian"
+            label="Start Date"
+          >
+            <input nglDatepickerInput type="text">
+          </ngl-datepicker-input>
+        </div>
+
+        <div class="slds-col">
+          <ngl-datepicker-input
+            [patternPlaceholder]="true"
+            [value]="endDate"
+            format="little-endian"
+            label="End Date"
+          >
+            <input nglDatepickerInput type="text">
+          </ngl-datepicker-input>
+        </div>
+      </div>
+
+      <div class="slds-col slds-p-top_medium">
+        <brd-combobox label="Select Option" [options]="options | async" (selectionChanged)="onItemSelected($event)"
+                      [selections]="itemSelected"></brd-combobox>
+      </div>
+    </div>
+  </div>
+
 </ng-template>

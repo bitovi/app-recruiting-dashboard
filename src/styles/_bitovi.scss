@@ -1,4 +1,4 @@
-$bitovi_red: #cb3036;
+$bitovi-red: #cb3036;
 
 /* App Container */
 section.app-container {
@@ -8,36 +8,34 @@ section.app-container {
   top: 90px;
 }
 
-.app-filter {
-
-}
-
 // override context bar
 .slds-context-bar {
-  border-bottom: 3px solid $bitovi_red;
+  border-bottom: 3px solid $bitovi-red;
 }
 
 .logo-img {
   height: auto;
   width: 7.5rem;
-  padding: .5rem .75rem;
+  padding: 0.5rem 0.75rem;
 }
 
 .slds-icon-standard-store-group {
-  background: $bitovi_red;
+  background: $bitovi-red;
 }
 
-.slds-context-bar__item.slds-is-active:before {
-  background: $bitovi_red;
+.slds-context-bar__item.slds-is-active::before {
+  background: $bitovi-red;
 }
 
-.slds-button_outline-brand, .slds-button_outline-brand:focus, .slds-button_outline-brand:hover {
-  /* default outline button bitovi*/
-  border-color: $bitovi_red;
-  color: $bitovi_red;
+.slds-button_outline-brand,
+.slds-button_outline-brand:focus,
+.slds-button_outline-brand:hover {
+  /* default outline button bitovi */
+  border-color: $bitovi-red;
+  color: $bitovi-red;
 }
 
-.table-fix-header {
+%table-fix-header {
   display: table;
   table-layout: fixed;
   width: 100%;
@@ -55,11 +53,12 @@ section.app-container {
       background: #f5f1f5;
     }
 
-    @extend .table-fix-header
+    @extend %table-fix-header;
   }
 
   tbody {
-    @extend .table-fix-header;
+    @extend %table-fix-header;
+
     display: block;
     height: calc(40vh - 80px);
     max-height: calc(40vh - 80px);
@@ -68,11 +67,12 @@ section.app-container {
 
   tr {
     height: 45px;
-    @extend .table-fix-header;
+
+    @extend %table-fix-header;
   }
 
   tr:nth-child(even) {
-    background-color: rgba(201, 207, 207, 0.3);
+    background-color: rgb(201 207 207 / 30%);
   }
 
   ngl-icon {
@@ -80,7 +80,7 @@ section.app-container {
   }
 
   td {
-    //border-top: 1px solid #17a0db;
+    /* border-top: 1px solid #17a0db; */
   }
 }
 
@@ -93,7 +93,8 @@ section.app-container {
     border-radius: 0;
   }
 
-  .slds-button-group .slds-button:first-child, .slds-button-group-list li:first-child .slds-button {
+  .slds-button-group .slds-button:first-child,
+  .slds-button-group-list li:first-child .slds-button {
     border-radius: 0;
     border-right: none;
   }
