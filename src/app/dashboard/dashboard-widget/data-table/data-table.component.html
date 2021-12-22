@@ -414,7 +414,8 @@
         <div class="slds-col">
           <ngl-datepicker-input
             [patternPlaceholder]="true"
-            [value]="startDate"
+            [value]="filter.startDate"
+            (valueChange)="onChangeCustomStartDate($event)"
             class="slds-p-around_none"
             format="little-endian"
             label="Start Date"
@@ -426,7 +427,8 @@
         <div class="slds-col">
           <ngl-datepicker-input
             [patternPlaceholder]="true"
-            [value]="endDate"
+            [value]="filter.endDate"
+            (valueChange)="onChangeCustomEndDate($event)"
             format="little-endian"
             label="End Date"
           >

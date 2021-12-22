@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { JobService } from '../../store/job.service';
 import { Applicant, Job } from '../../store/jazz-api.model';
+import { ApplicantFilter } from '../../store/applicants.store';
 
 @Component({
   selector: 'brd-data-table',
@@ -16,8 +17,13 @@ export class DataTableComponent {
   @Input() pageSize: number = 10;
   @Input() total: number = 0;
   @Input() sort: INglDatatableSort = { key: '', order: 'desc' };
+  @Input() filter: ApplicantFilter = {
+    startDate: null,
+    endDate: null,
+  };
   @Output() pageChange = new EventEmitter<number>();
   @Output() sortChange = new EventEmitter<INglDatatableSort>();
+  @Output() filterChange = new EventEmitter<ApplicantFilter>();
   readonly selectedId$ = new BehaviorSubject<string>('');
   readonly selectedApplicant$ = this.selectedId$.pipe(
     map((selectedId) =>
@@ -32,8 +38,6 @@ export class DataTableComponent {
   };
 
   openedFilter = false;
-  startDate!: Date;
-  endDate!: Date;
   options: Observable<string[]> = this.jobService.entities$.pipe(
     map((value: Job[]) => {
       return value.map(({ title }) => title.trim());
@@ -63,5 +67,21 @@ export class DataTableComponent {
 
   onItemSelected(items: any[]) {
     console.info(items, 'items selected');
+  }
+
+  onChangeCustomStartDate(date: string | Date): void {
+    if (typeof date === 'string') {
+      // documentation states that only Date is returned from valueChange event
+      return;
+    }
+    this.filterChange.emit({ startDate: date, endDate: this.filter.endDate });
+  }
+
+  onChangeCustomEndDate(date: string | Date): void {
+    if (typeof date === 'string') {
+      // documentation states that only Date is returned from valueChange event
+      return;
+    }
+    this.filterChange.emit({ startDate: this.filter.startDate, endDate: date });
   }
 }

@@ -11,6 +11,7 @@ export interface Applicant {
 
   // new backend api custom fields
   full_name?: string;
+  apply_date_date: Date;
 
   // /applicants/applicant_id
   // also includes properties:

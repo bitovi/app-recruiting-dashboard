@@ -2,7 +2,7 @@ import { formatDate } from '@angular/common';
 import { Component, Inject, LOCALE_ID } from '@angular/core';
 import { combineLatest, Observable } from 'rxjs';
 import { FilterState, FilterStore } from './store/filter.store';
-import { ApplicantsStore } from './store/applicants.store';
+import { ApplicantFilter, ApplicantsStore } from './store/applicants.store';
 import { map } from 'rxjs/operators';
 import {
   DashboardWidgets,
@@ -58,7 +58,8 @@ export class DashboardComponent {
   readonly totalApplicants$ = this.applicantsStore.totalApplicants$;
   readonly applicantsPageSize$ = this.applicantsStore.pageSize$;
   readonly applicantsCurrentPage$ = this.applicantsStore.currentPage$;
-  readonly sort$ = this.applicantsStore.sort$;
+  readonly applicantsSort$ = this.applicantsStore.sort$;
+  readonly applicantsFilter$ = this.applicantsStore.filter$;
 
   readonly filteredApplicants$ = combineLatest([
     this.combinedDatesFormatted$,
@@ -132,7 +133,7 @@ export class DashboardComponent {
   }
 
   setFilterState(state: FilterState) {
-    this.filterStore.setState(state);
+    this.filterStore.setDates(state.startDate, state.endDate);
   }
 
   closeModal() {
@@ -145,5 +146,9 @@ export class DashboardComponent {
 
   onSortChange(sort: INglDatatableSort) {
     this.applicantsStore.setSort(sort);
+  }
+
+  onFilterChange(filter: ApplicantFilter) {
+    this.applicantsStore.setFilter(filter);
   }
 }

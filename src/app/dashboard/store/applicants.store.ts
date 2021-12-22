@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { concatMap, finalize, map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { ApplicantResponse } from './applicant.model';
+import { FilterStore } from './filter.store';
 import { Applicant } from './jazz-api.model';
 
 export interface ApplicantsState {
@@ -15,6 +16,12 @@ export interface ApplicantsState {
   pageSize: number;
   totalApplicants: number;
   sort: INglDatatableSort;
+  filter: ApplicantFilter;
+}
+
+export interface ApplicantFilter {
+  startDate: Date | null;
+  endDate: Date | null;
 }
 
 @Injectable()
@@ -29,16 +36,26 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
   readonly currentPage$ = this.select((state) => state.currentPage);
   readonly totalApplicants$ = this.select((state) => state.totalApplicants);
   readonly sort$ = this.select((state) => state.sort);
+  readonly filter$ = this.select((state) => state.filter);
+  readonly globalCombinedDates$ = this.filterStore.combinedDates$;
 
   private readonly fetchApplicantsData$ = this.select(
     this.pageSize$,
     this.currentPage$,
     this.sort$,
-    (pageSize, currentPage, sort) => ({ pageSize, currentPage, sort }),
+    this.filter$,
+    this.globalCombinedDates$,
+    (pageSize, currentPage, sort, filter, globalCombinedDates) => ({
+      pageSize,
+      currentPage,
+      sort,
+      filter,
+      globalCombinedDates,
+    }),
     { debounce: true }
   );
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private filterStore: FilterStore) {
     super({
       applicants: [],
       loadingCounter: 0,
@@ -46,6 +63,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
       pageSize: 10,
       totalApplicants: 0,
       sort: { key: '', order: 'desc' },
+      filter: { startDate: null, endDate: null },
     });
 
     this.fetchApplicants(this.fetchApplicantsData$);
@@ -59,6 +77,11 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
   readonly setSort = this.updater((state, sort: INglDatatableSort) => ({
     ...state,
     sort,
+  }));
+
+  readonly setFilter = this.updater((state, filter: ApplicantFilter) => ({
+    ...state,
+    filter,
   }));
 
   private readonly updateLoading = this.updater((state, loading: boolean) => ({
@@ -82,38 +105,67 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
     })
   );
 
+  private getHttpParams(
+    pageSize: number,
+    currentPage: number,
+    sort: INglDatatableSort,
+    { startDate, endDate }: ApplicantFilter,
+    globalCombinedDates: [Date, Date]
+  ): HttpParams {
+    const [globalStartDate, globalEndDate] = globalCombinedDates;
+
+    let params = new HttpParams()
+      .set('$limit', pageSize)
+      .set('$skip', currentPage * pageSize - pageSize)
+      .set(
+        'apply_date_date[$gte]',
+        startDate ? startDate.getTime() : globalStartDate.getTime()
+      )
+      .set(
+        'apply_date_date[$lte]',
+        endDate ? endDate.getTime() : globalEndDate.getTime()
+      );
+
+    if (sort.key.length) {
+      params = params.set(`$sort[${sort.key}]`, sort.order === 'asc' ? 1 : -1);
+    }
+
+    return params;
+  }
+
   private readonly fetchApplicants = this.effect(
     (
       data$: Observable<{
         pageSize: number;
         currentPage: number;
         sort: INglDatatableSort;
+        filter: ApplicantFilter;
+        globalCombinedDates: [Date, Date];
       }>
     ) => {
       return data$.pipe(
-        concatMap(({ pageSize, currentPage, sort }) => {
-          const url = `${environment.api}/applicants`;
-          let params = new HttpParams()
-            .set('$limit', pageSize)
-            .set('$skip', currentPage * pageSize - pageSize);
+        concatMap(
+          ({ pageSize, currentPage, sort, filter, globalCombinedDates }) => {
+            const url = `${environment.api}/applicants`;
+            const params = this.getHttpParams(
+              pageSize,
+              currentPage,
+              sort,
+              filter,
+              globalCombinedDates
+            );
 
-          if (sort.key.length) {
-            params = params.set(
-              `$sort[${sort.key}]`,
-              sort.order === 'asc' ? 1 : -1
+            this.updateLoading(true);
+
+            return this.http.get<ApplicantResponse>(url, { params }).pipe(
+              tap((result) => {
+                this.updateApplicants(result.data);
+                this.updateTotalApplicants(result.total);
+              }),
+              finalize(() => this.updateLoading(false))
             );
           }
-
-          this.updateLoading(true);
-
-          return this.http.get<ApplicantResponse>(url, { params }).pipe(
-            tap((result) => {
-              this.updateApplicants(result.data);
-              this.updateTotalApplicants(result.total);
-            }),
-            finalize(() => this.updateLoading(false))
-          );
-        })
+        )
       );
     }
   );
