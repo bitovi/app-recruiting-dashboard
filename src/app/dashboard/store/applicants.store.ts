@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
+import { INglDatatableSort } from 'ng-lightning';
 import { Observable } from 'rxjs';
 import { concatMap, finalize, map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -13,6 +14,7 @@ export interface ApplicantsState {
   currentPage: number;
   pageSize: number;
   totalApplicants: number;
+  sort: INglDatatableSort;
 }
 
 @Injectable()
@@ -26,11 +28,13 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
   readonly pageSize$ = this.select((state) => state.pageSize);
   readonly currentPage$ = this.select((state) => state.currentPage);
   readonly totalApplicants$ = this.select((state) => state.totalApplicants);
+  readonly sort$ = this.select((state) => state.sort);
 
   private readonly fetchApplicantsData$ = this.select(
     this.pageSize$,
     this.currentPage$,
-    (pageSize, currentPage) => ({ pageSize, currentPage }),
+    this.sort$,
+    (pageSize, currentPage, sort) => ({ pageSize, currentPage, sort }),
     { debounce: true }
   );
 
@@ -41,6 +45,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
       currentPage: 1,
       pageSize: 10,
       totalApplicants: 0,
+      sort: { key: '', order: 'desc' },
     });
 
     this.fetchApplicants(this.fetchApplicantsData$);
@@ -49,6 +54,11 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
   readonly setPage = this.updater((state, currentPage: number) => ({
     ...state,
     currentPage,
+  }));
+
+  readonly setSort = this.updater((state, sort: INglDatatableSort) => ({
+    ...state,
+    sort,
   }));
 
   private readonly updateLoading = this.updater((state, loading: boolean) => ({
@@ -73,13 +83,26 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
   );
 
   private readonly fetchApplicants = this.effect(
-    (pageData$: Observable<{ pageSize: number; currentPage: number }>) => {
-      return pageData$.pipe(
-        concatMap(({ pageSize, currentPage }) => {
+    (
+      data$: Observable<{
+        pageSize: number;
+        currentPage: number;
+        sort: INglDatatableSort;
+      }>
+    ) => {
+      return data$.pipe(
+        concatMap(({ pageSize, currentPage, sort }) => {
           const url = `${environment.api}/applicants`;
-          const params = new HttpParams()
+          let params = new HttpParams()
             .set('$limit', pageSize)
             .set('$skip', currentPage * pageSize - pageSize);
+
+          if (sort.key.length) {
+            params = params.set(
+              `$sort[${sort.key}]`,
+              sort.order === 'asc' ? 1 : -1
+            );
+          }
 
           this.updateLoading(true);
 

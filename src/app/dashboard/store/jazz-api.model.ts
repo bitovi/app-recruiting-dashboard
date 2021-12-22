@@ -9,6 +9,9 @@ export interface Applicant {
   job_title: string;
   // end of /applicants
 
+  // new backend api custom fields
+  full_name?: string;
+
   // /applicants/applicant_id
   // also includes properties:
   // id

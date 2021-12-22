@@ -13,6 +13,7 @@ import {
 import { JobService } from './store/job.service';
 import { BarChartDataSet } from './dashboard-widget/dashboard-bar-chart/dashboard-bar-chart.component';
 import { LabelToArrayPipe } from './shared/pipe/label-to-array.pipe';
+import { INglDatatableSort } from 'ng-lightning';
 
 @Component({
   selector: 'brd-dashboard',
@@ -57,6 +58,7 @@ export class DashboardComponent {
   readonly totalApplicants$ = this.applicantsStore.totalApplicants$;
   readonly applicantsPageSize$ = this.applicantsStore.pageSize$;
   readonly applicantsCurrentPage$ = this.applicantsStore.currentPage$;
+  readonly sort$ = this.applicantsStore.sort$;
 
   readonly filteredApplicants$ = combineLatest([
     this.combinedDatesFormatted$,
@@ -139,5 +141,9 @@ export class DashboardComponent {
 
   onPageChange(page: number) {
     this.applicantsStore.setPage(page);
+  }
+
+  onSortChange(sort: INglDatatableSort) {
+    this.applicantsStore.setSort(sort);
   }
 }

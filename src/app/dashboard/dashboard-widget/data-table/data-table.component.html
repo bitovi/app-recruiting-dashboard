@@ -32,8 +32,8 @@
   </div>
   <table
     (sortChange)="onSort($event)"
-    [(sort)]="sort"
-    [data]="(dataSet$ | async)!"
+    [sort]="sort"
+    [data]="dataSet"
     class="slds-table slds-table_fixed-layout slds-table_resizable-cols tables"
     ngl-datatable
     trackByKey="current_stage"
@@ -52,12 +52,12 @@
       [sortable]="true"
       [truncate]="true"
       heading="Full Name"
-      key="first_name"
+      key="full_name"
     >
       <ng-template let-row="row" nglDatatableCell>
         <div class="slds-grid">
           <span class="slds-truncate slds-col slds-size_3-of-5">
-            {{ row.first_name }} {{ row.last_name }}
+            {{ row.full_name }}
           </span>
           <ngl-icon
             (click)="onClickInfo(row.id)"

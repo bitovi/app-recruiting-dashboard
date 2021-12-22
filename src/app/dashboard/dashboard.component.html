@@ -18,7 +18,9 @@
               [pageSize]="(applicantsPageSize$ | async)!"
               [currentPage]="(applicantsCurrentPage$ | async)!"
               [total]="(totalApplicants$ | async)!"
+              [sort]="(sort$ | async)!"
               (pageChange)="onPageChange($event)"
+              (sortChange)="onSortChange($event)"
             ></brd-data-table>
           </div>
         </div>
