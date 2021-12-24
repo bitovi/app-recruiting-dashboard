@@ -105,6 +105,35 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
     })
   );
 
+  private toISOString(date: Date) {
+    var z = (n: number) => ('0' + n).slice(-2);
+    var zz = (n: number) => ('00' + n).slice(-3);
+    // var off = date.getTimezoneOffset();
+    // var sign = off > 0 ? '-' : '+';
+    // off = Math.abs(off);
+
+    return (
+      date.getFullYear() +
+      '-' +
+      z(date.getMonth() + 1) +
+      '-' +
+      z(date.getDate()) +
+      'T' +
+      z(date.getHours()) +
+      ':' +
+      z(date.getMinutes()) +
+      ':' +
+      z(date.getSeconds()) +
+      '.' +
+      zz(date.getMilliseconds()) +
+      'Z'
+      // sign +
+      // z((off / 60) | 0) +
+      // ':' +
+      // z(off % 60)
+    );
+  }
+
   private getHttpParams(
     pageSize: number,
     currentPage: number,
@@ -119,11 +148,13 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
       .set('$skip', currentPage * pageSize - pageSize)
       .set(
         'apply_date_date[$gte]',
-        startDate ? startDate.getTime() : globalStartDate.getTime()
+        startDate
+          ? this.toISOString(startDate)
+          : this.toISOString(globalStartDate)
       )
       .set(
         'apply_date_date[$lte]',
-        endDate ? endDate.getTime() : globalEndDate.getTime()
+        endDate ? this.toISOString(endDate) : this.toISOString(globalEndDate)
       );
 
     if (sort.key.length) {
