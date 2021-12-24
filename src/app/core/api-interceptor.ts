@@ -8,17 +8,17 @@ import {
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class JazzApiInterceptor implements HttpInterceptor {
-  private API_KEY = 'XGcVIkGndu0yaS3z2P7KM8XZ5Mc7pQz7';
+export class ApiInterceptor implements HttpInterceptor {
+  private API_KEY = 'h84j90wdcbiy23c563r4n80brtypom';
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     let request = req;
 
-    if (request.url.includes('resumatorapi.com')) {
+    if (request.url.includes('recruiting-dashboard-api')) {
       request = req.clone({
-        params: req.params.append('apikey', this.API_KEY),
+        headers: request.headers.set('Authorization', `Bearer ${this.API_KEY}`),
       });
     }
     return next.handle(request);

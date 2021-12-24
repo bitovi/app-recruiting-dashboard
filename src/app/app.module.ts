@@ -17,7 +17,7 @@ import {
 import { entityConfig } from './entity-metadata';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { JazzApiInterceptor } from './core/jazz-api-interceptor';
+import { ApiInterceptor } from './core/api-interceptor';
 import { JazzApiDataServiceFactory } from './dashboard/store/jazz-api-data-service.factory';
 
 const defaultDataServiceConfig: DefaultDataServiceConfig = {
@@ -42,7 +42,7 @@ const defaultDataServiceConfig: DefaultDataServiceConfig = {
     EntityDataModule.forRoot(entityConfig),
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: JazzApiInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
     { provide: DefaultDataServiceConfig, useValue: defaultDataServiceConfig },
     { provide: DefaultDataServiceFactory, useClass: JazzApiDataServiceFactory },
   ],
