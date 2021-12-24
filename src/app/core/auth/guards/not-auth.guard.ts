@@ -14,7 +14,7 @@ export class NotAutGuard implements CanActivate {
     return this.authService.isAuthenticated$.pipe(
       take(1),
       map((isAuth: boolean) => {
-        if (isAuth || true) {
+        if (isAuth) {
           this.router.navigateByUrl(`/dashboard`).then();
           return false;
         }
