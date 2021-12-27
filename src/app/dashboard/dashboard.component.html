@@ -34,7 +34,10 @@
               (showModal)="viewWidgetModal = $event"
               [widgetHeader]="doughnutChartFilterFields"
             ></brd-widgets-filter>
-            <brd-dashboard-doughnut-chart></brd-dashboard-doughnut-chart>
+            <brd-dashboard-doughnut-chart
+              [labels]="(recruitingStageExitedLabels$ | async)!"
+              [values]="(recruitingStageExitedValues$ | async)!"
+            ></brd-dashboard-doughnut-chart>
           </div>
         </div>
         <div

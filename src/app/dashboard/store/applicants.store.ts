@@ -5,7 +5,10 @@ import { INglDatatableSort } from 'ng-lightning';
 import { Observable } from 'rxjs';
 import { concatMap, finalize, map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { ApplicantResponse } from './applicant.model';
+import {
+  ApplicantResponse,
+  RecruitingStageExitedData,
+} from './applicant.model';
 import { FilterStore } from './filter.store';
 import { Applicant } from './jazz-api.model';
 
@@ -38,6 +41,25 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
   readonly sort$ = this.select((state) => state.sort);
   readonly filter$ = this.select((state) => state.filter);
   readonly globalCombinedDates$ = this.filterStore.combinedDates$;
+  readonly recruitingStageExitedData$: Observable<RecruitingStageExitedData[]> =
+    this.select((state) => state.applicants).pipe(
+      map((applicants) => {
+        const mapped = applicants.reduce(
+          (prev: { [key: string]: number }, curr) => {
+            const stage = curr.jobs
+              ? curr.jobs[curr.jobs.length - 1].applicant_progress
+              : 'No Job';
+            const sum = prev[stage];
+            return { ...prev, [stage]: sum >= 0 ? sum + 1 : 1 };
+          },
+          {}
+        );
+        return Object.entries(mapped).map(([key, value]) => ({
+          stageTitle: key,
+          applicantCount: value,
+        }));
+      })
+    );
 
   private readonly fetchApplicantsData$ = this.select(
     this.pageSize$,

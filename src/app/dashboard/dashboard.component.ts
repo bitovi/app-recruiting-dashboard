@@ -94,6 +94,15 @@ export class DashboardComponent {
     })
   );
 
+  readonly recruitingStageExitedLabels$ =
+    this.applicantsStore.recruitingStageExitedData$.pipe(
+      map((data) => data.map((value) => value.stageTitle))
+    );
+  readonly recruitingStageExitedValues$ =
+    this.applicantsStore.recruitingStageExitedData$.pipe(
+      map((data) => data.map((value) => value.applicantCount))
+    );
+
   readonly jobs$ = this.jobService.entities$;
 
   readonly jobBarChartDataSet$: Observable<BarChartDataSet> = combineLatest([
