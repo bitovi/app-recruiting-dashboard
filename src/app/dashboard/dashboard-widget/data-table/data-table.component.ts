@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { JobService } from '../../store/job.service';
 import { Applicant, Job } from '../../store/jazz-api.model';
-import { ApplicantFilter } from '../../store/applicants.store';
+import { DateFilter } from '../../store/store.model';
 
 @Component({
   selector: 'brd-data-table',
@@ -17,13 +17,13 @@ export class DataTableComponent {
   @Input() pageSize: number = 10;
   @Input() total: number = 0;
   @Input() sort: INglDatatableSort = { key: '', order: 'desc' };
-  @Input() filter: ApplicantFilter = {
+  @Input() filter: DateFilter = {
     startDate: null,
     endDate: null,
   };
   @Output() pageChange = new EventEmitter<number>();
   @Output() sortChange = new EventEmitter<INglDatatableSort>();
-  @Output() filterChange = new EventEmitter<ApplicantFilter>();
+  @Output() filterChange = new EventEmitter<DateFilter>();
   readonly selectedId$ = new BehaviorSubject<string>('');
   readonly selectedApplicant$ = this.selectedId$.pipe(
     map((selectedId) =>

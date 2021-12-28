@@ -5,12 +5,10 @@ import { INglDatatableSort } from 'ng-lightning';
 import { Observable } from 'rxjs';
 import { concatMap, finalize, map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import {
-  ApplicantResponse,
-  RecruitingStageExitedData,
-} from './applicant.model';
+import { ApplicantResponse } from './applicant.model';
 import { FilterStore } from './filter.store';
 import { Applicant } from './jazz-api.model';
+import { DateFilter } from './store.model';
 
 export interface ApplicantsState {
   applicants: Applicant[];
@@ -19,12 +17,7 @@ export interface ApplicantsState {
   pageSize: number;
   totalApplicants: number;
   sort: INglDatatableSort;
-  filter: ApplicantFilter;
-}
-
-export interface ApplicantFilter {
-  startDate: Date | null;
-  endDate: Date | null;
+  filter: DateFilter;
 }
 
 @Injectable()
@@ -41,25 +34,6 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
   readonly sort$ = this.select((state) => state.sort);
   readonly filter$ = this.select((state) => state.filter);
   readonly globalCombinedDates$ = this.filterStore.combinedDates$;
-  readonly recruitingStageExitedData$: Observable<RecruitingStageExitedData[]> =
-    this.select((state) => state.applicants).pipe(
-      map((applicants) => {
-        const mapped = applicants.reduce(
-          (prev: { [key: string]: number }, curr) => {
-            const stage = curr.jobs
-              ? curr.jobs[curr.jobs.length - 1].applicant_progress
-              : 'No Job';
-            const sum = prev[stage];
-            return { ...prev, [stage]: sum >= 0 ? sum + 1 : 1 };
-          },
-          {}
-        );
-        return Object.entries(mapped).map(([key, value]) => ({
-          stageTitle: key,
-          applicantCount: value,
-        }));
-      })
-    );
 
   private readonly fetchApplicantsData$ = this.select(
     this.pageSize$,
@@ -101,7 +75,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
     sort,
   }));
 
-  readonly setFilter = this.updater((state, filter: ApplicantFilter) => ({
+  readonly setFilter = this.updater((state, filter: DateFilter) => ({
     ...state,
     filter,
   }));
@@ -160,7 +134,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
     pageSize: number,
     currentPage: number,
     sort: INglDatatableSort,
-    { startDate, endDate }: ApplicantFilter,
+    { startDate, endDate }: DateFilter,
     globalCombinedDates: [Date, Date]
   ): HttpParams {
     const [globalStartDate, globalEndDate] = globalCombinedDates;
@@ -192,7 +166,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
         pageSize: number;
         currentPage: number;
         sort: INglDatatableSort;
-        filter: ApplicantFilter;
+        filter: DateFilter;
         globalCombinedDates: [Date, Date];
       }>
     ) => {
