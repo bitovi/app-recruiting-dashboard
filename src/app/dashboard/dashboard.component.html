@@ -77,7 +77,7 @@
       <div class="slds-m-top_small slds-hide_small"></div>
       <div class="slds-col slds-small-size_2-of-2">
         <div class="slds-card pie-chart">
-          <div *ngIf="applicantsLoading$ | async; else showLineChart">
+          <div *ngIf="newApplicantsLoading$ | async; else showLineChart">
             <ngl-spinner
               size="large"
               variant="brand"

@@ -63,22 +63,13 @@ export class DashboardComponent {
   readonly applicantsSort$ = this.applicantsStore.sort$;
   readonly applicantsFilter$ = this.applicantsStore.filter$;
 
-  readonly applicantsLineChartDataSet$ = this.applicants$.pipe(
-    map((applicants) => {
-      const mapped: { [key: string]: number } = applicants.reduce(
-        (prev: { [key: string]: number }, curr) => {
-          const date = curr.apply_date;
-          const sum = prev[date];
-          return { ...prev, [date]: sum >= 0 ? sum + 1 : 1 };
-        },
-        {}
-      );
-
-      return Object.entries(mapped).map(([key, value]) => ({
-        x: Date.parse(key),
-        y: value,
-      }));
-    })
+  readonly applicantsLineChartDataSet$ = this.chartsStore.newApplicants$.pipe(
+    map((newApplicants) =>
+      newApplicants.map((data) => ({
+        x: Date.parse(data.applyDate),
+        y: data.total,
+      }))
+    )
   );
 
   readonly recruitingStageExitedLabels$ =
@@ -116,6 +107,7 @@ export class DashboardComponent {
   readonly getJobs$ = this.jobService.getWithQuery('status=open');
 
   readonly applicantsLoading$ = this.applicantsStore.loading$;
+  readonly newApplicantsLoading$ = this.chartsStore.loadingNewApplicants$;
   readonly jobsLoading$ = this.jobService.loading$;
 
   constructor(
