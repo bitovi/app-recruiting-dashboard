@@ -15,6 +15,7 @@ import { LabelToArrayPipe } from './shared/pipe/label-to-array.pipe';
 import { ComboboxComponent } from './shared/combobox/combobox.component';
 import { ClickOutsideToCloseDirective } from './shared/combobox/click-outside-to-close.directive';
 import { OptionIsSelectedPipe } from './shared/pipe/option-is-selected.pipe';
+import { HeaderComponent } from './header/header.component';
 
 const routes: Routes = [{ path: '', component: DashboardComponent }];
 
@@ -32,6 +33,7 @@ const routes: Routes = [{ path: '', component: DashboardComponent }];
     ComboboxComponent,
     ClickOutsideToCloseDirective,
     OptionIsSelectedPipe,
+    HeaderComponent,
   ],
   imports: [
     CommonModule,
