@@ -36,13 +36,13 @@
     [data]="dataSet"
     class="slds-table slds-table_fixed-layout slds-table_resizable-cols tables"
     ngl-datatable
-    trackByKey="current_stage"
+    trackByKey="jobs.applicant_progress"
   >
     <ngl-datatable-column
       [sortable]="true"
       [truncate]="true"
       heading="Current Stage"
-      key="current_stage"
+      key="jobs.applicant_progress"
     >
       <ng-template let-row="row" nglDatatableCell>
         {{ row.jobs[row.jobs.length - 1].applicant_progress }}
@@ -83,7 +83,7 @@
       [sortable]="true"
       [truncate]="true"
       heading="Position"
-      key="job_title"
+      key="jobs.job_title"
     >
       <ng-template let-row="row" nglDatatableCell>
         {{ row.jobs[row.jobs.length - 1].job_title }}
