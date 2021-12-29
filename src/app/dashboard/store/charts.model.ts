@@ -7,3 +7,8 @@ export interface NewApplicantsResponse {
   applyDate: string;
   total: number;
 }
+
+export interface JobsApplicantsResponse {
+  jobTitle: string;
+  total: number;
+}

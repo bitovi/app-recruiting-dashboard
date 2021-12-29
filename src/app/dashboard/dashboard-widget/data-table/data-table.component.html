@@ -440,7 +440,7 @@
       <div class="slds-col slds-p-top_medium">
         <brd-combobox
           label="Select Option"
-          [options]="options | async"
+          [options]="jobsLabels"
           (selectionChanged)="onItemSelected($event)"
           [selections]="itemSelected"
         ></brd-combobox>

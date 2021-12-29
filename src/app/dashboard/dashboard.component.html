@@ -44,12 +44,7 @@
           class="slds-col slds-m-top_small slds-large-size_1-of-2 slds-size_2-of-2"
         >
           <div class="slds-card line-bar-chart">
-            <div
-              *ngIf="
-                (jobsLoading$ | async) || (applicantsLoading$ | async);
-                else showBarChart
-              "
-            >
+            <div *ngIf="jobsApplicantsLoading$ | async; else showBarChart">
               <ngl-spinner
                 size="large"
                 variant="brand"
@@ -115,9 +110,7 @@
     <ng-container
       *ngIf="viewWidgetModal.openedModal === dashboardWidgets.BAR_CHART"
     >
-      <span *ngIf="(jobsLoading$ | async) || (applicantsLoading$ | async)"
-        >LOADING</span
-      >
+      <span *ngIf="jobsApplicantsLoading$ | async">LOADING</span>
       <brd-dashboard-bar-chart
         [dataSet]="(jobBarChartDataSet$ | async)!"
       ></brd-dashboard-bar-chart>

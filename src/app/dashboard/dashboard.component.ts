@@ -1,6 +1,5 @@
-import { formatDate } from '@angular/common';
-import { Component, Inject, LOCALE_ID } from '@angular/core';
-import { combineLatest, Observable } from 'rxjs';
+import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
 import { FilterState, FilterStore } from './store/filter.store';
 import { ApplicantsStore } from './store/applicants.store';
 import { map } from 'rxjs/operators';
@@ -10,7 +9,6 @@ import {
   WidgetFieldType,
   WidgetsHeader,
 } from './shared/dashboard-model';
-import { JobService } from './store/job.service';
 import { BarChartDataSet } from './dashboard-widget/dashboard-bar-chart/dashboard-bar-chart.component';
 import { LabelToArrayPipe } from './shared/pipe/label-to-array.pipe';
 import { INglDatatableSort } from 'ng-lightning';
@@ -32,8 +30,6 @@ export class DashboardComponent {
   dashboardWidgets = DashboardWidgets;
   readonly startDate$: Observable<Date> = this.filterStore.startDate$;
   readonly endDate$: Observable<Date> = this.filterStore.endDate$;
-  readonly combinedDates$: Observable<[Date, Date]> =
-    this.filterStore.combinedDates$;
 
   barChartFilterFields: WidgetsHeader = {
     widgetType: DashboardWidgets.BAR_CHART,
@@ -47,14 +43,6 @@ export class DashboardComponent {
     widgetType: DashboardWidgets.DOUGHNUT_CHART,
     widgetFilterFields: [],
   };
-
-  readonly combinedDatesFormatted$ = this.combinedDates$.pipe(
-    map((combinedDates) => {
-      const startDate = formatDate(combinedDates[0], 'yyyy-MM-dd', this.locale);
-      const endDate = formatDate(combinedDates[1], 'yyyy-MM-dd', this.locale);
-      return [startDate, endDate];
-    })
-  );
 
   readonly applicants$ = this.applicantsStore.applicants$;
   readonly totalApplicants$ = this.applicantsStore.totalApplicants$;
@@ -81,45 +69,29 @@ export class DashboardComponent {
       map((data) => data.map((value) => value.total))
     );
 
-  readonly jobs$ = this.jobService.entities$;
-
-  readonly jobBarChartDataSet$: Observable<BarChartDataSet> = combineLatest([
-    this.jobs$,
-    this.applicants$,
-  ]).pipe(
-    map(([jobs, applicants]) => {
-      const labels = jobs.map((job) =>
-        this.labelToArrayPipe.transform(job.title, 2)
-      );
-      const mapped = applicants.reduce(
-        (prev: { [key: string]: number }, curr) => {
-          const jobId = curr.job_id;
-          const sum = prev[jobId];
-          return { ...prev, [jobId]: sum >= 0 ? sum + 1 : 1 };
-        },
-        {}
-      );
-      const data = jobs.map((job) => mapped[job.id]);
-      return { data, labels };
-    })
-  );
-
-  readonly getJobs$ = this.jobService.getWithQuery('status=open');
+  readonly jobBarChartDataSet$: Observable<BarChartDataSet> =
+    this.chartsStore.jobsApplicants$.pipe(
+      map((jobsApplicantsData) => {
+        const labels = jobsApplicantsData.map((jobApplicant) =>
+          this.labelToArrayPipe.transform(jobApplicant.jobTitle, 2)
+        );
+        const data = jobsApplicantsData.map(
+          (jobApplicant) => jobApplicant.total
+        );
+        return { data, labels };
+      })
+    );
 
   readonly applicantsLoading$ = this.applicantsStore.loading$;
   readonly newApplicantsLoading$ = this.chartsStore.loadingNewApplicants$;
-  readonly jobsLoading$ = this.jobService.loading$;
+  readonly jobsApplicantsLoading$ = this.chartsStore.loadingJobsApplicants$;
 
   constructor(
     private readonly filterStore: FilterStore,
     private readonly applicantsStore: ApplicantsStore,
     private readonly chartsStore: ChartsStore,
-    private readonly jobService: JobService,
-    private labelToArrayPipe: LabelToArrayPipe,
-    @Inject(LOCALE_ID) private locale: string
-  ) {
-    this.getJobs$.subscribe();
-  }
+    private labelToArrayPipe: LabelToArrayPipe
+  ) {}
 
   setFilterState(state: FilterState) {
     this.filterStore.setDates(state.startDate, state.endDate);

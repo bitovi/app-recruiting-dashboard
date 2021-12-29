@@ -1,9 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { INglDatatableSort } from 'ng-lightning';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { JobService } from '../../store/job.service';
-import { Applicant, Job } from '../../store/jazz-api.model';
+import { Applicant } from '../../store/jazz-api.model';
 import { DateFilter } from '../../store/store.model';
 
 @Component({
@@ -13,6 +12,7 @@ import { DateFilter } from '../../store/store.model';
 })
 export class DataTableComponent {
   @Input() dataSet: Applicant[] = [];
+  @Input() jobsLabels: string[] = [];
   @Input() currentPage: number = 1;
   @Input() pageSize: number = 10;
   @Input() total: number = 0;
@@ -36,16 +36,8 @@ export class DataTableComponent {
     activity: false,
     comments: false,
   };
-
   openedFilter = false;
-  options: Observable<string[]> = this.jobService.entities$.pipe(
-    map((value: Job[]) => {
-      return value.map(({ title }) => title.trim());
-    })
-  );
   itemSelected: string[] = []; // dummy selected
-
-  constructor(private readonly jobService: JobService) {}
 
   onSort(event: INglDatatableSort) {
     this.sortChange.emit(event);
