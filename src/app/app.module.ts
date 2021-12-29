@@ -6,7 +6,6 @@ import { AuthModule } from '@auth0/auth0-angular';
 
 import { NglModule } from 'ng-lightning';
 import { LoginComponent } from './pages/login/login.component';
-import { HeaderComponent } from './core/header/header.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
@@ -14,7 +13,7 @@ import { StoreModule } from '@ngrx/store';
 import { ApiInterceptor } from './core/api-interceptor';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, HeaderComponent],
+  declarations: [AppComponent, LoginComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

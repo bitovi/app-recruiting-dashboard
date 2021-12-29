@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { AuthState } from '@auth0/auth0-angular';
 
 @Component({
   selector: 'brd-root',
@@ -8,6 +7,4 @@ import { AuthState } from '@auth0/auth0-angular';
 })
 export class AppComponent {
   title = 'app-recruiting-dashboard';
-
-  constructor(public authService: AuthState) {}
 }
