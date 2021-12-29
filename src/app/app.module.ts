@@ -9,20 +9,9 @@ import { LoginComponent } from './pages/login/login.component';
 import { HeaderComponent } from './core/header/header.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import {
-  DefaultDataServiceConfig,
-  DefaultDataServiceFactory,
-  EntityDataModule,
-} from '@ngrx/data';
-import { entityConfig } from './entity-metadata';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { JazzApiInterceptor } from './core/jazz-api-interceptor';
-import { JazzApiDataServiceFactory } from './dashboard/store/jazz-api-data-service.factory';
-
-const defaultDataServiceConfig: DefaultDataServiceConfig = {
-  root: 'https://api.resumatorapi.com/v1',
-};
+import { ApiInterceptor } from './core/api-interceptor';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, HeaderComponent],
@@ -39,12 +28,9 @@ const defaultDataServiceConfig: DefaultDataServiceConfig = {
     }),
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
-    EntityDataModule.forRoot(entityConfig),
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: JazzApiInterceptor, multi: true },
-    { provide: DefaultDataServiceConfig, useValue: defaultDataServiceConfig },
-    { provide: DefaultDataServiceFactory, useClass: JazzApiDataServiceFactory },
+    { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
 })

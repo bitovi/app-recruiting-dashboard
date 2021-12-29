@@ -1,4 +1,4 @@
-import config from '../../auth_config.json';
+import config from '../../auth_config_prod.json';
 import { Environment } from './environment.model';
 
 const { domain, clientId, apiUri, errorPath } = config as {
@@ -20,4 +20,5 @@ export const environment: Environment = {
   httpInterceptor: {
     allowedList: [`${apiUri}/*`],
   },
+  api: 'https://recruiting-dashboard-api.onrender.com',
 };

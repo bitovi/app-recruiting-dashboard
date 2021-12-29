@@ -10,6 +10,10 @@ import { Router } from '@angular/router';
 export class LoginComponent {
   constructor(public authService: AuthService, private router: Router) {}
 
+  login() {
+    this.router.navigateByUrl(`/dashboard`);
+  }
+
   onSubmit(): void {
     this.authService.loginWithRedirect().subscribe(
       (resp) => {

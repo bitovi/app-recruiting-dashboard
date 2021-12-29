@@ -28,7 +28,7 @@ export class DashboardLineChartComponent implements OnChanges {
         type: 'time',
         time: {
           unit: 'day',
-          // tooltipFormat: "LL"
+          tooltipFormat: 'yyyy-MM-dd',
         },
         title: {
           display: true,

@@ -1,12 +1,15 @@
-import { Component } from '@angular/core';
-import { ChartData, ChartDataset, ChartOptions, ChartType } from 'chart.js';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChartData, ChartOptions, ChartType } from 'chart.js';
 
 @Component({
   selector: 'brd-dashboard-doughnut-chart',
   templateUrl: './dashboard-doughnut-chart.component.html',
   styleUrls: ['./dashboard-doughnut-chart.component.scss'],
 })
-export class DashboardDoughnutChartComponent {
+export class DashboardDoughnutChartComponent implements OnChanges {
+  @Input() values: number[] = [];
+  @Input() labels: string[] = [];
+
   colorScheme: string[] = [
     'rgb(0, 93, 185, 1)',
     'rgb(41, 180, 32, 1)',
@@ -16,15 +19,6 @@ export class DashboardDoughnutChartComponent {
     'rgb(85, 191, 202, 1)',
     'rgb(202, 80, 80, 1)',
     'rgb(119, 119, 119, 1)',
-  ];
-
-  doughnutDataSets: ChartDataset[] = [
-    {
-      data: [28, 48, 63, 44, 100],
-      label: 'No Of Applicant',
-      borderColor: this.colorScheme,
-      backgroundColor: this.colorScheme,
-    },
   ];
 
   doughnutOptions: ChartOptions = {
@@ -41,18 +35,27 @@ export class DashboardDoughnutChartComponent {
     },
   };
 
-  labels: string[] = [
-    'Resume',
-    'Round 1',
-    'Round 2',
-    'Round 3',
-    'Final Interview',
-  ];
   doughnutChartType: ChartType = 'doughnut';
   barChartLegend = true;
 
   doughnutChartData: ChartData = {
-    datasets: this.doughnutDataSets,
-    labels: this.labels,
+    datasets: [{ data: [] }],
+    labels: [],
   };
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.labels || changes.values) {
+      this.doughnutChartData = {
+        datasets: [
+          {
+            data: this.values,
+            label: 'No Of Applicant',
+            borderColor: this.colorScheme,
+            backgroundColor: this.colorScheme,
+          },
+        ],
+        labels: this.labels,
+      };
+    }
+  }
 }

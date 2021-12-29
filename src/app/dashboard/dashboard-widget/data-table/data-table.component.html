@@ -1,6 +1,10 @@
 <section class="slds-box paginated-table" style="padding: 0">
   <div class="loader-overlay" *ngIf="showLoader">
-    <ngl-spinner size="large" variant="brand" alternativeText="Loading"></ngl-spinner>
+    <ngl-spinner
+      size="large"
+      variant="brand"
+      alternativeText="Loading"
+    ></ngl-spinner>
   </div>
   <div class="table-filter">
     <button
@@ -11,36 +15,50 @@
       nglPopoverHeader="Filter Table"
       nglPopoverPlacement="bottom-right"
       nglPopoverSize="large"
-      type="button">
-      <ngl-icon alternativeText="Filter" iconName="utility:filter" size="x-small"></ngl-icon>
-      <ngl-icon alternativeText="Filter" class="slds-m-left--x-small" iconName="utility:down"
-                size="x-small"></ngl-icon>
+      type="button"
+    >
+      <ngl-icon
+        alternativeText="Filter"
+        iconName="utility:filter"
+        size="x-small"
+      ></ngl-icon>
+      <ngl-icon
+        alternativeText="Filter"
+        class="slds-m-left--x-small"
+        iconName="utility:down"
+        size="x-small"
+      ></ngl-icon>
     </button>
   </div>
   <table
-    (rowClick)="onClickRow($event)"
     (sortChange)="onSort($event)"
-    [(sort)]="sort"
-    [data]="(paginatedData$ | async)!"
+    [sort]="sort"
+    [data]="dataSet"
     class="slds-table slds-table_fixed-layout slds-table_resizable-cols tables"
     ngl-datatable
-    trackByKey="current_stage"
+    trackByKey="jobs.applicant_progress"
   >
     <ngl-datatable-column
       [sortable]="true"
       [truncate]="true"
       heading="Current Stage"
-      key="current_stage"
-    ></ngl-datatable-column>
+      key="jobs.applicant_progress"
+    >
+      <ng-template let-row="row" nglDatatableCell>
+        {{ row.jobs[row.jobs.length - 1].applicant_progress }}
+      </ng-template>
+    </ngl-datatable-column>
     <ngl-datatable-column
       [sortable]="true"
       [truncate]="true"
       heading="Full Name"
-      key="name"
+      key="full_name"
     >
       <ng-template let-row="row" nglDatatableCell>
         <div class="slds-grid">
-          <span class="slds-truncate slds-col slds-size_3-of-5"> {{ row.name }} </span>
+          <span class="slds-truncate slds-col slds-size_3-of-5">
+            {{ row.full_name }}
+          </span>
           <ngl-icon
             (click)="onClickInfo(row.id)"
             [nglPopoverFooter]="closeDialog"
@@ -59,29 +77,26 @@
             variant="warning"
           ></ngl-icon>
         </div>
-
       </ng-template>
     </ngl-datatable-column>
     <ngl-datatable-column
       [sortable]="true"
       [truncate]="true"
       heading="Position"
-      key="position"
-    ></ngl-datatable-column>
-    <ngl-datatable-column
-      [sortable]="true"
-      [truncate]="true"
-      heading="Comments"
-      key="comments"
-    ></ngl-datatable-column>
+      key="jobs.job_title"
+    >
+      <ng-template let-row="row" nglDatatableCell>
+        {{ row.jobs[row.jobs.length - 1].job_title }}
+      </ng-template>
+    </ngl-datatable-column>
   </table>
   <ngl-pagination
     (pageChange)="onPageChange($event)"
-    [page]="(currentPage$ | async)!"
+    [page]="currentPage"
     [perPage]="pageSize"
     [boundaryNumbers]="1"
     [limit]="5"
-    [total]="dataSet.length"
+    [total]="total"
     class="slds-float_right"
   ></ngl-pagination>
 </section>
@@ -95,7 +110,7 @@
             class="slds-icon_container slds-icon-standard-account slds-media__figure"
           >
             <ngl-icon iconName="standard:account"></ngl-icon
-            ></span>
+          ></span>
           <div class="slds-media__body">
             <h2 class="slds-text-heading_medium slds-hyphenate">
               Applicant Details
@@ -152,9 +167,9 @@
             </dl>
             <span
               class="slds-text-body_small slds-float--right slds-text-align_right"
-            ><a [href]="applicant?.resume_link" target="_blank"
-            >View Resume</a
-            ></span
+              ><a [href]="applicant?.resume_link" target="_blank"
+                >View Resume</a
+              ></span
             >
           </div>
         </div>
@@ -226,7 +241,9 @@
                   <div
                     class="slds-timeline__actions slds-timeline__actions_inline"
                   >
-                    <p class="slds-timeline__date">{{applicant.apply_date}}</p>
+                    <p class="slds-timeline__date">
+                      {{ applicant.apply_date }}
+                    </p>
                     <button
                       aria-haspopup="true"
                       class="slds-button slds-button_icon slds-button_icon-border-filled slds-button_icon-x-small"
@@ -248,11 +265,18 @@
                   <ul
                     class="slds-has-dividers_around slds-has-block-links_space"
                   >
-                    <div *ngIf="!applicant?.activities?.length else showActivities">
+                    <div
+                      *ngIf="
+                        !applicant?.activities?.length;
+                        else showActivities
+                      "
+                    >
                       <span>No activity to display ...</span>
                     </div>
                     <ng-template #showActivities>
-                      <ng-container *ngFor="let activity of applicant.activities">
+                      <ng-container
+                        *ngFor="let activity of applicant.activities"
+                      >
                         <li class="slds-item">
                           <div class="slds-p-around--xx-small">
                             <i class="slds-text-body_small slds-truncate">
@@ -262,7 +286,6 @@
                           </div>
                         </li>
                       </ng-container>
-
                     </ng-template>
                   </ul>
                 </article>
@@ -347,7 +370,9 @@
                   <ul
                     class="slds-has-dividers_around slds-has-block-links_space"
                   >
-                    <div *ngIf="!applicant?.comments?.length else showComments">
+                    <div
+                      *ngIf="!applicant?.comments?.length; else showComments"
+                    >
                       <span>No comment to display ...</span>
                     </div>
                     <ng-template #showComments>
@@ -383,39 +408,43 @@
 </ng-template>
 
 <ng-template #widgetFilter>
-
   <div class="slds-p-around_small">
     <div class="slds-grid slds-wrap slds-p-bottom--large">
       <div class="slds-grid slds-gutters">
         <div class="slds-col">
           <ngl-datepicker-input
             [patternPlaceholder]="true"
-            [value]="startDate"
+            [value]="filter.startDate"
+            (valueChange)="onChangeCustomStartDate($event)"
             class="slds-p-around_none"
             format="little-endian"
             label="Start Date"
           >
-            <input nglDatepickerInput type="text">
+            <input nglDatepickerInput type="text" />
           </ngl-datepicker-input>
         </div>
 
         <div class="slds-col">
           <ngl-datepicker-input
             [patternPlaceholder]="true"
-            [value]="endDate"
+            [value]="filter.endDate"
+            (valueChange)="onChangeCustomEndDate($event)"
             format="little-endian"
             label="End Date"
           >
-            <input nglDatepickerInput type="text">
+            <input nglDatepickerInput type="text" />
           </ngl-datepicker-input>
         </div>
       </div>
 
       <div class="slds-col slds-p-top_medium">
-        <brd-combobox label="Select Option" [options]="options | async" (selectionChanged)="onItemSelected($event)"
-                      [selections]="itemSelected"></brd-combobox>
+        <brd-combobox
+          label="Select Option"
+          [options]="jobsLabels"
+          (selectionChanged)="onItemSelected($event)"
+          [selections]="itemSelected"
+        ></brd-combobox>
       </div>
     </div>
   </div>
-
 </ng-template>
