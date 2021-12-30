@@ -5,10 +5,9 @@ import { INglDatatableSort } from 'ng-lightning';
 import { Observable } from 'rxjs';
 import { concatMap, finalize, map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { ApplicantResponse } from './applicant.model';
+import { ApplicantFilterState, ApplicantResponse } from './applicant.model';
 import { FilterStore } from './filter.store';
 import { Applicant } from './jazz-api.model';
-import { DateFilter } from './store.model';
 
 export interface ApplicantsState {
   applicants: Applicant[];
@@ -17,7 +16,7 @@ export interface ApplicantsState {
   pageSize: number;
   totalApplicants: number;
   sort: INglDatatableSort;
-  filter: DateFilter;
+  filters: ApplicantFilterState;
 }
 
 @Injectable()
@@ -32,20 +31,20 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
   readonly currentPage$ = this.select((state) => state.currentPage);
   readonly totalApplicants$ = this.select((state) => state.totalApplicants);
   readonly sort$ = this.select((state) => state.sort);
-  readonly filter$ = this.select((state) => state.filter);
+  readonly filters$ = this.select((state) => state.filters);
   readonly globalCombinedDates$ = this.filterStore.combinedDates$;
 
   private readonly fetchApplicantsData$ = this.select(
     this.pageSize$,
     this.currentPage$,
     this.sort$,
-    this.filter$,
+    this.filters$,
     this.globalCombinedDates$,
-    (pageSize, currentPage, sort, filter, globalCombinedDates) => ({
+    (pageSize, currentPage, sort, filters, globalCombinedDates) => ({
       pageSize,
       currentPage,
       sort,
-      filter,
+      filters,
       globalCombinedDates,
     }),
     { debounce: true }
@@ -59,7 +58,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
       pageSize: 10,
       totalApplicants: 0,
       sort: { key: '', order: 'desc' },
-      filter: { startDate: null, endDate: null },
+      filters: { date: { startDate: null, endDate: null }, position: [] },
     });
 
     this.fetchApplicants(this.fetchApplicantsData$);
@@ -75,10 +74,15 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
     sort,
   }));
 
-  readonly setFilter = this.updater((state, filter: DateFilter) => ({
-    ...state,
-    filter,
-  }));
+  readonly setFilter = this.updater(
+    (state, filters: Partial<ApplicantFilterState>) => ({
+      ...state,
+      filters: {
+        ...state.filters,
+        ...filters,
+      },
+    })
+  );
 
   private readonly updateLoading = this.updater((state, loading: boolean) => ({
     ...state,
@@ -134,10 +138,12 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
     pageSize: number,
     currentPage: number,
     sort: INglDatatableSort,
-    { startDate, endDate }: DateFilter,
+    filters: ApplicantFilterState,
     globalCombinedDates: [Date, Date]
   ): HttpParams {
     const [globalStartDate, globalEndDate] = globalCombinedDates;
+    const { startDate, endDate } = filters.date;
+    const position = filters.position;
 
     let params = new HttpParams()
       .set('$limit', pageSize)
@@ -157,6 +163,12 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
       params = params.set(`$sort[${sort.key}]`, sort.order === 'asc' ? 1 : -1);
     }
 
+    if (position.length) {
+      position.forEach((pos) => {
+        params = params.append(`jobs.job_title[$in][]`, pos);
+      });
+    }
+
     return params;
   }
 
@@ -166,19 +178,19 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
         pageSize: number;
         currentPage: number;
         sort: INglDatatableSort;
-        filter: DateFilter;
+        filters: ApplicantFilterState;
         globalCombinedDates: [Date, Date];
       }>
     ) => {
       return data$.pipe(
         concatMap(
-          ({ pageSize, currentPage, sort, filter, globalCombinedDates }) => {
+          ({ pageSize, currentPage, sort, filters, globalCombinedDates }) => {
             const url = `${environment.api}/applicants`;
             const params = this.getHttpParams(
               pageSize,
               currentPage,
               sort,
-              filter,
+              filters,
               globalCombinedDates
             );
 

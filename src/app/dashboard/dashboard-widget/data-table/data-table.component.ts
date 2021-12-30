@@ -2,8 +2,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { INglDatatableSort } from 'ng-lightning';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { ApplicantFilterState } from '../../store/applicant.model';
 import { Applicant } from '../../store/jazz-api.model';
-import { DateFilter } from '../../store/store.model';
 
 @Component({
   selector: 'brd-data-table',
@@ -17,13 +17,13 @@ export class DataTableComponent {
   @Input() pageSize: number = 10;
   @Input() total: number = 0;
   @Input() sort: INglDatatableSort = { key: '', order: 'desc' };
-  @Input() filter: DateFilter = {
-    startDate: null,
-    endDate: null,
+  @Input() filters: ApplicantFilterState = {
+    date: { startDate: null, endDate: null },
+    position: [],
   };
   @Output() pageChange = new EventEmitter<number>();
   @Output() sortChange = new EventEmitter<INglDatatableSort>();
-  @Output() filterChange = new EventEmitter<DateFilter>();
+  @Output() filterChange = new EventEmitter<Partial<ApplicantFilterState>>();
   readonly selectedId$ = new BehaviorSubject<string>('');
   readonly selectedApplicant$ = this.selectedId$.pipe(
     map((selectedId) =>
@@ -58,7 +58,9 @@ export class DataTableComponent {
   }
 
   onItemSelected(items: any[]) {
-    console.info(items, 'items selected');
+    this.filterChange.emit({
+      position: items,
+    });
   }
 
   onChangeCustomStartDate(date: string | Date): void {
@@ -66,7 +68,9 @@ export class DataTableComponent {
       // documentation states that only Date is returned from valueChange event
       return;
     }
-    this.filterChange.emit({ startDate: date, endDate: this.filter.endDate });
+    this.filterChange.emit({
+      date: { startDate: date, endDate: this.filters.date.endDate },
+    });
   }
 
   onChangeCustomEndDate(date: string | Date): void {
@@ -74,6 +78,8 @@ export class DataTableComponent {
       // documentation states that only Date is returned from valueChange event
       return;
     }
-    this.filterChange.emit({ startDate: this.filter.startDate, endDate: date });
+    this.filterChange.emit({
+      date: { startDate: this.filters.date.startDate, endDate: date },
+    });
   }
 }
