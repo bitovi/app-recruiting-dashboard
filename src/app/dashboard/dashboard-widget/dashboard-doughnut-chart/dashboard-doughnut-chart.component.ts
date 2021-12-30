@@ -7,21 +7,10 @@ import { ChartData, ChartOptions, ChartType } from 'chart.js';
   styleUrls: ['./dashboard-doughnut-chart.component.scss'],
 })
 export class DashboardDoughnutChartComponent implements OnChanges {
-  @Input() values: number[] = [];
-  @Input() labels: string[] = [];
+  @Input() public values: number[] = [];
+  @Input() public labels: string[] = [];
 
-  colorScheme: string[] = [
-    'rgb(0, 93, 185, 1)',
-    'rgb(41, 180, 32, 1)',
-    'rgb(255, 159, 64)',
-    'rgb(145, 92, 206, 1)',
-    'rgb(202, 80, 156, 1)',
-    'rgb(85, 191, 202, 1)',
-    'rgb(202, 80, 80, 1)',
-    'rgb(119, 119, 119, 1)',
-  ];
-
-  doughnutOptions: ChartOptions = {
+  public doughnutOptions: ChartOptions = {
     responsive: true,
     maintainAspectRatio: true,
     plugins: {
@@ -34,16 +23,26 @@ export class DashboardDoughnutChartComponent implements OnChanges {
       },
     },
   };
-
-  doughnutChartType: ChartType = 'doughnut';
-  barChartLegend = true;
-
-  doughnutChartData: ChartData = {
+  public doughnutChartType: ChartType = 'doughnut';
+  public barChartLegend = true;
+  public doughnutChartData: ChartData = {
     datasets: [{ data: [] }],
     labels: [],
   };
 
-  ngOnChanges(changes: SimpleChanges): void {
+  // TODO: create enum for colors
+  private colorScheme: string[] = [
+    'rgb(0, 93, 185, 1)',
+    'rgb(41, 180, 32, 1)',
+    'rgb(255, 159, 64)',
+    'rgb(145, 92, 206, 1)',
+    'rgb(202, 80, 156, 1)',
+    'rgb(85, 191, 202, 1)',
+    'rgb(202, 80, 80, 1)',
+    'rgb(119, 119, 119, 1)',
+  ];
+
+  public ngOnChanges(changes: SimpleChanges): void {
     if (changes.labels || changes.values) {
       this.doughnutChartData = {
         datasets: [

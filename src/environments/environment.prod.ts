@@ -1,5 +1,5 @@
 import config from '../../auth_config_prod.json';
-import { Environment } from './environment.model';
+import { IEnvironment } from '../app/core/interfaces';
 
 const { domain, clientId, apiUri, errorPath } = config as {
   domain: string;
@@ -9,7 +9,7 @@ const { domain, clientId, apiUri, errorPath } = config as {
   errorPath: string;
 };
 
-export const environment: Environment = {
+export const environment: IEnvironment = {
   production: true,
   auth: {
     domain,
@@ -21,4 +21,5 @@ export const environment: Environment = {
     allowedList: [`${apiUri}/*`],
   },
   api: 'https://recruiting-dashboard-api.onrender.com',
+  apiKey: 'h84j90wdcbiy23c563r4n80brtypom',
 };

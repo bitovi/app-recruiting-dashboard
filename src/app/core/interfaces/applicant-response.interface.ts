@@ -1,5 +1,5 @@
-import { Applicant } from './jazz-api.model';
-import { DateFilter } from './store.model';
+import { Applicant } from './jazz-api.interface';
+import { IDateFilter } from './date-filter.interface';
 
 export interface ApplicantResponse {
   total: number;
@@ -9,6 +9,6 @@ export interface ApplicantResponse {
 }
 
 export interface ApplicantFilterState {
-  date: DateFilter;
+  date: IDateFilter;
   position: string[];
 }

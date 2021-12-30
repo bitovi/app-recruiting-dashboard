@@ -12,17 +12,20 @@
           </span>
         </div>
         <div class="slds-media__body">
-          <div class="slds-page-header__name">
-            <div class="slds-page-header__name-title">
-              <h1>
-                <span>Applicants</span>
-                <span
-                  class="slds-page-header__title slds-truncate"
-                  title="Total Applicants"
-                  >Total Applicants - {{ totalApplicants }}</span
-                >
-              </h1>
-            </div>
+          <div
+            style="
+              display: flex;
+              flex-direction: column;
+              align-items: start;
+              justify-content: start;
+            "
+          >
+            <h3>Applicants</h3>
+            <span
+              class="slds-page-header__title slds-truncate"
+              title="Total Applicants"
+              >Total Applicants - {{ totalApplicants }}</span
+            >
           </div>
         </div>
       </div>

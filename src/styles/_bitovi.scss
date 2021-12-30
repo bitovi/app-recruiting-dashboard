@@ -1,5 +1,3 @@
-$bitovi-red: #cb3036;
-
 /* App Container */
 section.app-container {
   position: absolute;
@@ -10,7 +8,7 @@ section.app-container {
 
 // override context bar
 .slds-context-bar {
-  border-bottom: 3px solid $bitovi-red;
+  border-bottom: 3px solid var(--color-bitovi-red);
 }
 
 .logo-img {
@@ -20,19 +18,19 @@ section.app-container {
 }
 
 .slds-icon-standard-store-group {
-  background: $bitovi-red;
+  background: var(--color-bitovi-red);
 }
 
 .slds-context-bar__item.slds-is-active::before {
-  background: $bitovi-red;
+  background: var(--color-bitovi-red);
 }
 
 .slds-button_outline-brand,
 .slds-button_outline-brand:focus,
 .slds-button_outline-brand:hover {
   /* default outline button bitovi */
-  border-color: $bitovi-red;
-  color: $bitovi-red;
+  border-color: var(--color-bitovi-red);
+  color: var(--color-bitovi-red);
 }
 
 %table-fix-header {

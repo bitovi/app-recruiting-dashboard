@@ -9,12 +9,11 @@ import {
   WidgetFieldType,
   WidgetsHeader,
 } from './shared/dashboard-model';
-import { BarChartDataSet } from './dashboard-widget/dashboard-bar-chart/dashboard-bar-chart.component';
 import { LabelToArrayPipe } from './shared/pipe/label-to-array.pipe';
 import { INglDatatableSort } from 'ng-lightning';
 import { ChartsStore } from './store/charts.store';
 import { JobsStore } from './store/jobs.store';
-import { ApplicantFilterState } from './store/applicant.model';
+import { ApplicantFilterState, IBarChartDataSet } from '../core/interfaces';
 
 @Component({
   selector: 'brd-dashboard',
@@ -23,54 +22,53 @@ import { ApplicantFilterState } from './store/applicant.model';
   providers: [FilterStore, ApplicantsStore, ChartsStore, JobsStore],
 })
 export class DashboardComponent {
-  date: Date = new Date();
-  viewWidgetModal: ViewWidgetModal = {
+  public viewWidgetModal: ViewWidgetModal = {
     openModal: false,
     openedModal: undefined,
   };
-  dashboardWidgets = DashboardWidgets;
-  readonly startDate$: Observable<Date> = this.filterStore.startDate$;
-  readonly endDate$: Observable<Date> = this.filterStore.endDate$;
-
-  barChartFilterFields: WidgetsHeader = {
+  public dashboardWidgets = DashboardWidgets;
+  public barChartFilterFields: WidgetsHeader = {
     widgetType: DashboardWidgets.BAR_CHART,
     widgetFilterFields: [
       { fieldType: WidgetFieldType.DATE_RANGE },
       { fieldType: WidgetFieldType.CHECK_BOX, fields: [{}] },
     ],
   };
-
-  doughnutChartFilterFields: WidgetsHeader = {
+  public doughnutChartFilterFields: WidgetsHeader = {
     widgetType: DashboardWidgets.DOUGHNUT_CHART,
     widgetFilterFields: [],
   };
 
-  readonly applicants$ = this.applicantsStore.applicants$;
-  readonly totalApplicants$ = this.applicantsStore.totalApplicants$;
-  readonly applicantsPageSize$ = this.applicantsStore.pageSize$;
-  readonly applicantsCurrentPage$ = this.applicantsStore.currentPage$;
-  readonly applicantsSort$ = this.applicantsStore.sort$;
-  readonly applicantsFilter$ = this.applicantsStore.filters$;
+  public readonly applicants$ = this.applicantsStore.applicants$;
+  public readonly totalApplicants$ = this.applicantsStore.totalApplicants$;
+  public readonly applicantsPageSize$ = this.applicantsStore.pageSize$;
+  public readonly applicantsCurrentPage$ = this.applicantsStore.currentPage$;
+  public readonly applicantsSort$ = this.applicantsStore.sort$;
+  public readonly applicantsFilter$ = this.applicantsStore.filters$;
+  public readonly startDate$: Observable<Date> = this.filterStore.startDate$;
+  public readonly endDate$: Observable<Date> = this.filterStore.endDate$;
 
-  readonly applicantsLineChartDataSet$ = this.chartsStore.newApplicants$.pipe(
-    map((newApplicants) =>
-      newApplicants.map((data) => ({
-        x: Date.parse(data.applyDate),
-        y: data.total,
-      }))
-    )
-  );
+  public readonly applicantsLineChartDataSet$ =
+    this.chartsStore.newApplicants$.pipe(
+      map((newApplicants) =>
+        newApplicants.map((data) => ({
+          x: Date.parse(data.applyDate),
+          y: data.total,
+        }))
+      )
+    );
 
-  readonly recruitingStageExitedLabels$ =
+  public readonly recruitingStageExitedLabels$ =
     this.chartsStore.recruitingStageExited$.pipe(
       map((data) => data.map((value) => value.stage))
     );
-  readonly recruitingStageExitedValues$ =
+
+  public readonly recruitingStageExitedValues$ =
     this.chartsStore.recruitingStageExited$.pipe(
       map((data) => data.map((value) => value.total))
     );
 
-  readonly jobBarChartDataSet$: Observable<BarChartDataSet> =
+  public readonly jobBarChartDataSet$: Observable<IBarChartDataSet> =
     this.chartsStore.jobsApplicants$.pipe(
       map((jobsApplicantsData) => {
         const labels = jobsApplicantsData.map((jobApplicant) =>
@@ -99,19 +97,19 @@ export class DashboardComponent {
     private labelToArrayPipe: LabelToArrayPipe
   ) {}
 
-  setFilterState(state: FilterState) {
+  public setFilterState(state: FilterState) {
     this.filterStore.setDates(state.startDate, state.endDate);
   }
 
-  closeModal() {
+  public closeModal() {
     this.viewWidgetModal = { openModal: false, openedModal: undefined };
   }
 
-  onPageChange(page: number) {
+  public onPageChange(page: number) {
     this.applicantsStore.setPage(page);
   }
 
-  onSortChange(sort: INglDatatableSort) {
+  public onSortChange(sort: INglDatatableSort) {
     this.applicantsStore.setSort(sort);
   }
 

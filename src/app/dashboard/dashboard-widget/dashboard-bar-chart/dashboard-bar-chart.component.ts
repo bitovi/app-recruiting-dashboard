@@ -5,11 +5,7 @@ import {
   OnChanges,
 } from '@angular/core';
 import { ChartData, ChartOptions, ChartType } from 'chart.js';
-
-export interface BarChartDataSet {
-  data: number[];
-  labels: string[][];
-}
+import { IBarChartDataSet } from '../../../core/interfaces';
 
 @Component({
   selector: 'brd-dashboard-bar-chart',
@@ -18,13 +14,13 @@ export interface BarChartDataSet {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardBarChartComponent implements OnChanges {
-  @Input() dataSet: BarChartDataSet = { data: [], labels: [] };
+  @Input() public dataSet: IBarChartDataSet = { data: [], labels: [] };
 
-  barChartData: ChartData = {
+  public barChartData: ChartData = {
     datasets: [],
     labels: [],
   };
-  barChartOptions: ChartOptions = {
+  public barChartOptions: ChartOptions = {
     responsive: true,
     scales: {
       x: {
@@ -45,10 +41,10 @@ export class DashboardBarChartComponent implements OnChanges {
       },
     },
   };
-  barChartType: ChartType = 'bar';
-  barChartLegend = true;
+  public barChartType: ChartType = 'bar';
+  public barChartLegend = true;
 
-  ngOnChanges() {
+  public ngOnChanges() {
     if (this.dataSet.data) {
       this.barChartData = {
         datasets: [

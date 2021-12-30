@@ -2,8 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { INglDatatableSort } from 'ng-lightning';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ApplicantFilterState } from '../../store/applicant.model';
-import { Applicant } from '../../store/jazz-api.model';
+import { Applicant, ApplicantFilterState } from '../../../core/interfaces';
 
 @Component({
   selector: 'brd-data-table',
@@ -11,73 +10,76 @@ import { Applicant } from '../../store/jazz-api.model';
   styleUrls: ['./data-table.component.scss'],
 })
 export class DataTableComponent {
-  @Input() dataSet: Applicant[] = [];
-  @Input() jobsLabels: string[] = [];
-  @Input() currentPage: number = 1;
-  @Input() pageSize: number = 10;
-  @Input() total: number = 0;
-  @Input() sort: INglDatatableSort = { key: '', order: 'desc' };
-  @Input() filters: ApplicantFilterState = {
+  @Input() public dataSet: Applicant[] = [];
+  @Input() public jobsLabels: string[] = [];
+  @Input() public currentPage: number = 1;
+  @Input() public pageSize: number = 10;
+  @Input() public total: number = 0;
+  @Input() public sort: INglDatatableSort = { key: '', order: 'desc' };
+  @Input() public filters: ApplicantFilterState = {
     date: { startDate: null, endDate: null },
     position: [],
   };
-  @Output() pageChange = new EventEmitter<number>();
-  @Output() sortChange = new EventEmitter<INglDatatableSort>();
-  @Output() filterChange = new EventEmitter<Partial<ApplicantFilterState>>();
-  readonly selectedId$ = new BehaviorSubject<string>('');
-  readonly selectedApplicant$ = this.selectedId$.pipe(
+  @Output() public pageChange = new EventEmitter<number>();
+  @Output() public sortChange = new EventEmitter<INglDatatableSort>();
+  @Input() public showLoader: boolean | null = false;
+  @Output()
+  public filterChange = new EventEmitter<Partial<ApplicantFilterState>>();
+  public readonly selectedId$ = new BehaviorSubject<string>('');
+  public readonly selectedApplicant$ = this.selectedId$.pipe(
     map((selectedId) =>
       this.dataSet.find((applicant) => applicant.id === selectedId)
     )
   );
-  hideName = false;
-  @Input() showLoader: boolean | null = false;
-  activityTimelineIsOpened: Record<string, boolean> = {
+
+  public activityTimelineIsOpened: Record<string, boolean> = {
     activity: false,
     comments: false,
   };
-  openedFilter = false;
-  itemSelected: string[] = []; // dummy selected
+  public openedFilter = false;
+  public itemSelected: string[] = []; // dummy selected
 
-  onSort(event: INglDatatableSort) {
+  public onSort(event: INglDatatableSort) {
     this.sortChange.emit(event);
   }
 
-  onPageChange(pageNumber: number) {
+  public onPageChange(pageNumber: number) {
     if (pageNumber) {
       this.pageChange.emit(pageNumber);
     }
   }
 
-  onClickInfo(id: string) {
+  public onClickInfo(id: string) {
     this.selectedId$.next(id);
   }
 
-  close() {
+  public close() {
     this.selectedId$.next('');
   }
 
-  onItemSelected(items: any[]) {
+  public onItemSelected(items: any[]) {
     this.filterChange.emit({
       position: items,
     });
   }
 
-  onChangeCustomStartDate(date: string | Date): void {
+  public onChangeCustomStartDate(date: string | Date): void {
     if (typeof date === 'string') {
       // documentation states that only Date is returned from valueChange event
       return;
     }
+
     this.filterChange.emit({
       date: { startDate: date, endDate: this.filters.date.endDate },
     });
   }
 
-  onChangeCustomEndDate(date: string | Date): void {
+  public onChangeCustomEndDate(date: string | Date): void {
     if (typeof date === 'string') {
       // documentation states that only Date is returned from valueChange event
       return;
     }
+
     this.filterChange.emit({
       date: { startDate: this.filters.date.startDate, endDate: date },
     });

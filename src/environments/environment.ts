@@ -2,7 +2,7 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 import config from '../../auth_config.json';
-import { Environment } from './environment.model';
+import { IEnvironment } from '../app/core/interfaces';
 
 const { domain, clientId, apiUri, errorPath } = config as {
   domain: string;
@@ -12,7 +12,7 @@ const { domain, clientId, apiUri, errorPath } = config as {
   errorPath: string;
 };
 
-export const environment: Environment = {
+export const environment: IEnvironment = {
   production: false,
   auth: {
     domain,
@@ -24,7 +24,10 @@ export const environment: Environment = {
   httpInterceptor: {
     allowedList: [`${apiUri}/*`],
   },
-  api: 'http://localhost:3030',
+  // use the domain when developing only front end
+  // api: 'http://localhost:3030'
+  api: 'https://recruiting-dashboard-api.onrender.com',
+  apiKey: 'h84j90wdcbiy23c563r4n80brtypom',
 };
 
 /*

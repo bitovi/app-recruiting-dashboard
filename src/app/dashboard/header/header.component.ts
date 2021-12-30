@@ -12,16 +12,16 @@ interface MenuItems {
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
-  items: MenuItems[] = [
+  public items: MenuItems[] = [
     { value: 'Settings', icon: 'utility:settings' },
     { value: 'Logout', icon: 'utility:logout' },
   ];
-  open = false;
-  openAppList = false;
+  public open = false;
+  public openAppList = false;
 
   constructor(private authService: AuthService) {}
 
-  onClickMenuItem(type: string) {
+  public onClickMenuItem(type: string) {
     if (type === 'Logout') {
       this.authService.logout();
     }

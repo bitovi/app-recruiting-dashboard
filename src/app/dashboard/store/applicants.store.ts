@@ -5,9 +5,12 @@ import { INglDatatableSort } from 'ng-lightning';
 import { Observable } from 'rxjs';
 import { concatMap, finalize, map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { ApplicantFilterState, ApplicantResponse } from './applicant.model';
+import {
+  Applicant,
+  ApplicantFilterState,
+  ApplicantResponse,
+} from '../../core/interfaces';
 import { FilterStore } from './filter.store';
-import { Applicant } from './jazz-api.model';
 
 export interface ApplicantsState {
   applicants: Applicant[];
@@ -21,18 +24,20 @@ export interface ApplicantsState {
 
 @Injectable()
 export class ApplicantsStore extends ComponentStore<ApplicantsState> {
-  readonly applicants$: Observable<Applicant[]> = this.select(
+  public readonly applicants$: Observable<Applicant[]> = this.select(
     (state) => state.applicants
   );
-  readonly loading$: Observable<boolean> = this.select(
+  public readonly loading$: Observable<boolean> = this.select(
     (state) => state.loadingCounter
   ).pipe(map((counter) => counter !== 0));
-  readonly pageSize$ = this.select((state) => state.pageSize);
-  readonly currentPage$ = this.select((state) => state.currentPage);
-  readonly totalApplicants$ = this.select((state) => state.totalApplicants);
-  readonly sort$ = this.select((state) => state.sort);
-  readonly filters$ = this.select((state) => state.filters);
-  readonly globalCombinedDates$ = this.filterStore.combinedDates$;
+  public readonly pageSize$ = this.select((state) => state.pageSize);
+  public readonly currentPage$ = this.select((state) => state.currentPage);
+  public readonly totalApplicants$ = this.select(
+    (state) => state.totalApplicants
+  );
+  public readonly sort$ = this.select((state) => state.sort);
+  public readonly filters$ = this.select((state) => state.filters);
+  public readonly globalCombinedDates$ = this.filterStore.combinedDates$;
 
   private readonly fetchApplicantsData$ = this.select(
     this.pageSize$,
