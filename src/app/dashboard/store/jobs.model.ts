@@ -1,4 +1,4 @@
-import { Job } from './jazz-api.model';
+import { Job } from '../../core/interfaces';
 
 export interface JobResponse {
   total: number;

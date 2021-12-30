@@ -22,6 +22,7 @@ export class DataTableComponent {
   };
   @Output() public pageChange = new EventEmitter<number>();
   @Output() public sortChange = new EventEmitter<INglDatatableSort>();
+  @Input() public showLoader: boolean | null = false;
   @Output()
   public filterChange = new EventEmitter<Partial<ApplicantFilterState>>();
   public readonly selectedId$ = new BehaviorSubject<string>('');

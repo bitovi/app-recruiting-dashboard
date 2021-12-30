@@ -4,7 +4,7 @@ import { ComponentStore } from '@ngrx/component-store';
 import { Observable } from 'rxjs';
 import { finalize, map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { Job } from './jazz-api.model';
+import { Job } from '../../core/interfaces';
 import { JobResponse } from './jobs.model';
 
 export interface JobsState {
