@@ -20,11 +20,11 @@
               [currentPage]="(applicantsCurrentPage$ | async)!"
               [total]="(totalApplicants$ | async)!"
               [sort]="(applicantsSort$ | async)!"
-              [filter]="(applicantsFilter$ | async)!"
+              [filters]="(applicantsFilter$ | async)!"
               [jobsLabels]="(jobsLabels$ | async)!"
               (pageChange)="onPageChange($event)"
               (sortChange)="onSortChange($event)"
-              (filterChange)="onFilterChange($event)"
+              (filterChange)="onApplicantsFilterChange($event)"
             ></brd-data-table>
           </div>
         </div>

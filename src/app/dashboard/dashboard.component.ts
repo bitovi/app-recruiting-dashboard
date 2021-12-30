@@ -13,8 +13,8 @@ import { BarChartDataSet } from './dashboard-widget/dashboard-bar-chart/dashboar
 import { LabelToArrayPipe } from './shared/pipe/label-to-array.pipe';
 import { INglDatatableSort } from 'ng-lightning';
 import { ChartsStore } from './store/charts.store';
-import { DateFilter } from './store/store.model';
 import { JobsStore } from './store/jobs.store';
+import { ApplicantFilterState } from './store/applicant.model';
 
 @Component({
   selector: 'brd-dashboard',
@@ -50,7 +50,7 @@ export class DashboardComponent {
   readonly applicantsPageSize$ = this.applicantsStore.pageSize$;
   readonly applicantsCurrentPage$ = this.applicantsStore.currentPage$;
   readonly applicantsSort$ = this.applicantsStore.sort$;
-  readonly applicantsFilter$ = this.applicantsStore.filter$;
+  readonly applicantsFilter$ = this.applicantsStore.filters$;
 
   readonly applicantsLineChartDataSet$ = this.chartsStore.newApplicants$.pipe(
     map((newApplicants) =>
@@ -115,7 +115,7 @@ export class DashboardComponent {
     this.applicantsStore.setSort(sort);
   }
 
-  onFilterChange(filter: DateFilter) {
+  onApplicantsFilterChange(filter: Partial<ApplicantFilterState>) {
     this.applicantsStore.setFilter(filter);
   }
 }
