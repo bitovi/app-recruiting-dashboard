@@ -12,13 +12,14 @@ import {
 import { LabelToArrayPipe } from './shared/pipe/label-to-array.pipe';
 import { INglDatatableSort } from 'ng-lightning';
 import { ChartsStore } from './store/charts.store';
-import { IBarChartDataSet, IDateFilter } from '../core/interfaces';
+import { JobsStore } from './store/jobs.store';
+import { ApplicantFilterState, IBarChartDataSet } from '../core/interfaces';
 
 @Component({
   selector: 'brd-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
-  providers: [FilterStore, ApplicantsStore, ChartsStore],
+  providers: [FilterStore, ApplicantsStore, ChartsStore, JobsStore],
 })
 export class DashboardComponent {
   public viewWidgetModal: ViewWidgetModal = {
@@ -38,19 +39,12 @@ export class DashboardComponent {
     widgetFilterFields: [],
   };
 
-  public readonly startDate$: Observable<Date> = this.filterStore.startDate$;
-  public readonly endDate$: Observable<Date> = this.filterStore.endDate$;
-  public readonly applicants$ = this.applicantsStore.applicants$;
-  public readonly totalApplicants$ = this.applicantsStore.totalApplicants$;
-  public readonly applicantsPageSize$ = this.applicantsStore.pageSize$;
-  public readonly applicantsCurrentPage$ = this.applicantsStore.currentPage$;
-  public readonly applicantsSort$ = this.applicantsStore.sort$;
-  public readonly applicantsFilter$ = this.applicantsStore.filter$;
-  public readonly applicantsLoading$ = this.applicantsStore.loading$;
-  public readonly newApplicantsLoading$ =
-    this.chartsStore.loadingNewApplicants$;
-  public readonly jobsApplicantsLoading$ =
-    this.chartsStore.loadingJobsApplicants$;
+  readonly applicants$ = this.applicantsStore.applicants$;
+  readonly totalApplicants$ = this.applicantsStore.totalApplicants$;
+  readonly applicantsPageSize$ = this.applicantsStore.pageSize$;
+  readonly applicantsCurrentPage$ = this.applicantsStore.currentPage$;
+  readonly applicantsSort$ = this.applicantsStore.sort$;
+  readonly applicantsFilter$ = this.applicantsStore.filters$;
 
   public readonly applicantsLineChartDataSet$ =
     this.chartsStore.newApplicants$.pipe(
@@ -85,10 +79,19 @@ export class DashboardComponent {
       })
     );
 
+  readonly jobsLabels$ = this.jobsStore.jobs$.pipe(
+    map((jobs) => jobs.map((job) => job.title))
+  );
+
+  readonly applicantsLoading$ = this.applicantsStore.loading$;
+  readonly newApplicantsLoading$ = this.chartsStore.loadingNewApplicants$;
+  readonly jobsApplicantsLoading$ = this.chartsStore.loadingJobsApplicants$;
+
   constructor(
     private readonly filterStore: FilterStore,
     private readonly applicantsStore: ApplicantsStore,
     private readonly chartsStore: ChartsStore,
+    private readonly jobsStore: JobsStore,
     private labelToArrayPipe: LabelToArrayPipe
   ) {}
 
@@ -108,7 +111,7 @@ export class DashboardComponent {
     this.applicantsStore.setSort(sort);
   }
 
-  public onFilterChange(filter: IDateFilter) {
+  onApplicantsFilterChange(filter: Partial<ApplicantFilterState>) {
     this.applicantsStore.setFilter(filter);
   }
 }
