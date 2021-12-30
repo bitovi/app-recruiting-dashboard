@@ -11,17 +11,17 @@ import {
   styleUrls: ['./widgets-filter.component.scss'],
 })
 export class WidgetsFilterComponent {
-  opened = false;
-  fieldTypes = WidgetFieldType;
+  public opened = false;
+  public fieldTypes = WidgetFieldType;
 
-  @Input() startDate: Date = new Date();
-  @Input() endDate: Date = new Date();
-  @Input() widgetHeader!: WidgetsHeader;
-  @Output() showModal = new EventEmitter<ViewWidgetModal>();
+  @Input() public startDate: Date = new Date();
+  @Input() public endDate: Date = new Date();
+  @Input() public widgetHeader!: WidgetsHeader;
+  @Output() public showModal = new EventEmitter<ViewWidgetModal>();
 
   constructor() {}
 
-  doFilter() {
+  public doFilter() {
     this.opened = false;
   }
 }

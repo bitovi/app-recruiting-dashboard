@@ -1,4 +1,4 @@
-import { Applicant } from './jazz-api.model';
+import { Applicant } from './jazz-api.interface';
 
 export interface ApplicantResponse {
   total: number;

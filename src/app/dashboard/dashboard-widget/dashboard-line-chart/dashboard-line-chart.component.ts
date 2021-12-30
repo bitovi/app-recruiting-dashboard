@@ -1,6 +1,5 @@
-import { Component, Input, OnChanges, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { ChartData, ChartOptions, ChartType } from 'chart.js';
-import { BaseChartDirective } from 'ng2-charts';
 import 'chartjs-adapter-date-fns';
 
 @Component({
@@ -10,17 +9,15 @@ import 'chartjs-adapter-date-fns';
 })
 export class DashboardLineChartComponent implements OnChanges {
   // x: Date.parse(yyyy-mm-dd), y: amount of applicants
-  @Input() dataSet: { x: number; y: number }[] = [];
+  @Input() public dataSet: { x: number; y: number }[] = [];
 
-  lineChartType: ChartType = 'line';
-  barChartLegend = true;
-
-  lineChartData: ChartData = {
+  public lineChartType: ChartType = 'line';
+  public barChartLegend = true;
+  public lineChartData: ChartData = {
     datasets: [],
     labels: [],
   };
-
-  lineOptions: ChartOptions = {
+  public lineOptions: ChartOptions = {
     responsive: true,
     maintainAspectRatio: true,
     scales: {
@@ -52,9 +49,7 @@ export class DashboardLineChartComponent implements OnChanges {
     },
   };
 
-  @ViewChild(BaseChartDirective) lineChart?: BaseChartDirective;
-
-  ngOnChanges() {
+  public ngOnChanges() {
     if (this.dataSet.length) {
       this.lineChartData = {
         datasets: [
@@ -76,7 +71,7 @@ export class DashboardLineChartComponent implements OnChanges {
     }
   }
 
-  generateLabelsByFilters(startDate: Date, endDate: Date): string[] {
+  private generateLabelsByFilters(startDate: Date, endDate: Date): string[] {
     return [startDate.toISOString(), endDate.toISOString()];
   }
 }

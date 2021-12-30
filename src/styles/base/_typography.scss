@@ -1,0 +1,50 @@
+@import "responsive-width-mixins";
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--default-font-size);
+  font-weight: 400;
+  // Be careful with 3rd party software as this might modify the way their components behave
+  // We can add line-height also per header (depending on the font).
+  line-height: 1.7;
+}
+
+h1,
+.h1 {
+  font-size: 3.5rem;
+  font-weight: bold;
+}
+
+h2,
+.h2 {
+  font-size: 2.5rem;
+}
+
+h3,
+.h3 {
+  font-size: 1.8rem;
+  line-height: 2rem;
+}
+
+p,
+label,
+.p {
+  font-size: 1.3rem;
+
+  @include width(phone) {
+    margin: 0;
+  }
+
+  &:not(:last-of-type) {
+    margin-bottom: 2rem;
+  }
+}
+
+.font {
+  font-size: 1.25rem;
+
+  &-bold {
+    font-size: 1.25rem;
+    font-weight: 500;
+  }
+}

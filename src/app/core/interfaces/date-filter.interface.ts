@@ -1,4 +1,4 @@
-export interface DateFilter {
+export interface IDateFilter {
   startDate: Date | null;
   endDate: Date | null;
 }

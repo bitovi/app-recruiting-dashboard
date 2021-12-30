@@ -5,10 +5,10 @@ import { INglDatatableSort } from 'ng-lightning';
 import { Observable } from 'rxjs';
 import { concatMap, finalize, map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { ApplicantResponse } from './applicant.model';
+import { ApplicantResponse } from '../../core/interfaces/applicant-response.interface';
 import { FilterStore } from './filter.store';
-import { Applicant } from './jazz-api.model';
-import { DateFilter } from './store.model';
+import { Applicant } from '../../core/interfaces';
+import { IDateFilter } from '../../core/interfaces';
 
 export interface ApplicantsState {
   applicants: Applicant[];
@@ -17,7 +17,7 @@ export interface ApplicantsState {
   pageSize: number;
   totalApplicants: number;
   sort: INglDatatableSort;
-  filter: DateFilter;
+  filter: IDateFilter;
 }
 
 @Injectable()
@@ -75,7 +75,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
     sort,
   }));
 
-  readonly setFilter = this.updater((state, filter: DateFilter) => ({
+  readonly setFilter = this.updater((state, filter: IDateFilter) => ({
     ...state,
     filter,
   }));
@@ -134,7 +134,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
     pageSize: number,
     currentPage: number,
     sort: INglDatatableSort,
-    { startDate, endDate }: DateFilter,
+    { startDate, endDate }: IDateFilter,
     globalCombinedDates: [Date, Date]
   ): HttpParams {
     const [globalStartDate, globalEndDate] = globalCombinedDates;
@@ -166,7 +166,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
         pageSize: number;
         currentPage: number;
         sort: INglDatatableSort;
-        filter: DateFilter;
+        filter: IDateFilter;
         globalCombinedDates: [Date, Date];
       }>
     ) => {

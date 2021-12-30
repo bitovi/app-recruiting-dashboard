@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {ComboboxAction, ComboSelected} from './combobox-model';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ComboboxAction } from './combobox-model';
 
 @Component({
   selector: 'brd-combobox',
@@ -7,18 +7,15 @@ import {ComboboxAction, ComboSelected} from './combobox-model';
   styleUrls: ['./combobox.component.scss'],
 })
 export class ComboboxComponent {
-  openDropDown = false;
-  comboAction = ComboboxAction;
-  @Input() selections: string[] = [];
-  @Input() label!: string;
-  @Input() options: string[] | null = [];
-  @Output() selectionChanged = new EventEmitter<string[]>();
+  public openDropDown = false;
+  public comboAction = ComboboxAction;
+  @Input() public selections: string[] = [];
+  @Input() public label!: string;
+  @Input() public options: string[] | null = [];
+  @Output() public selectionChanged = new EventEmitter<string[]>();
 
-  constructor() {
-  }
-
-  onItemAction(option: string, type: ComboboxAction) {
-    const indexItem = this.selections.indexOf(option);
+  public onItemAction(option: string, type: ComboboxAction) {
+    const indexItem: number = this.selections.indexOf(option);
     if (type === ComboboxAction.PILL_ACTION) {
       this.selections.splice(indexItem, 1);
     }

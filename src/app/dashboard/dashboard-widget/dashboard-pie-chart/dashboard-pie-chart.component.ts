@@ -5,6 +5,4 @@ import { Component } from '@angular/core';
   templateUrl: './dashboard-pie-chart.component.html',
   styleUrls: ['./dashboard-pie-chart.component.scss'],
 })
-export class DashboardPieChartComponent {
-  constructor() {}
-}
+export class DashboardPieChartComponent {}
