@@ -14,12 +14,13 @@ import { LabelToArrayPipe } from './shared/pipe/label-to-array.pipe';
 import { INglDatatableSort } from 'ng-lightning';
 import { ChartsStore } from './store/charts.store';
 import { DateFilter } from './store/store.model';
+import { JobsStore } from './store/jobs.store';
 
 @Component({
   selector: 'brd-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
-  providers: [FilterStore, ApplicantsStore, ChartsStore],
+  providers: [FilterStore, ApplicantsStore, ChartsStore, JobsStore],
 })
 export class DashboardComponent {
   date: Date = new Date();
@@ -82,6 +83,10 @@ export class DashboardComponent {
       })
     );
 
+  readonly jobsLabels$ = this.jobsStore.jobs$.pipe(
+    map((jobs) => jobs.map((job) => job.title))
+  );
+
   readonly applicantsLoading$ = this.applicantsStore.loading$;
   readonly newApplicantsLoading$ = this.chartsStore.loadingNewApplicants$;
   readonly jobsApplicantsLoading$ = this.chartsStore.loadingJobsApplicants$;
@@ -90,6 +95,7 @@ export class DashboardComponent {
     private readonly filterStore: FilterStore,
     private readonly applicantsStore: ApplicantsStore,
     private readonly chartsStore: ChartsStore,
+    private readonly jobsStore: JobsStore,
     private labelToArrayPipe: LabelToArrayPipe
   ) {}
 
