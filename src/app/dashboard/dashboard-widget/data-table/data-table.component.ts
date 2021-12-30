@@ -10,21 +10,22 @@ import { Applicant, ApplicantFilterState } from '../../../core/interfaces';
   styleUrls: ['./data-table.component.scss'],
 })
 export class DataTableComponent {
-  @Input() dataSet: Applicant[] = [];
-  @Input() jobsLabels: string[] = [];
-  @Input() currentPage: number = 1;
-  @Input() pageSize: number = 10;
-  @Input() total: number = 0;
-  @Input() sort: INglDatatableSort = { key: '', order: 'desc' };
-  @Input() filters: ApplicantFilterState = {
+  @Input() public dataSet: Applicant[] = [];
+  @Input() public jobsLabels: string[] = [];
+  @Input() public currentPage: number = 1;
+  @Input() public pageSize: number = 10;
+  @Input() public total: number = 0;
+  @Input() public sort: INglDatatableSort = { key: '', order: 'desc' };
+  @Input() public filters: ApplicantFilterState = {
     date: { startDate: null, endDate: null },
     position: [],
   };
-  @Output() pageChange = new EventEmitter<number>();
-  @Output() sortChange = new EventEmitter<INglDatatableSort>();
-  @Output() filterChange = new EventEmitter<Partial<ApplicantFilterState>>();
-  readonly selectedId$ = new BehaviorSubject<string>('');
-  readonly selectedApplicant$ = this.selectedId$.pipe(
+  @Output() public pageChange = new EventEmitter<number>();
+  @Output() public sortChange = new EventEmitter<INglDatatableSort>();
+  @Output()
+  public filterChange = new EventEmitter<Partial<ApplicantFilterState>>();
+  public readonly selectedId$ = new BehaviorSubject<string>('');
+  public readonly selectedApplicant$ = this.selectedId$.pipe(
     map((selectedId) =>
       this.dataSet.find((applicant) => applicant.id === selectedId)
     )
@@ -66,6 +67,7 @@ export class DataTableComponent {
       // documentation states that only Date is returned from valueChange event
       return;
     }
+
     this.filterChange.emit({
       date: { startDate: date, endDate: this.filters.date.endDate },
     });
@@ -76,6 +78,7 @@ export class DataTableComponent {
       // documentation states that only Date is returned from valueChange event
       return;
     }
+
     this.filterChange.emit({
       date: { startDate: this.filters.date.startDate, endDate: date },
     });
