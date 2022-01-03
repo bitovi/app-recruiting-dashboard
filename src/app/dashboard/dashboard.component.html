@@ -31,39 +31,22 @@
         <div
           class="slds-col slds-m-top_small slds-large-size_1-of-2 slds-size_2-of-2"
         >
-          <div class="slds-card pie-doughnut-chart">
-            <brd-widgets-filter
-              (showModal)="viewWidgetModal = $event"
-              [widgetHeader]="doughnutChartFilterFields"
-            ></brd-widgets-filter>
-            <brd-dashboard-doughnut-chart
-              [labels]="(recruitingStageExitedLabels$ | async)!"
-              [values]="(recruitingStageExitedValues$ | async)!"
-            ></brd-dashboard-doughnut-chart>
-          </div>
+          <brd-widget-wrapper
+            [config]="{
+              component: 'widget-recruiting-stage-exited',
+              fullscreen: true
+            }"
+          ></brd-widget-wrapper>
         </div>
         <div
           class="slds-col slds-m-top_small slds-large-size_1-of-2 slds-size_2-of-2"
         >
-          <div class="slds-card line-bar-chart">
-            <div *ngIf="jobsApplicantsLoading$ | async; else showBarChart">
-              <ngl-spinner
-                size="large"
-                variant="brand"
-                alternativeText="Loading"
-              ></ngl-spinner>
-            </div>
-
-            <ng-template #showBarChart>
-              <brd-widgets-filter
-                (showModal)="viewWidgetModal = $event"
-                [widgetHeader]="barChartFilterFields"
-              ></brd-widgets-filter>
-              <brd-dashboard-bar-chart
-                [dataSet]="(jobBarChartDataSet$ | async)!"
-              ></brd-dashboard-bar-chart>
-            </ng-template>
-          </div>
+          <brd-widget-wrapper
+            [config]="{
+              component: 'widget-jobs-applicants',
+              fullscreen: true
+            }"
+          ></brd-widget-wrapper>
         </div>
       </div>
     </div>
@@ -73,20 +56,12 @@
     >
       <div class="slds-m-top_small slds-hide_small"></div>
       <div class="slds-col slds-small-size_2-of-2">
-        <div class="slds-card pie-chart">
-          <div *ngIf="newApplicantsLoading$ | async; else showLineChart">
-            <ngl-spinner
-              size="large"
-              variant="brand"
-              alternativeText="Loading"
-            ></ngl-spinner>
-          </div>
-          <ng-template #showLineChart>
-            <brd-dashboard-line-chart
-              [dataSet]="(applicantsLineChartDataSet$ | async)!"
-            ></brd-dashboard-line-chart>
-          </ng-template>
-        </div>
+        <brd-widget-wrapper
+          [config]="{
+            component: 'widget-new-applicants',
+            fullscreen: true
+          }"
+        ></brd-widget-wrapper>
       </div>
       <div class="slds-col slds-m-top_small slds-small-size_2-of-2">
         <div class="slds-card other-info">
@@ -98,40 +73,5 @@
         </div>
       </div>
     </div>
-    <brd-widget-wrapper
-      [config]="{
-        component: 'widget-recruiting-stage-exited',
-        fullscreen: true
-      }"
-    ></brd-widget-wrapper>
   </div>
 </section>
-
-<ngl-modal
-  (close)="closeModal()"
-  [(open)]="viewWidgetModal.openModal"
-  [dismissOnClickOutside]="false"
-  prompt="info"
-  size="large"
->
-  <div class="slds-p-around_medium">
-    <ng-container
-      *ngIf="viewWidgetModal.openedModal === dashboardWidgets.BAR_CHART"
-    >
-      <span *ngIf="jobsApplicantsLoading$ | async">LOADING</span>
-      <brd-dashboard-bar-chart
-        [dataSet]="(jobBarChartDataSet$ | async)!"
-      ></brd-dashboard-bar-chart>
-    </ng-container>
-    <ng-container
-      *ngIf="viewWidgetModal.openedModal === dashboardWidgets.DOUGHNUT_CHART"
-    >
-      <brd-dashboard-doughnut-chart></brd-dashboard-doughnut-chart>
-    </ng-container>
-  </div>
-  <ng-template nglModalFooter>
-    <button (click)="closeModal()" class="slds-button slds-button_neutral">
-      Okay
-    </button>
-  </ng-template>
-</ngl-modal>

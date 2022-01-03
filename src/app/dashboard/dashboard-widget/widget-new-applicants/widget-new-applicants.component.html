@@ -1,0 +1,13 @@
+<div
+  *ngIf="data$ | async as data"
+  class="slds-box_x-small slds-text-align_center slds-m-around_x-small"
+>
+  <canvas
+    baseChart
+    [data]="data"
+    [options]="lineOptions"
+    [legend]="barChartLegend"
+    [type]="lineChartType"
+  >
+  </canvas>
+</div>

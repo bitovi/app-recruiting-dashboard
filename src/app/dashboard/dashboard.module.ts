@@ -20,11 +20,10 @@ import {
 } from '../shared/pipes';
 import { BRDDatePickerModule } from '../shared/components/date-picker/date-picker.module';
 import { ApplicantDetailsModule } from '../shared/components';
-import { DashboardBarChartComponent } from './dashboard-widget/dashboard-bar-chart/dashboard-bar-chart.component';
-import { DashboardLineChartComponent } from './dashboard-widget/dashboard-line-chart/dashboard-line-chart.component';
-import { DashboardDoughnutChartComponent } from './dashboard-widget/dashboard-doughnut-chart/dashboard-doughnut-chart.component';
 import { WidgetWrapperComponent } from './dashboard-widget/widget-wrapper.component';
 import { WidgetRecruitingStageExitedComponent } from './dashboard-widget/widget-recruiting-stage-exited/widget-recruiting-stage-exited.component';
+import { WidgetJobsApplicantsComponent } from './dashboard-widget/widget-jobs-applicants/widget-jobs-applicants.component';
+import { WidgetNewApplicantsComponent } from './dashboard-widget/widget-new-applicants/widget-new-applicants.component';
 
 const routes: Routes = [{ path: '', component: DashboardComponent }];
 
@@ -32,16 +31,15 @@ const routes: Routes = [{ path: '', component: DashboardComponent }];
   declarations: [
     DashboardComponent,
     DataTableComponent,
-    DashboardBarChartComponent,
-    DashboardLineChartComponent,
     DashboardPieChartComponent,
-    DashboardDoughnutChartComponent,
     PageFilterWidgetComponent,
     WidgetsFilterComponent,
     ComboboxComponent,
     HeaderComponent,
     WidgetWrapperComponent,
     WidgetRecruitingStageExitedComponent,
+    WidgetJobsApplicantsComponent,
+    WidgetNewApplicantsComponent,
   ],
   imports: [
     CommonModule,
