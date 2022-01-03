@@ -4,11 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
 import { DataTableComponent } from './dashboard-widget/data-table/data-table.component';
 import { NglDatatablesModule, NglModule } from 'ng-lightning';
-import { DashboardBarChartComponent } from './dashboard-widget/dashboard-bar-chart/dashboard-bar-chart.component';
-import { DashboardLineChartComponent } from './dashboard-widget/dashboard-line-chart/dashboard-line-chart.component';
 import { DashboardPieChartComponent } from './dashboard-widget/dashboard-pie-chart/dashboard-pie-chart.component';
 import { NgChartsModule } from 'ng2-charts';
-import { DashboardDoughnutChartComponent } from './dashboard-widget/dashboard-doughnut-chart/dashboard-doughnut-chart.component';
 import { PageFilterWidgetComponent } from './dashboard-widget/page-filter-widget/page-filter-widget.component';
 import { WidgetsFilterComponent } from './shared/widgets-filter/widgets-filter.component';
 import { ComboboxComponent } from './shared/combobox/combobox.component';
@@ -22,6 +19,10 @@ import {
   SelectedOptionPipeModule,
 } from '../shared/pipes';
 import { BRDDatePickerModule } from '../shared/components/date-picker/date-picker.module';
+import { ApplicantDetailsModule } from '../shared/components';
+import { DashboardBarChartComponent } from './dashboard-widget/dashboard-bar-chart/dashboard-bar-chart.component';
+import { DashboardLineChartComponent } from './dashboard-widget/dashboard-line-chart/dashboard-line-chart.component';
+import { DashboardDoughnutChartComponent } from './dashboard-widget/dashboard-doughnut-chart/dashboard-doughnut-chart.component';
 
 const routes: Routes = [{ path: '', component: DashboardComponent }];
 
@@ -47,6 +48,7 @@ const routes: Routes = [{ path: '', component: DashboardComponent }];
     LabelToArrayPipeModule,
     SelectedOptionPipeModule,
     BRDDatePickerModule,
+    ApplicantDetailsModule,
     RouterModule.forChild(routes),
   ],
   providers: [ApplicantService, ChartApiService, JobsApiService],

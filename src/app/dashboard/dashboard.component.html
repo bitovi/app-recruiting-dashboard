@@ -14,7 +14,7 @@
         <div class="slds-col slds-size_2-of-2">
           <div class="slds-card table">
             <brd-data-table
-              [showLoader]="applicantsLoading$ | async"
+              [isLoading]="applicantsLoading$ | async"
               [dataSet]="(applicants$ | async)!"
               [pageSize]="(applicantsPageSize$ | async)!"
               [currentPage]="(applicantsCurrentPage$ | async)!"
