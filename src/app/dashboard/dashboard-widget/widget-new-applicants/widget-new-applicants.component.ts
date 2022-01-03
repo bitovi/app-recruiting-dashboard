@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ChartsStore } from '../../store/charts.store';
 import { WidgetComponent } from '../widget.component';
-import 'chartjs-adapter-moment';
+import 'chartjs-adapter-date-fns';
 
 @Component({
   selector: 'brd-widget-new-applicants',
@@ -19,29 +19,20 @@ export class WidgetNewApplicantsComponent implements WidgetComponent {
         y: data.total,
       }))
     ),
-    map((data) => {
-      const firstDate: string = data[0]?.x
-        ? new Date(data[0].x).toISOString()
-        : new Date().toISOString();
-      const secondDate: string = data[data.length - 1]?.x
-        ? new Date(data[data.length - 1].x).toISOString()
-        : new Date().toISOString();
-
-      return {
-        datasets: [
-          {
-            data: [...data],
-            label: 'Applicants',
-            tension: 0.1,
-            borderColor: 'rgb(75, 192, 192)',
-            pointBackgroundColor: 'rgb(75, 192, 192)',
-            pointHoverBackgroundColor: 'rgb(75, 192, 192)',
-            backgroundColor: 'rgb(75, 192, 192)',
-          },
-        ],
-        labels: data.length > 0 ? [firstDate, secondDate] : [],
-      };
-    })
+    map((data) => ({
+      datasets: [
+        {
+          data: [...data],
+          label: 'Applicants',
+          tension: 0.1,
+          borderColor: 'rgb(75, 192, 192)',
+          pointBackgroundColor: 'rgb(75, 192, 192)',
+          pointHoverBackgroundColor: 'rgb(75, 192, 192)',
+          backgroundColor: 'rgb(75, 192, 192)',
+        },
+      ],
+      labels: this.getLabels(data[0]?.x, data[data.length - 1]?.x),
+    }))
   );
   readonly loading$ = this.chartsStore.loadingNewApplicants$;
 
@@ -80,4 +71,12 @@ export class WidgetNewApplicantsComponent implements WidgetComponent {
   };
 
   constructor(private readonly chartsStore: ChartsStore) {}
+
+  private getLabels(startDate: number, endDate: number): string[] {
+    if (!startDate) {
+      return [];
+    }
+
+    return [new Date(startDate).toISOString(), new Date(endDate).toISOString()];
+  }
 }
