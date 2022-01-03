@@ -1,9 +1,9 @@
 <header class="slds-global-header_container">
   <div class="slds-global-header slds-grid slds-grid_align-spread">
     <div class="slds-p-left_medium">
-            <span class="slds-text-heading_large slds-show_medium">
-                <img class="logo-img" src="assets/images/logo.png">
-            </span>
+      <span class="slds-text-heading_large slds-show_medium">
+        <img class="logo-img" src="assets/images/logo.png" />
+      </span>
     </div>
 
     <div class="slds-global-header__item">
@@ -12,9 +12,17 @@
           <div class="slds-dropdown-trigger slds-dropdown-trigger_click">
             <button
               aria-atomic="true"
-              aria-live="assertive" class="slds-button slds-button_icon slds-button_icon slds-button_icon-container slds-button_icon-small slds-global-actions__notifications slds-global-actions__item-action" title="no new notifications">
-              <svg aria-hidden="true" class="slds-button__icon slds-global-header__icon">
-                <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#notification"></use>
+              aria-live="assertive"
+              class="slds-button slds-button_icon slds-button_icon slds-button_icon-container slds-button_icon-small slds-global-actions__notifications slds-global-actions__item-action"
+              title="no new notifications"
+            >
+              <svg
+                aria-hidden="true"
+                class="slds-button__icon slds-global-header__icon"
+              >
+                <use
+                  xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#notification"
+                ></use>
               </svg>
               <span class="slds-assistive-text">no new notifications</span>
             </button>
@@ -24,20 +32,36 @@
 
         <li [(open)]="open" class="slds-global-actions__item" nglDropdown>
           <div class="slds-dropdown-trigger slds-dropdown-trigger_click">
-            <button aria-haspopup="true"
-                    class="slds-button slds-global-actions__avatar slds-global-actions__item-action" nglDropdownTrigger title="person name">
+            <button
+              aria-haspopup="true"
+              class="slds-button slds-global-actions__avatar slds-global-actions__item-action"
+              nglDropdownTrigger
+              title="person name"
+            >
               <span class="slds-avatar slds-avatar_circle slds-avatar_medium">
-                <img alt="Person name" src="/assets/images/avatar2.jpg" title="User avatar"/>
+                <img
+                  alt="Person name"
+                  src="/assets/images/avatar2.jpg"
+                  title="User avatar"
+                />
               </span>
             </button>
             <div class="slds-dropdown slds-dropdown_right">
               <ul class="dropdown__list" role="menu">
-                <li *ngFor="let item of items;" class="slds-dropdown__item"><a (click)="onClickMenuItem(item.value)"
-                                                                               nglDropdownItem
-                                                                               role="menuitem">
-                  <p class="slds-truncate">{{item.value}}</p>
-                  <ngl-icon [iconName]="item.icon" size="x-small" variant="default"></ngl-icon>
-                </a></li>
+                <li *ngFor="let item of items" class="slds-dropdown__item">
+                  <a
+                    (click)="onClickMenuItem(item.value)"
+                    nglDropdownItem
+                    role="menuitem"
+                  >
+                    <p class="slds-truncate">{{ item.value }}</p>
+                    <ngl-icon
+                      [iconName]="item.icon"
+                      size="x-small"
+                      variant="default"
+                    ></ngl-icon>
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
@@ -48,26 +72,30 @@
   <div class="slds-context-bar">
     <div class="slds-context-bar__primary">
       <div
-        class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger_click slds-no-hover">
+        class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger_click slds-no-hover"
+      >
         <div class="slds-context-bar__icon-action">
-          <ngl-dynamic-icon [(nglPopoverOpen)]="openAppList" [alternativeText]="'Dashboard'" [nglPopoverCloseVisible]="false"
-                            [nglPopover]="appsList"
-                            nglPopoverHeader="Select Apps"
-                            nglPopoverPlacement="bottom-left-corner"
-                            nglPopoverSize="medium"
-                            title="Dashboard" type="waffle"></ngl-dynamic-icon>
+          <ngl-dynamic-icon
+            [(nglPopoverOpen)]="openAppList"
+            [alternativeText]="'Dashboard'"
+            [nglPopoverCloseVisible]="false"
+            [nglPopover]="appsList"
+            nglPopoverHeader="Select Apps"
+            nglPopoverPlacement="bottom-left-corner"
+            nglPopoverSize="medium"
+            title="Dashboard"
+            type="waffle"
+          ></ngl-dynamic-icon>
         </div>
         <span class="slds-context-bar__label-action slds-context-bar__app-name">
-                    <span class="slds-truncate" title="App Name">Dashboard</span>
-                </span>
+          <span class="slds-truncate" title="App Name">Dashboard</span>
+        </span>
       </div>
     </div>
     <nav class="slds-context-bar__secondary" role="navigation">
       <ul class="slds-grid">
-        <ng-container>
-
-        </ng-container>
-        <li class="slds-context-bar__item slds-is-active ">
+        <ng-container> </ng-container>
+        <li class="slds-context-bar__item slds-is-active">
           <a class="slds-context-bar__label-action" title="Home">
             <span class="slds-assistive-text">Current Page:</span>
             <span class="slds-truncate" title="Home">Home</span>
@@ -150,16 +178,20 @@
 <ng-template #appsList>
   <div class="slds-text-align--left">
     <div class="slds-p-around--small slds-is-hovered" style="cursor: pointer">
-            <span class="slds-icon_container slds-icon-standard-shift" title="Description of icon when needed">
-                <svg aria-hidden="true" class="slds-icon">
-                    <use xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#account"></use>
-                </svg>
-                <span class="slds-assistive-text">Recruiting Dashboard</span>
-            </span>
-      <span class="slds-text-title_bold slds-p-left_medium"> Recruiting Dashboard </span>
-
+      <span
+        class="slds-icon_container slds-icon-standard-shift"
+        title="Description of icon when needed"
+      >
+        <svg aria-hidden="true" class="slds-icon">
+          <use
+            xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#account"
+          ></use>
+        </svg>
+        <span class="slds-assistive-text">Recruiting Dashboard</span>
+      </span>
+      <span class="slds-text-title_bold slds-p-left_medium">
+        Recruiting Dashboard
+      </span>
     </div>
-
   </div>
-
 </ng-template>

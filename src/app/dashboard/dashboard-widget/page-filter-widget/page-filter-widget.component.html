@@ -1,118 +1,90 @@
-<div class="slds-page-header slds-page-header_record-home slds-m-bottom--small">
-  <div class="slds-page-header__row">
-    <div class="slds-page-header__col-title">
-      <div class="slds-media">
-        <div class="slds-media__figure">
-          <span class="slds-icon_container slds-icon-standard-opportunity">
-            <svg aria-hidden="true" class="slds-icon slds-page-header__icon">
-              <use
-                xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#opportunity"
-              ></use>
-            </svg>
-          </span>
-        </div>
-        <div class="slds-media__body">
-          <div
-            style="
-              display: flex;
-              flex-direction: column;
-              align-items: start;
-              justify-content: start;
-            "
-          >
-            <h3>Applicants</h3>
-            <span
-              class="slds-page-header__title slds-truncate"
-              title="Total Applicants"
-              >Total Applicants - {{ totalApplicants }}</span
-            >
-          </div>
-        </div>
-      </div>
+<div
+  class="slds-page-header slds-page-header_record-home slds-m-bottom--small slds-page-header__row"
+>
+  <div class="slds-page-header__col-title slds-media">
+    <div class="slds-media__figure">
+      <span class="slds-icon_container slds-icon-standard-opportunity">
+        <svg aria-hidden="true" class="slds-icon slds-page-header__icon">
+          <use
+            xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#opportunity"
+          ></use>
+        </svg>
+      </span>
     </div>
-    <div class="slds-page-header__col-actions slds-show_medium">
-      <div class="slds-page-header__controls">
-        <div
-          (nglPickChange)="onChange($event)"
-          [(nglPick)]="selectedInput"
-          class="slds-button-group"
-          nglPickActiveClass="slds-button_brand"
-          role="group"
+    <div class="slds-media__body flex flex-column v-center h-start">
+      <h3>Applicants</h3>
+      <span
+        class="slds-page-header__title slds-truncate"
+        title="Total Applicants"
+        >Total Applicants - {{ totalApplicants }}</span
+      >
+    </div>
+  </div>
+  <div
+    class="slds-page-header__col-actions slds-show_medium slds-page-header__controls"
+  >
+    <div
+      (nglPickChange)="onChange($event)"
+      [(nglPick)]="selectedInput"
+      class="slds-button-group"
+      nglPickActiveClass="slds-button_brand"
+      role="group"
+    >
+      <ng-container *ngFor="let option of options">
+        <ng-container
+          *ngIf="option.label !== filtersLabels.CUSTOM; else customDateBlock"
         >
-          <ng-container *ngFor="let option of options">
-            <ng-container
-              *ngIf="option.label !== filtersLabels.CUSTOM; else showCustom"
-            >
-              <button
-                [nglPickOption]="option.label"
-                [title]="option.label"
-                nglButton
-                type="button"
-              >
-                {{ option.label }}
-              </button>
-            </ng-container>
-            <ng-template #showCustom>
-              <button
-                (click)="isCustomFilterPopoverOpen = !isCustomFilterPopoverOpen"
-                [nglPickOption]="option.label"
-                [nglPopoverCloseVisible]="true"
-                [nglPopoverFooter]="footerClose"
-                [nglPopoverOpen]="isCustomFilterPopoverOpen"
-                [nglPopover]="dateRange"
-                [title]="option.label"
-                nglButton
-                nglPopoverHeader="Set Date Range"
-                nglPopoverPlacement="left"
-                nglPopoverSize="large"
-                type="button"
-              >
-                {{ option.label }}
-              </button>
-            </ng-template>
-          </ng-container>
-        </div>
-      </div>
+          <button
+            [nglPickOption]="option.label"
+            [title]="option.label"
+            nglButton
+            type="button"
+          >
+            {{ option.label }}
+          </button>
+        </ng-container>
+
+        <ng-template #customDateBlock>
+          <button
+            (click)="isCustomFilterPopoverOpen = !isCustomFilterPopoverOpen"
+            [nglPickOption]="option.label"
+            [nglPopoverCloseVisible]="true"
+            [nglPopoverFooter]="footerCloseBlock"
+            [nglPopoverOpen]="isCustomFilterPopoverOpen"
+            [nglPopover]="dateRangeBlock"
+            [title]="option.label"
+            nglButton
+            nglPopoverHeader="Set Date Range"
+            nglPopoverPlacement="left"
+            nglPopoverSize="large"
+            type="button"
+          >
+            {{ option.label }}
+          </button>
+        </ng-template>
+      </ng-container>
     </div>
   </div>
 </div>
-<ng-template #dateRange>
-  <div class="slds-grid slds-gutters_xx-small slds-p-bottom--large">
-    <div class="slds-col">
-      <ngl-datepicker-input
-        (valueChange)="onChangeCustomStartDate($event)"
-        [patternPlaceholder]="true"
-        [value]="startDate"
-        format="little-endian"
-        label="Start Date"
-      >
-        <input nglDatepickerInput type="text" />
-      </ngl-datepicker-input>
-    </div>
 
-    <div class="slds-col">
-      <ngl-datepicker-input
-        (valueChange)="onChangeCustomEndDate($event)"
-        [patternPlaceholder]="true"
-        [value]="endDate"
-        format="little-endian"
-        label="End Date"
-      >
-        <input nglDatepickerInput type="text" />
-      </ngl-datepicker-input>
-    </div>
-  </div>
+<ng-template #dateRangeBlock>
+  <brd-date-picker
+    [startDate]="startDate"
+    [endDate]="endDate"
+    (dateChanged)="changeCustomDate($event)"
+  ></brd-date-picker>
 </ng-template>
 
-<ng-template #footerClose>
+<ng-template #footerCloseBlock>
   <div class="slds-align--absolute-center sdl_outline-button-bitovi">
     <button
       (click)="closeCustomFilterPopover()"
       nglButton
       type="button"
       variant="neutral"
+      class="u-min-w-5"
     >
-      &nbsp; Close &nbsp;
+      Close
     </button>
   </div>
 </ng-template>

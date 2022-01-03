@@ -21,6 +21,7 @@ import {
   LabelToArrayPipeModule,
   SelectedOptionPipeModule,
 } from '../shared/pipes';
+import { BRDDatePickerModule } from '../shared/components/date-picker/date-picker.module';
 
 const routes: Routes = [{ path: '', component: DashboardComponent }];
 
@@ -45,6 +46,7 @@ const routes: Routes = [{ path: '', component: DashboardComponent }];
     ClickOutsideToCloseDirectiveModule,
     LabelToArrayPipeModule,
     SelectedOptionPipeModule,
+    BRDDatePickerModule,
     RouterModule.forChild(routes),
   ],
   providers: [ApplicantService, ChartApiService, JobsApiService],

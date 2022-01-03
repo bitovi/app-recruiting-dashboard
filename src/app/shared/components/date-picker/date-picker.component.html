@@ -1,0 +1,25 @@
+<div class="slds-grid slds-gutters_xx-small slds-p-bottom--large">
+  <div class="slds-col">
+    <ngl-datepicker-input
+      (valueChange)="dateChange($event, dateSides.StartDate)"
+      [patternPlaceholder]="true"
+      [value]="startDate"
+      format="little-endian"
+      label="Start Date"
+    >
+      <input nglDatepickerInput type="text" />
+    </ngl-datepicker-input>
+  </div>
+
+  <div class="slds-col">
+    <ngl-datepicker-input
+      (valueChange)="dateChange($event, dateSides.EndDate)"
+      [patternPlaceholder]="true"
+      [value]="endDate"
+      format="little-endian"
+      label="End Date"
+    >
+      <input nglDatepickerInput type="text" />
+    </ngl-datepicker-input>
+  </div>
+</div>

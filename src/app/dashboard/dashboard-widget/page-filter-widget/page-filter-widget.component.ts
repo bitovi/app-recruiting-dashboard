@@ -2,6 +2,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FilterState } from '../../store/filter.store';
 import { DashboardFilters, FiltersLabels } from '../../shared/dashboard-model';
 import moment from 'moment';
+import { IDatePickerEvent } from '../../../core/interfaces/date-picker-event.interface';
+import { DateSide } from '../../../core/enums';
 
 @Component({
   selector: 'brd-page-filter-widget',
@@ -31,28 +33,36 @@ export class PageFilterWidgetComponent {
   }
 
   public onChange(selected: string) {
-    if (selected !== FiltersLabels.CUSTOM) {
-      const option = this.options.find((val) => val.label === selected);
+    if (selected === FiltersLabels.CUSTOM) {
+      return;
+    }
 
-      if (option) {
-        const endDate = new Date();
-        const startDate = moment(endDate)
-          .subtract(option.durationCount, 'days')
-          .toDate();
-        this.selected.emit({ startDate, endDate });
-      }
+    const option: DashboardFilters | undefined = this.options.find(
+      (val) => val.label === selected
+    );
+
+    if (option) {
+      const endDate = new Date();
+      const startDate = moment(endDate)
+        .subtract(option.durationCount, 'days')
+        .toDate();
+      this.selected.emit({ startDate, endDate });
     }
   }
 
-  public onChangeCustomStartDate(date: string | Date): void {
-    const convertedDate: Date = new Date(date);
+  public changeCustomDate(datePickerEvent: IDatePickerEvent) {
+    if (datePickerEvent.dateSide === DateSide.StartDate) {
+      this.selected.emit({
+        startDate: datePickerEvent.date,
+        endDate: this.endDate,
+      });
 
-    this.selected.emit({ startDate: convertedDate, endDate: this.endDate });
-  }
+      return;
+    }
 
-  public onChangeCustomEndDate(date: string | Date): void {
-    const convertedDate: Date = new Date(date);
-
-    this.selected.emit({ startDate: this.startDate, endDate: convertedDate });
+    this.selected.emit({
+      startDate: this.startDate,
+      endDate: datePickerEvent.date,
+    });
   }
 }
