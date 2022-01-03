@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ChartsStore } from '../../store/charts.store';
 import { WidgetComponent } from '../widget.component';
+import 'chartjs-adapter-moment';
 
 @Component({
   selector: 'brd-widget-new-applicants',
@@ -18,26 +19,29 @@ export class WidgetNewApplicantsComponent implements WidgetComponent {
         y: data.total,
       }))
     ),
-    map((data) => ({
-      datasets: [
-        {
-          data: [...data],
-          label: 'Applicants',
-          tension: 0.1,
-          borderColor: 'rgb(75, 192, 192)',
-          pointBackgroundColor: 'rgb(75, 192, 192)',
-          pointHoverBackgroundColor: 'rgb(75, 192, 192)',
-          backgroundColor: 'rgb(75, 192, 192)',
-        },
-      ],
-      labels:
-        data.length > 0
-          ? [
-              new Date(data[0].x).toISOString(),
-              new Date(data[data.length - 1].x).toISOString(),
-            ]
-          : [],
-    }))
+    map((data) => {
+      const firstDate: string = data[0]?.x
+        ? new Date(data[0].x).toISOString()
+        : new Date().toISOString();
+      const secondDate: string = data[data.length - 1]?.x
+        ? new Date(data[data.length - 1].x).toISOString()
+        : new Date().toISOString();
+
+      return {
+        datasets: [
+          {
+            data: [...data],
+            label: 'Applicants',
+            tension: 0.1,
+            borderColor: 'rgb(75, 192, 192)',
+            pointBackgroundColor: 'rgb(75, 192, 192)',
+            pointHoverBackgroundColor: 'rgb(75, 192, 192)',
+            backgroundColor: 'rgb(75, 192, 192)',
+          },
+        ],
+        labels: data.length > 0 ? [firstDate, secondDate] : [],
+      };
+    })
   );
   readonly loading$ = this.chartsStore.loadingNewApplicants$;
 
