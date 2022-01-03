@@ -1,44 +1,100 @@
 <div class="slds-form-element">
-  <label class="slds-form-element__label" for="combobox-id-1" id="combobox-label-id-26">{{label}}</label>
+  <label
+    class="slds-form-element__label"
+    for="combobox-id-1"
+    id="combobox-label-id-26"
+    >{{ label }}</label
+  >
   <div class="slds-form-element__control">
-    <div class="slds-combobox_container" (brdClickOutsideToClose)="openDropDown = $event">
-      <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click"
-           [class.slds-is-open]="openDropDown" id="combobox-id-1" *ngIf="options?.length">
-        <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
-          <button type="button" class="slds-input_faux slds-combobox__input slds-combobox__input-value"
-                  (click)="openDropDown = true"
-                  aria-labelledby="combobox-label-id-26 combobox-id-7-selected-value"
-                  id="combobox-id-7-selected-value" aria-controls="listbox-id-7" aria-expanded="false"
-                  aria-haspopup="listbox">
-                    <span class="slds-truncate"
-                          id="combobox-value-id-28">
-                      {{selections?.length ? selections.length > 1 ?
-                      selections.length + ' Options Selected' : selections[0] : 'Select Item '}}</span>
+    <div
+      class="slds-combobox_container"
+      (brdClickOutsideToClose)="openDropDown = $event"
+    >
+      <div
+        class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click"
+        [class.slds-is-open]="openDropDown"
+        id="combobox-id-1"
+        *ngIf="options?.length"
+      >
+        <div
+          class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right"
+          role="none"
+        >
+          <button
+            type="button"
+            class="slds-input_faux slds-combobox__input slds-combobox__input-value"
+            (click)="openDropDown = true"
+            aria-labelledby="combobox-label-id-26 combobox-id-7-selected-value"
+            id="combobox-id-7-selected-value"
+            aria-controls="listbox-id-7"
+            aria-expanded="false"
+            aria-haspopup="listbox"
+          >
+            <span class="slds-truncate" id="combobox-value-id-28">
+              {{
+                selections?.length
+                  ? selections.length > 1
+                    ? selections.length + " Options Selected"
+                    : selections[0]
+                  : "Select Item "
+              }}</span
+            >
           </button>
-          <span class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right">
-                        <ngl-icon iconName="utility:down" alternativeText="down" size="x-small"></ngl-icon>
-                        </span>
+          <span
+            class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right"
+          >
+            <ngl-icon
+              iconName="utility:down"
+              alternativeText="down"
+              size="x-small"
+            ></ngl-icon>
+          </span>
         </div>
-        <div id="listbox-id-7" class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid" role="listbox">
+        <div
+          id="listbox-id-7"
+          class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid"
+          role="listbox"
+        >
           <ul class="slds-listbox slds-listbox_vertical" role="presentation">
-            <ng-container *ngFor="let option of options ; let i = index">
-              <li role="presentation" class="slds-listbox__item"
-                  (click)="onItemAction(option, comboAction.LIST_BOX_ACTION)">
-                <div aria-checked="true" [id]="'option'+i"
-                     class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small slds-is-selected"
-                     role="option">
-                              <span class="slds-media__figure slds-listbox__option-icon">
-                                <span class="slds-icon_container slds-icon-utility-check slds-current-color"
-                                      *ngIf="option | isSelected:
-                                      {count: this.selections.length, selected: this.selections}">
-                                  <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
-                                    <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
-                                  </svg>
-                                </span>
-                              </span>
+            <ng-container *ngFor="let option of options; let i = index">
+              <li
+                role="presentation"
+                class="slds-listbox__item"
+                (click)="onItemAction(option, comboAction.LIST_BOX_ACTION)"
+              >
+                <div
+                  aria-checked="true"
+                  [id]="'option' + i"
+                  class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small slds-is-selected"
+                  role="option"
+                >
+                  <span class="slds-media__figure slds-listbox__option-icon">
+                    <span
+                      class="slds-icon_container slds-icon-utility-check slds-current-color"
+                      *ngIf="
+                        option
+                          | isSelected
+                            : {
+                                count: this.selections.length,
+                                selected: this.selections
+                              }
+                      "
+                    >
+                      <svg
+                        class="slds-icon slds-icon_x-small"
+                        aria-hidden="true"
+                      >
+                        <use
+                          xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#check"
+                        ></use>
+                      </svg>
+                    </span>
+                  </span>
                   <span class="slds-media__body">
-                            <span class="slds-truncate" [title]="option"> {{option}}</span>
-                          </span>
+                    <span class="slds-truncate" [title]="option">
+                      {{ option }}</span
+                    >
+                  </span>
                 </div>
               </li>
             </ng-container>
@@ -48,9 +104,12 @@
     </div>
     <div class="slds-m-top_xx-small" *ngIf="selections">
       <ng-container *ngFor="let label of selections; let i = index">
-        <ngl-pill class="slds-m-top_xx-small slds-m-left_xx-small"
-                  (remove)="onItemAction(selections[i], comboAction.PILL_ACTION)">
-          {{ label | labelToArray: 2 }}</ngl-pill>
+        <ngl-pill
+          class="slds-m-top_xx-small slds-m-left_xx-small"
+          (remove)="onItemAction(selections[i], comboAction.PILL_ACTION)"
+        >
+          {{ label | labelToArray: 2 }}</ngl-pill
+        >
       </ng-container>
     </div>
   </div>

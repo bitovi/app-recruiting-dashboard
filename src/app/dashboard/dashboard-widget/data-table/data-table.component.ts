@@ -64,24 +64,18 @@ export class DataTableComponent {
   }
 
   public onChangeCustomStartDate(date: string | Date): void {
-    if (typeof date === 'string') {
-      // documentation states that only Date is returned from valueChange event
-      return;
-    }
+    const convertedDate: Date = new Date(date);
 
     this.filterChange.emit({
-      date: { startDate: date, endDate: this.filters.date.endDate },
+      date: { startDate: convertedDate, endDate: this.filters.date.endDate },
     });
   }
 
   public onChangeCustomEndDate(date: string | Date): void {
-    if (typeof date === 'string') {
-      // documentation states that only Date is returned from valueChange event
-      return;
-    }
+    const convertedDate: Date = new Date(date);
 
     this.filterChange.emit({
-      date: { startDate: this.filters.date.startDate, endDate: date },
+      date: { startDate: this.filters.date.startDate, endDate: convertedDate },
     });
   }
 }

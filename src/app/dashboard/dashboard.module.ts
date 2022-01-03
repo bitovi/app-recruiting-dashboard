@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
 import { DataTableComponent } from './dashboard-widget/data-table/data-table.component';
-import { NglModule } from 'ng-lightning';
+import { NglDatatablesModule, NglModule } from 'ng-lightning';
 import { DashboardBarChartComponent } from './dashboard-widget/dashboard-bar-chart/dashboard-bar-chart.component';
 import { DashboardLineChartComponent } from './dashboard-widget/dashboard-line-chart/dashboard-line-chart.component';
 import { DashboardPieChartComponent } from './dashboard-widget/dashboard-pie-chart/dashboard-pie-chart.component';
@@ -11,11 +11,16 @@ import { NgChartsModule } from 'ng2-charts';
 import { DashboardDoughnutChartComponent } from './dashboard-widget/dashboard-doughnut-chart/dashboard-doughnut-chart.component';
 import { PageFilterWidgetComponent } from './dashboard-widget/page-filter-widget/page-filter-widget.component';
 import { WidgetsFilterComponent } from './shared/widgets-filter/widgets-filter.component';
-import { LabelToArrayPipe } from './shared/pipe/label-to-array.pipe';
 import { ComboboxComponent } from './shared/combobox/combobox.component';
-import { ClickOutsideToCloseDirective } from './shared/combobox/click-outside-to-close.directive';
-import { OptionIsSelectedPipe } from './shared/pipe/option-is-selected.pipe';
 import { HeaderComponent } from './header/header.component';
+import { ClickOutsideToCloseDirectiveModule } from '../shared/directives';
+import { ApplicantService } from './services/applicants-api.service';
+import { ChartApiService } from './services/charts-api.service';
+import { JobsApiService } from './services/jobs-api.service';
+import {
+  LabelToArrayPipeModule,
+  SelectedOptionPipeModule,
+} from '../shared/pipes';
 
 const routes: Routes = [{ path: '', component: DashboardComponent }];
 
@@ -29,18 +34,19 @@ const routes: Routes = [{ path: '', component: DashboardComponent }];
     DashboardDoughnutChartComponent,
     PageFilterWidgetComponent,
     WidgetsFilterComponent,
-    LabelToArrayPipe,
     ComboboxComponent,
-    ClickOutsideToCloseDirective,
-    OptionIsSelectedPipe,
     HeaderComponent,
   ],
   imports: [
     CommonModule,
     NglModule,
+    NglDatatablesModule,
     NgChartsModule,
+    ClickOutsideToCloseDirectiveModule,
+    LabelToArrayPipeModule,
+    SelectedOptionPipeModule,
     RouterModule.forChild(routes),
   ],
-  providers: [LabelToArrayPipe],
+  providers: [ApplicantService, ChartApiService, JobsApiService],
 })
 export class DashboardModule {}

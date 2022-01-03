@@ -10,7 +10,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { ApiInterceptor } from './core/api-interceptor';
+import { ApiInterceptor } from './core/interceptors/api-interceptor';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent],
