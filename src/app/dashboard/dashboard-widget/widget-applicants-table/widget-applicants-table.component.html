@@ -1,39 +1,8 @@
 <section class="slds-box paginated-table" style="padding: 0">
-  <div class="loader-overlay" *ngIf="showLoader">
-    <ngl-spinner
-      size="large"
-      variant="brand"
-      alternativeText="Loading"
-    ></ngl-spinner>
-  </div>
-  <div class="table-filter">
-    <button
-      [(nglPopoverOpen)]="openedFilter"
-      [nglPopover]="widgetFilter"
-      class="slds-button--icon-more"
-      nglButton
-      nglPopoverHeader="Filter Table"
-      nglPopoverPlacement="bottom-right"
-      nglPopoverSize="large"
-      type="button"
-    >
-      <ngl-icon
-        alternativeText="Filter"
-        iconName="utility:filter"
-        size="x-small"
-      ></ngl-icon>
-      <ngl-icon
-        alternativeText="Filter"
-        class="slds-m-left--x-small"
-        iconName="utility:down"
-        size="x-small"
-      ></ngl-icon>
-    </button>
-  </div>
   <table
     (sortChange)="onSort($event)"
-    [sort]="sort"
-    [data]="dataSet"
+    [sort]="(applicantsSort$ | async)!"
+    [data]="(applicants$ | async)!"
     class="slds-table slds-table_fixed-layout slds-table_resizable-cols tables"
     ngl-datatable
     trackByKey="jobs.applicant_progress"
@@ -90,15 +59,17 @@
       </ng-template>
     </ngl-datatable-column>
   </table>
-  <ngl-pagination
-    (pageChange)="onPageChange($event)"
-    [page]="currentPage"
-    [perPage]="pageSize"
-    [boundaryNumbers]="1"
-    [limit]="5"
-    [total]="total"
-    class="slds-float_right"
-  ></ngl-pagination>
+  <div class="slds-clearfix">
+    <ngl-pagination
+      (pageChange)="onPageChange($event)"
+      [page]="(applicantsCurrentPage$ | async)!"
+      [perPage]="(applicantsPageSize$ | async)!"
+      [boundaryNumbers]="1"
+      [limit]="5"
+      [total]="(totalApplicants$ | async)!"
+      class="slds-float_right"
+    ></ngl-pagination>
+  </div>
 </section>
 
 <ng-template #viewDetails>
@@ -410,12 +381,17 @@
 <ng-template #widgetFilter>
   <div class="slds-p-around_small">
     <div class="slds-grid slds-wrap slds-p-bottom--large">
-      <div class="slds-grid slds-gutters">
+      <div
+        class="slds-grid slds-gutters"
+        *ngIf="applicantsFilter$ | async as filters"
+      >
         <div class="slds-col">
           <ngl-datepicker-input
             [patternPlaceholder]="true"
             [value]="filters.date.startDate"
-            (valueChange)="onChangeCustomStartDate($event)"
+            (valueChange)="
+              onChangeCustomStartDate($event, filters.date.endDate)
+            "
             class="slds-p-around_none"
             format="little-endian"
             label="Start Date"
@@ -428,7 +404,9 @@
           <ngl-datepicker-input
             [patternPlaceholder]="true"
             [value]="filters.date.endDate"
-            (valueChange)="onChangeCustomEndDate($event)"
+            (valueChange)="
+              onChangeCustomEndDate($event, filters.date.startDate)
+            "
             format="little-endian"
             label="End Date"
           >
@@ -440,7 +418,7 @@
       <div class="slds-col slds-p-top_medium">
         <brd-combobox
           label="Select Option"
-          [options]="jobsLabels"
+          [options]="jobsLabels$ | async"
           (selectionChanged)="onItemSelected($event)"
           [selections]="itemSelected"
         ></brd-combobox>

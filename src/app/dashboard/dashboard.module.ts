@@ -2,9 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
-import { DataTableComponent } from './dashboard-widget/data-table/data-table.component';
 import { NglModule } from 'ng-lightning';
-import { DashboardPieChartComponent } from './dashboard-widget/dashboard-pie-chart/dashboard-pie-chart.component';
 import { NgChartsModule } from 'ng2-charts';
 import { PageFilterWidgetComponent } from './dashboard-widget/page-filter-widget/page-filter-widget.component';
 import { WidgetsFilterComponent } from './shared/widgets-filter/widgets-filter.component';
@@ -17,14 +15,13 @@ import { WidgetWrapperComponent } from './dashboard-widget/widget-wrapper.compon
 import { WidgetRecruitingStageExitedComponent } from './dashboard-widget/widget-recruiting-stage-exited/widget-recruiting-stage-exited.component';
 import { WidgetJobsApplicantsComponent } from './dashboard-widget/widget-jobs-applicants/widget-jobs-applicants.component';
 import { WidgetNewApplicantsComponent } from './dashboard-widget/widget-new-applicants/widget-new-applicants.component';
+import { WidgetApplicantsTableComponent } from './dashboard-widget/widget-applicants-table/widget-applicants-table.component';
 
 const routes: Routes = [{ path: '', component: DashboardComponent }];
 
 @NgModule({
   declarations: [
     DashboardComponent,
-    DataTableComponent,
-    DashboardPieChartComponent,
     PageFilterWidgetComponent,
     WidgetsFilterComponent,
     LabelToArrayPipe,
@@ -36,6 +33,7 @@ const routes: Routes = [{ path: '', component: DashboardComponent }];
     WidgetRecruitingStageExitedComponent,
     WidgetJobsApplicantsComponent,
     WidgetNewApplicantsComponent,
+    WidgetApplicantsTableComponent,
   ],
   imports: [
     CommonModule,

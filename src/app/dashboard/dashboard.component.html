@@ -13,19 +13,12 @@
       <div class="slds-grid slds-wrap">
         <div class="slds-col slds-size_2-of-2">
           <div class="slds-card table">
-            <brd-data-table
-              [showLoader]="applicantsLoading$ | async"
-              [dataSet]="(applicants$ | async)!"
-              [pageSize]="(applicantsPageSize$ | async)!"
-              [currentPage]="(applicantsCurrentPage$ | async)!"
-              [total]="(totalApplicants$ | async)!"
-              [sort]="(applicantsSort$ | async)!"
-              [filters]="(applicantsFilter$ | async)!"
-              [jobsLabels]="(jobsLabels$ | async)!"
-              (pageChange)="onPageChange($event)"
-              (sortChange)="onSortChange($event)"
-              (filterChange)="onApplicantsFilterChange($event)"
-            ></brd-data-table>
+            <brd-widget-wrapper
+              [config]="{
+                component: 'widget-applicants-table',
+                fullscreen: true
+              }"
+            ></brd-widget-wrapper>
           </div>
         </div>
         <div
