@@ -1,0 +1,47 @@
+<div class="slds-card pie-doughnut-chart">
+  <div class="slds-card__header slds-m-bottom_none">
+    <div class="slds-media slds-media_center slds-has-flexi-truncate">
+      <div class="slds-media__body">
+        <button
+          *ngIf="config.fullscreen"
+          (click)="toggleFullscreen()"
+          iconName="utility:expand"
+          nglButtonIcon
+          title="Expand Chart"
+          type="button"
+          variant="bare"
+        ></button>
+      </div>
+    </div>
+  </div>
+  <div class="slds-box_x-small slds-text-align_center slds-m-around_x-small">
+    <div class="loader-overlay" *ngIf="loading$ | async">
+      <ngl-spinner
+        size="large"
+        variant="brand"
+        alternativeText="Loading"
+      ></ngl-spinner>
+    </div>
+    <ng-template #child></ng-template>
+  </div>
+</div>
+
+<ngl-modal
+  (close)="toggleFullscreen()"
+  [(open)]="fullscreen"
+  [dismissOnClickOutside]="false"
+  prompt="info"
+  size="large"
+>
+  <div class="slds-p-around_medium">
+    <ng-template #childModal></ng-template>
+  </div>
+  <ng-template nglModalFooter>
+    <button
+      (click)="toggleFullscreen()"
+      class="slds-button slds-button_neutral"
+    >
+      Okay
+    </button>
+  </ng-template>
+</ngl-modal>

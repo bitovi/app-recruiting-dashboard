@@ -23,6 +23,8 @@ import { ApplicantDetailsModule } from '../shared/components';
 import { DashboardBarChartComponent } from './dashboard-widget/dashboard-bar-chart/dashboard-bar-chart.component';
 import { DashboardLineChartComponent } from './dashboard-widget/dashboard-line-chart/dashboard-line-chart.component';
 import { DashboardDoughnutChartComponent } from './dashboard-widget/dashboard-doughnut-chart/dashboard-doughnut-chart.component';
+import { WidgetWrapperComponent } from './dashboard-widget/widget-wrapper.component';
+import { WidgetRecruitingStageExitedComponent } from './dashboard-widget/widget-recruiting-stage-exited/widget-recruiting-stage-exited.component';
 
 const routes: Routes = [{ path: '', component: DashboardComponent }];
 
@@ -38,6 +40,8 @@ const routes: Routes = [{ path: '', component: DashboardComponent }];
     WidgetsFilterComponent,
     ComboboxComponent,
     HeaderComponent,
+    WidgetWrapperComponent,
+    WidgetRecruitingStageExitedComponent,
   ],
   imports: [
     CommonModule,
