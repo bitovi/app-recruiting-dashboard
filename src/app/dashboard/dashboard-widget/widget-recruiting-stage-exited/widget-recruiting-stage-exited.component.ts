@@ -5,7 +5,7 @@ import { ChartsStore } from '../../store/charts.store';
 import { WidgetComponent } from '../widget.component';
 
 @Component({
-  selector: 'brd-recruiting-stage-exited',
+  selector: 'brd-widget-recruiting-stage-exited',
   templateUrl: './widget-recruiting-stage-exited.component.html',
   styleUrls: ['./widget-recruiting-stage-exited.component.scss'],
 })
