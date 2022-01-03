@@ -16,6 +16,8 @@ import { ComboboxComponent } from './shared/combobox/combobox.component';
 import { ClickOutsideToCloseDirective } from './shared/combobox/click-outside-to-close.directive';
 import { OptionIsSelectedPipe } from './shared/pipe/option-is-selected.pipe';
 import { HeaderComponent } from './header/header.component';
+import { WidgetWrapperComponent } from './dashboard-widget/widget-wrapper.component';
+import { WidgetRecruitingStageExitedComponent } from './dashboard-widget/widget-recruiting-stage-exited/widget-recruiting-stage-exited.component';
 
 const routes: Routes = [{ path: '', component: DashboardComponent }];
 
@@ -34,6 +36,8 @@ const routes: Routes = [{ path: '', component: DashboardComponent }];
     ClickOutsideToCloseDirective,
     OptionIsSelectedPipe,
     HeaderComponent,
+    WidgetWrapperComponent,
+    WidgetRecruitingStageExitedComponent,
   ],
   imports: [
     CommonModule,
