@@ -51,6 +51,16 @@ export class DashboardLineChartComponent implements OnChanges {
 
   public ngOnChanges() {
     if (this.dataSet.length) {
+      const startDatasetDate: number = this.dataSet[0].x;
+      const startDate: Date = isNaN(startDatasetDate)
+        ? new Date()
+        : new Date(startDatasetDate);
+
+      const endDatasetDate: number = this.dataSet[this.dataSet.length - 1].x;
+      const endDate: Date = isNaN(endDatasetDate)
+        ? new Date()
+        : new Date(endDatasetDate);
+
       this.lineChartData = {
         datasets: [
           {
@@ -63,10 +73,7 @@ export class DashboardLineChartComponent implements OnChanges {
             backgroundColor: 'rgb(75, 192, 192)',
           },
         ],
-        labels: this.generateLabelsByFilters(
-          new Date(this.dataSet[0].x),
-          new Date(this.dataSet[this.dataSet.length - 1].x)
-        ),
+        labels: this.generateLabelsByFilters(startDate, endDate),
       };
     }
   }

@@ -1,11 +1,10 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
 import { Observable } from 'rxjs';
 import { finalize, map, tap } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
 import { Job } from '../../core/interfaces';
-import { JobResponse } from './jobs.model';
+import { JobsApiService } from '../services/jobs-api.service';
 
 export interface JobsState {
   jobs: Job[];
@@ -14,12 +13,14 @@ export interface JobsState {
 
 @Injectable()
 export class JobsStore extends ComponentStore<JobsState> {
-  readonly jobs$: Observable<Job[]> = this.select((state) => state.jobs);
+  readonly jobs$: Observable<Job[]> = this.select(
+    (state: JobsState) => state.jobs
+  );
   readonly loading$: Observable<boolean> = this.select(
-    (state) => state.loadingCounter
+    (state: JobsState) => state.loadingCounter
   ).pipe(map((counter) => counter !== 0));
 
-  constructor(private http: HttpClient) {
+  constructor(private jobsApiService: JobsApiService) {
     super({
       jobs: [],
       loadingCounter: 0,
@@ -28,31 +29,28 @@ export class JobsStore extends ComponentStore<JobsState> {
     this.fetchJobs();
   }
 
-  private readonly updateLoading = this.updater((state, loading: boolean) => ({
-    ...state,
-    loadingCounter: loading
-      ? state.loadingCounter + 1
-      : state.loadingCounter - 1,
-  }));
+  private readonly updateLoading = this.updater(
+    (state, loading: boolean): JobsState => ({
+      ...state,
+      loadingCounter: loading
+        ? state.loadingCounter + 1
+        : state.loadingCounter - 1,
+    })
+  );
 
-  private readonly updateJobs = this.updater((state, jobs: Job[]) => ({
-    ...state,
-    jobs,
-  }));
-
-  private getHttpParams(): HttpParams {
-    const params = new HttpParams().set('status', 'Open');
-
-    return params;
-  }
+  private readonly updateJobs = this.updater(
+    (state, jobs: Job[]): JobsState => ({
+      ...state,
+      jobs,
+    })
+  );
 
   private readonly fetchJobs = this.effect(() => {
-    const url = `${environment.api}/jobs`;
-    const params = this.getHttpParams();
+    const params: HttpParams = this.jobsApiService.getHttpParams();
 
     this.updateLoading(true);
 
-    return this.http.get<JobResponse>(url, { params }).pipe(
+    return this.jobsApiService.getJobs(params).pipe(
       tap((result) => this.updateJobs(result.data)),
       finalize(() => this.updateLoading(false))
     );

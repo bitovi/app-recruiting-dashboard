@@ -48,3 +48,12 @@ label,
     font-weight: 500;
   }
 }
+
+.font-sm {
+  font-size: 1rem;
+
+  &-bold {
+    font-size: 1rem;
+    weight: 500;
+  }
+}

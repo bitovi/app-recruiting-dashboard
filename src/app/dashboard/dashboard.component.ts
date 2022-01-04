@@ -9,11 +9,15 @@ import {
   WidgetFieldType,
   WidgetsHeader,
 } from './shared/dashboard-model';
-import { LabelToArrayPipe } from './shared/pipe/label-to-array.pipe';
 import { INglDatatableSort } from 'ng-lightning';
 import { ChartsStore } from './store/charts.store';
 import { JobsStore } from './store/jobs.store';
-import { ApplicantFilterState, IBarChartDataSet } from '../core/interfaces';
+import {
+  ApplicantFilterState,
+  IBarChartDataSet,
+  IRecruitingStageExitedResponse,
+} from '../core/interfaces';
+import { LabelToArrayPipe } from '../shared/pipes/label-to-array/label-to-array.pipe';
 
 @Component({
   selector: 'brd-dashboard',
@@ -60,12 +64,16 @@ export class DashboardComponent {
 
   public readonly recruitingStageExitedLabels$ =
     this.chartsStore.recruitingStageExited$.pipe(
-      map((data) => data.map((value) => value.stage))
+      map((data: IRecruitingStageExitedResponse[]) =>
+        data.map((value) => value.stage)
+      )
     );
 
   public readonly recruitingStageExitedValues$ =
     this.chartsStore.recruitingStageExited$.pipe(
-      map((data) => data.map((value) => value.total))
+      map((data: IRecruitingStageExitedResponse[]) =>
+        data.map((value) => value.total)
+      )
     );
 
   public readonly jobBarChartDataSet$: Observable<IBarChartDataSet> =
@@ -113,7 +121,7 @@ export class DashboardComponent {
     this.applicantsStore.setSort(sort);
   }
 
-  onApplicantsFilterChange(filter: Partial<ApplicantFilterState>) {
+  public onApplicantsFilterChange(filter: Partial<ApplicantFilterState>) {
     this.applicantsStore.setFilter(filter);
   }
 }

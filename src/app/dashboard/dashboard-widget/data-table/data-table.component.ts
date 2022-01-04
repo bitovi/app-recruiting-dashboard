@@ -1,15 +1,23 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+} from '@angular/core';
 import { INglDatatableSort } from 'ng-lightning';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { DateSide } from '../../../core/enums';
 import { Applicant, ApplicantFilterState } from '../../../core/interfaces';
+import { IDatePickerEvent } from '../../../core/interfaces/date-picker-event.interface';
 
 @Component({
   selector: 'brd-data-table',
   templateUrl: './data-table.component.html',
   styleUrls: ['./data-table.component.scss'],
 })
-export class DataTableComponent {
+export class DataTableComponent implements OnChanges {
   @Input() public dataSet: Applicant[] = [];
   @Input() public jobsLabels: string[] = [];
   @Input() public currentPage: number = 1;
@@ -17,12 +25,12 @@ export class DataTableComponent {
   @Input() public total: number = 0;
   @Input() public sort: INglDatatableSort = { key: '', order: 'desc' };
   @Input() public filters: ApplicantFilterState = {
-    date: { startDate: null, endDate: null },
+    date: { startDate: new Date(), endDate: new Date() },
     position: [],
   };
   @Output() public pageChange = new EventEmitter<number>();
   @Output() public sortChange = new EventEmitter<INglDatatableSort>();
-  @Input() public showLoader: boolean | null = false;
+  @Input() public isLoading: boolean | null = false;
   @Output()
   public filterChange = new EventEmitter<Partial<ApplicantFilterState>>();
   public readonly selectedId$ = new BehaviorSubject<string>('');
@@ -32,12 +40,16 @@ export class DataTableComponent {
     )
   );
 
+  ngOnChanges(): void {
+    console.log(this.dataSet);
+  }
+
   public activityTimelineIsOpened: Record<string, boolean> = {
     activity: false,
     comments: false,
   };
   public openedFilter = false;
-  public itemSelected: string[] = []; // dummy selected
+  public itemSelected: string[] = [];
 
   public onSort(event: INglDatatableSort) {
     this.sortChange.emit(event);
@@ -53,7 +65,7 @@ export class DataTableComponent {
     this.selectedId$.next(id);
   }
 
-  public close() {
+  public closeUserInfoModal() {
     this.selectedId$.next('');
   }
 
@@ -63,25 +75,23 @@ export class DataTableComponent {
     });
   }
 
-  public onChangeCustomStartDate(date: string | Date): void {
-    if (typeof date === 'string') {
-      // documentation states that only Date is returned from valueChange event
+  public changeCustomDate(datePickerEvent: IDatePickerEvent) {
+    if (datePickerEvent.dateSide === DateSide.StartDate) {
+      this.filterChange.emit({
+        date: {
+          startDate: datePickerEvent.date,
+          endDate: this.filters.date.endDate,
+        },
+      });
+
       return;
     }
 
     this.filterChange.emit({
-      date: { startDate: date, endDate: this.filters.date.endDate },
-    });
-  }
-
-  public onChangeCustomEndDate(date: string | Date): void {
-    if (typeof date === 'string') {
-      // documentation states that only Date is returned from valueChange event
-      return;
-    }
-
-    this.filterChange.emit({
-      date: { startDate: this.filters.date.startDate, endDate: date },
+      date: {
+        startDate: this.filters.date.startDate,
+        endDate: datePickerEvent.date,
+      },
     });
   }
 }
