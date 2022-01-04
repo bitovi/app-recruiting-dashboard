@@ -1,9 +1,11 @@
 <div class="slds-card pie-doughnut-chart">
-  <div class="slds-card__header slds-m-bottom_none">
-    <div class="slds-media slds-media_center slds-has-flexi-truncate">
+  <div class="slds-card__header slds-m-bottom_none slds-clearfix">
+    <div
+      *ngIf="config.fullscreen"
+      class="slds-media slds-media_center slds-has-flexi-truncate slds-float_left"
+    >
       <div class="slds-media__body">
         <button
-          *ngIf="config.fullscreen"
           (click)="toggleFullscreen()"
           iconName="utility:expand"
           nglButtonIcon
@@ -12,6 +14,30 @@
           variant="bare"
         ></button>
       </div>
+    </div>
+    <div *ngIf="config.filters?.length > 0" class="slds-float_right">
+      <button
+        [(nglPopoverOpen)]="openedFilter"
+        [nglPopover]="widgetFilter"
+        class="slds-button--icon-more"
+        nglButton
+        nglPopoverHeader="Filter Table"
+        nglPopoverPlacement="bottom-right"
+        nglPopoverSize="large"
+        type="button"
+      >
+        <ngl-icon
+          alternativeText="Filter"
+          iconName="utility:filter"
+          size="x-small"
+        ></ngl-icon>
+        <ngl-icon
+          alternativeText="Filter"
+          class="slds-m-left--x-small"
+          iconName="utility:down"
+          size="x-small"
+        ></ngl-icon>
+      </button>
     </div>
   </div>
   <div class="slds-box_x-small slds-text-align_center slds-m-around_x-small">
@@ -45,3 +71,23 @@
     </button>
   </ng-template>
 </ngl-modal>
+
+<ng-template #widgetFilter>
+  <div
+    *ngIf="config.filters?.length > 0"
+    class="slds-p-around_small slds-grid slds-wrap slds-p-bottom--large"
+  >
+    <ng-container *ngIf="filters$ | async as filters">
+      <ng-container *ngFor="let filter of config.filters">
+        <ng-container *ngIf="filters.get(filter.id) as currentFilter">
+          <brd-date-picker
+            *ngIf="currentFilter.type === 'date-interval'"
+            [startDate]="currentFilter.value.startDate"
+            [endDate]="currentFilter.value.endDate"
+            (dateChanged)="filterDateIntervalChange($event, currentFilter)"
+          ></brd-date-picker>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+  </div>
+</ng-template>

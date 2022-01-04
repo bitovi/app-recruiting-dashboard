@@ -14,7 +14,9 @@ export class PageFilterWidgetComponent {
   @Input() public startDate: Date = new Date();
   @Input() public endDate: Date = new Date();
   @Input() public totalApplicants: number = 0;
-  @Output() public selected = new EventEmitter<FilterState>();
+  @Output() public selected = new EventEmitter<
+    Pick<FilterState, 'startDate' | 'endDate'>
+  >();
 
   public options: DashboardFilters[] = [
     { durationCount: 7, label: FiltersLabels.SEVEN_DAYS },

@@ -21,7 +21,7 @@ export class DashboardComponent {
     private readonly applicantsStore: ApplicantsStore
   ) {}
 
-  public setFilterState(state: FilterState) {
+  public setFilterState(state: Pick<FilterState, 'startDate' | 'endDate'>) {
     this.filterStore.setDates(state.startDate, state.endDate);
   }
 }

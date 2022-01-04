@@ -16,6 +16,16 @@
             <brd-widget-wrapper
               [config]="{
                 component: 'widget-applicants-table',
+                filters: [
+                  {
+                    id: 'test',
+                    type: 'date-interval',
+                    value: {
+                      startDate: null,
+                      endDate: null
+                    }
+                  }
+                ],
                 fullscreen: true
               }"
             ></brd-widget-wrapper>
