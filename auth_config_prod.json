@@ -2,6 +2,6 @@
   "domain": "dev-8-qfqjbb.us.auth0.com",
   "clientId": "E2qDtddfIKKmqT5pysXIB3rmcRR7Uidg",
   "apiUri": "https://recruiting-dashboard-api.onrender.com",
-  "appUri": "https://app-recruiting-dashboard.onrender.com",
+  "appUri": "https://app-recruiting-dashboard-nb9c.onrender.com",
   "errorPath": "/"
 }
