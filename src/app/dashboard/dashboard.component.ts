@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { FilterState, FilterStore } from './store/filter.store';
+import { FilterDateState, FilterStore } from './store/filter.store';
 import { ApplicantsStore } from './store/applicants.store';
 import { ChartsStore } from './store/charts.store';
 import { JobsStore } from './store/jobs.store';
@@ -21,7 +21,7 @@ export class DashboardComponent {
     private readonly applicantsStore: ApplicantsStore
   ) {}
 
-  public setFilterState(state: Pick<FilterState, 'startDate' | 'endDate'>) {
+  public setFilterState(state: FilterDateState) {
     this.filterStore.setDates(state.startDate, state.endDate);
   }
 }

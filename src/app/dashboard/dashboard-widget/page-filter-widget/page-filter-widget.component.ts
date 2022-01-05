@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FilterState } from '../../store/filter.store';
+import { FilterDateState } from '../../store/filter.store';
 import { DashboardFilters, FiltersLabels } from '../../shared/dashboard-model';
 import moment from 'moment';
 import { IDatePickerEvent } from '../../../core/interfaces/date-picker-event.interface';
@@ -14,9 +14,7 @@ export class PageFilterWidgetComponent {
   @Input() public startDate: Date = new Date();
   @Input() public endDate: Date = new Date();
   @Input() public totalApplicants: number = 0;
-  @Output() public selected = new EventEmitter<
-    Pick<FilterState, 'startDate' | 'endDate'>
-  >();
+  @Output() public selected = new EventEmitter<FilterDateState>();
 
   public options: DashboardFilters[] = [
     { durationCount: 7, label: FiltersLabels.SEVEN_DAYS },
