@@ -18,8 +18,7 @@ export const environment: IEnvironment = {
     errorPath,
   },
   httpInterceptor: {
-    allowedList: [`${apiUri}/*`],
+    allowedList: [{ uri: `${apiUri}/*` }],
   },
   api: 'https://recruiting-dashboard-api.onrender.com',
-  apiKey: 'h84j90wdcbiy23c563r4n80brtypom',
 };

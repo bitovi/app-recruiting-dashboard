@@ -16,18 +16,16 @@ export const environment: IEnvironment = {
   production: false,
   auth: {
     domain,
-
     clientId,
     redirectUri: window.location.origin,
     errorPath,
   },
   httpInterceptor: {
-    allowedList: [`${apiUri}/*`],
+    allowedList: [{ uri: `${apiUri}/*` }],
   },
   // use the domain when developing only front end
   // api: 'http://localhost:3030'
   api: 'https://recruiting-dashboard-api.onrender.com',
-  apiKey: 'h84j90wdcbiy23c563r4n80brtypom',
 };
 
 /*

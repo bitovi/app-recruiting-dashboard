@@ -3,5 +3,4 @@ export interface IEnvironment {
   auth: any;
   httpInterceptor: any;
   api: string;
-  apiKey: string;
 }
