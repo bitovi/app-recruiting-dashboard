@@ -3,7 +3,7 @@ import { ChartData, ChartOptions, ChartType } from 'chart.js';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ChartsStore } from '../../store/charts.store';
-import { WidgetComponent } from '../widget.component';
+import { DefaultWidgetComponent } from '../default-widget.component';
 import 'chartjs-adapter-date-fns';
 
 @Component({
@@ -11,7 +11,7 @@ import 'chartjs-adapter-date-fns';
   templateUrl: './widget-new-applicants.component.html',
   styleUrls: ['./widget-new-applicants.component.scss'],
 })
-export class WidgetNewApplicantsComponent implements WidgetComponent {
+export class WidgetNewApplicantsComponent extends DefaultWidgetComponent {
   readonly data$: Observable<ChartData> = this.chartsStore.newApplicants$.pipe(
     map((newApplicants) =>
       newApplicants.map((data) => ({
@@ -70,7 +70,9 @@ export class WidgetNewApplicantsComponent implements WidgetComponent {
     },
   };
 
-  constructor(private readonly chartsStore: ChartsStore) {}
+  constructor(private readonly chartsStore: ChartsStore) {
+    super();
+  }
 
   private getLabels(startDate: number, endDate: number): string[] {
     if (!startDate) {

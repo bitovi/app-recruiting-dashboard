@@ -3,14 +3,14 @@ import { ChartOptions, ChartType } from 'chart.js';
 import { map } from 'rxjs/operators';
 import { LabelToArrayPipe } from 'src/app/shared/pipes/label-to-array/label-to-array.pipe';
 import { ChartsStore } from '../../store/charts.store';
-import { WidgetComponent } from '../widget.component';
+import { DefaultWidgetComponent } from '../default-widget.component';
 
 @Component({
   selector: 'brd-widget-jobs-applicants',
   templateUrl: './widget-jobs-applicants.component.html',
   styleUrls: ['./widget-jobs-applicants.component.scss'],
 })
-export class WidgetJobsApplicantsComponent implements WidgetComponent {
+export class WidgetJobsApplicantsComponent extends DefaultWidgetComponent {
   readonly data$ = this.chartsStore.jobsApplicants$.pipe(
     map((jobsApplicantsData) => {
       const labels = jobsApplicantsData.map((jobApplicant) =>
@@ -62,5 +62,7 @@ export class WidgetJobsApplicantsComponent implements WidgetComponent {
   constructor(
     private readonly chartsStore: ChartsStore,
     private labelToArrayPipe: LabelToArrayPipe
-  ) {}
+  ) {
+    super();
+  }
 }

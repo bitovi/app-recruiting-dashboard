@@ -2,14 +2,14 @@ import { Component } from '@angular/core';
 import { ChartOptions, ChartType } from 'chart.js';
 import { map } from 'rxjs/operators';
 import { ChartsStore } from '../../store/charts.store';
-import { WidgetComponent } from '../widget.component';
+import { DefaultWidgetComponent } from '../default-widget.component';
 
 @Component({
   selector: 'brd-widget-recruiting-stage-exited',
   templateUrl: './widget-recruiting-stage-exited.component.html',
   styleUrls: ['./widget-recruiting-stage-exited.component.scss'],
 })
-export class WidgetRecruitingStageExitedComponent implements WidgetComponent {
+export class WidgetRecruitingStageExitedComponent extends DefaultWidgetComponent {
   readonly data$ = this.chartsStore.recruitingStageExited$.pipe(
     map((recruitingStageExitedResponse) => ({
       datasets: [
@@ -53,5 +53,7 @@ export class WidgetRecruitingStageExitedComponent implements WidgetComponent {
     'rgb(119, 119, 119, 1)',
   ];
 
-  constructor(private readonly chartsStore: ChartsStore) {}
+  constructor(private readonly chartsStore: ChartsStore) {
+    super();
+  }
 }

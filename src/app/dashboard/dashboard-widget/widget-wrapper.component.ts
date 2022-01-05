@@ -66,9 +66,12 @@ export class WidgetWrapperComponent implements OnChanges {
         this.viewContainerRef.createComponent<EntryComponentsUnion>(
           entryComponents[this.config.component]
         );
-      this.viewContainerModalRef.createComponent<EntryComponentsUnion>(
-        entryComponents[this.config.component]
-      );
+      const modalComponentRef =
+        this.viewContainerModalRef.createComponent<EntryComponentsUnion>(
+          entryComponents[this.config.component]
+        );
+      componentRef.instance.id = this.id;
+      modalComponentRef.instance.id = this.id;
       this.loading$ = componentRef.instance.loading$;
     }
   }

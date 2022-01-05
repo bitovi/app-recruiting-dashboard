@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
 import moment from 'moment';
 import { combineLatest, Observable } from 'rxjs';
-import { distinctUntilChanged } from 'rxjs/operators';
 import { WidgetFilterUnion } from '../dashboard-widget/widget.model';
 
 export interface FilterState {
@@ -14,12 +13,8 @@ export interface FilterState {
 export const DEFAULT_LAST_N_DAYS = 7;
 @Injectable()
 export class FilterStore extends ComponentStore<FilterState> {
-  readonly startDate$ = this.select(
-    (state: FilterState) => state.startDate
-  ).pipe(distinctUntilChanged((x, y) => x.getTime() !== y.getTime()));
-  readonly endDate$ = this.select((state: FilterState) => state.endDate).pipe(
-    distinctUntilChanged((x, y) => x.getTime() !== y.getTime())
-  );
+  readonly startDate$ = this.select((state: FilterState) => state.startDate);
+  readonly endDate$ = this.select((state: FilterState) => state.endDate);
   readonly combinedDates$: Observable<[Date, Date]> = combineLatest([
     this.startDate$,
     this.endDate$,

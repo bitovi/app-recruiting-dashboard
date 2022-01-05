@@ -1,28 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { INglDatatableSort } from 'ng-lightning';
 import { BehaviorSubject } from 'rxjs';
 import { map, withLatestFrom } from 'rxjs/operators';
-import { DateSide } from 'src/app/core/enums';
-import { IDatePickerEvent } from 'src/app/core/interfaces/date-picker-event.interface';
 import { ApplicantsStore } from '../../store/applicants.store';
-import { JobsStore } from '../../store/jobs.store';
-import { WidgetComponent } from '../widget.component';
+import { DefaultWidgetComponent } from '../default-widget.component';
 
 @Component({
   selector: 'brd-widget-applicants-table',
   templateUrl: './widget-applicants-table.component.html',
   styleUrls: ['./widget-applicants-table.component.scss'],
+  providers: [ApplicantsStore],
 })
-export class WidgetApplicantsTableComponent implements WidgetComponent {
+export class WidgetApplicantsTableComponent
+  extends DefaultWidgetComponent
+  implements OnInit
+{
   readonly applicants$ = this.applicantsStore.applicants$;
   readonly totalApplicants$ = this.applicantsStore.totalApplicants$;
   readonly applicantsPageSize$ = this.applicantsStore.pageSize$;
   readonly applicantsCurrentPage$ = this.applicantsStore.currentPage$;
   readonly applicantsSort$ = this.applicantsStore.sort$;
   readonly applicantsFilter$ = this.applicantsStore.filters$;
-  readonly jobsLabels$ = this.jobsStore.jobs$.pipe(
-    map((jobs) => jobs.map((job) => job.title))
-  );
   readonly loading$ = this.applicantsStore.loading$;
   readonly selectedId$ = new BehaviorSubject<string>('');
   readonly selectedApplicant$ = this.selectedId$.pipe(
@@ -31,18 +29,19 @@ export class WidgetApplicantsTableComponent implements WidgetComponent {
       applicants.find((applicant) => applicant.id === selectedId)
     )
   );
-
-  constructor(
-    private readonly applicantsStore: ApplicantsStore,
-    private readonly jobsStore: JobsStore
-  ) {}
-
   public activityTimelineIsOpened: Record<string, boolean> = {
     activity: false,
     comments: false,
   };
-  public openedFilter = false;
   public itemSelected: string[] = []; // dummy selected
+
+  constructor(private readonly applicantsStore: ApplicantsStore) {
+    super();
+  }
+
+  ngOnInit(): void {
+    this.applicantsStore.setId(this.id);
+  }
 
   public onSort(event: INglDatatableSort) {
     this.applicantsStore.setSort(event);
@@ -60,27 +59,5 @@ export class WidgetApplicantsTableComponent implements WidgetComponent {
 
   public closeUserInfoModal() {
     this.selectedId$.next('');
-  }
-
-  public onItemSelected(items: any[]) {
-    this.applicantsStore.setFilter({ position: items });
-  }
-
-  public changeCustomDate(
-    datePickerEvent: IDatePickerEvent,
-    startDate: Date,
-    endDate: Date
-  ) {
-    if (datePickerEvent.dateSide === DateSide.StartDate) {
-      this.applicantsStore.setFilter({
-        date: { startDate: datePickerEvent.date, endDate },
-      });
-
-      return;
-    }
-
-    this.applicantsStore.setFilter({
-      date: { startDate, endDate: datePickerEvent.date },
-    });
   }
 }

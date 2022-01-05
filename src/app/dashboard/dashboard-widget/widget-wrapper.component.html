@@ -87,6 +87,11 @@
             (dateChanged)="filterDateIntervalChange($event, currentFilter)"
           ></brd-date-picker>
         </ng-container>
+        <brd-combobox
+          *ngIf="filter.type === 'select'"
+          class="u-w-100"
+          label="Select Option"
+        ></brd-combobox>
       </ng-container>
     </ng-container>
   </div>

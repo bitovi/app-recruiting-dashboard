@@ -19,23 +19,15 @@ export class ApplicantService {
     currentPage: number,
     sort: INglDatatableSort,
     filters: ApplicantFilterState,
-    globalCombinedDates: [Date, Date]
+    [startDate, endDate]: [Date, Date]
   ): HttpParams {
-    const [globalStartDate, globalEndDate] = globalCombinedDates;
-    const { startDate, endDate } = filters.date;
     const position = filters.position;
 
     let params = new HttpParams()
       .set('$limit', pageSize)
       .set('$skip', currentPage * pageSize - pageSize)
-      .set(
-        'apply_date_date[$gte]',
-        startDate ? startDate.toISOString() : globalStartDate.toISOString()
-      )
-      .set(
-        'apply_date_date[$lte]',
-        endDate ? endDate.toISOString() : globalEndDate.toISOString()
-      );
+      .set('apply_date_date[$gte]', startDate.toISOString())
+      .set('apply_date_date[$lte]', endDate.toISOString());
 
     if (sort.key.length) {
       params = params.set(`$sort[${sort.key}]`, sort.order === 'asc' ? 1 : -1);
