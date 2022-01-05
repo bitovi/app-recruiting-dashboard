@@ -1,7 +1,7 @@
 {
-  "domain": "dev-tpf5ukg7.us.auth0.com",
-  "clientId": "gdVuxH0DD0mFOB3SOkhHbiB0RyUBxCud",
-  "apiUri": "https://recruiting-dashboard-api.onrender.com/",
-  "appUri": "https://app-recruiting-dashboard.onrender.com/",
+  "domain": "dev-8-qfqjbb.us.auth0.com",
+  "clientId": "E2qDtddfIKKmqT5pysXIB3rmcRR7Uidg",
+  "apiUri": "https://recruiting-dashboard-api.onrender.com",
+  "appUri": "https://app-recruiting-dashboard.onrender.com",
   "errorPath": "/"
 }

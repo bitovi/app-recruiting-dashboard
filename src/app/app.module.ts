@@ -2,7 +2,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { environment as env } from '../environments/environment';
-import { AuthModule } from '@auth0/auth0-angular';
+import { AuthHttpInterceptor, AuthModule } from '@auth0/auth0-angular';
 
 import { NglModule } from 'ng-lightning';
 import { LoginComponent } from './pages/login/login.component';
@@ -10,7 +10,6 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { ApiInterceptor } from './core/interceptors';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent],
@@ -29,7 +28,7 @@ import { ApiInterceptor } from './core/interceptors';
     EffectsModule.forRoot([]),
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
 })
