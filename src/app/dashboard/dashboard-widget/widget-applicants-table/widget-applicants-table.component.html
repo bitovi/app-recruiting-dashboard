@@ -1,33 +1,8 @@
 <section class="slds-box paginated-table" style="padding: 0">
-  <div class="table-filter" *ngIf="!isLoading; else loaderBlock">
-    <button
-      [(nglPopoverOpen)]="openedFilter"
-      [nglPopover]="widgetFilter"
-      class="slds-button--icon-more"
-      nglButton
-      nglPopoverHeader="Filter Table"
-      nglPopoverPlacement="bottom-right"
-      nglPopoverSize="large"
-      type="button"
-    >
-      <ngl-icon
-        alternativeText="Filter"
-        iconName="utility:filter"
-        size="x-small"
-      ></ngl-icon>
-      <ngl-icon
-        alternativeText="Filter"
-        class="slds-m-left--x-small"
-        iconName="utility:down"
-        size="x-small"
-      ></ngl-icon>
-    </button>
-  </div>
-
   <table
     (sortChange)="onSort($event)"
-    [sort]="sort"
-    [data]="dataSet"
+    [sort]="(applicantsSort$ | async)!"
+    [data]="(applicants$ | async)!"
     class="slds-table slds-table_fixed-layout slds-table_resizable-cols tables"
     ngl-datatable
     trackByKey="jobs.applicant_progress"
@@ -84,15 +59,17 @@
       </ng-template>
     </ngl-datatable-column>
   </table>
-  <ngl-pagination
-    (pageChange)="onPageChange($event)"
-    [page]="currentPage"
-    [perPage]="pageSize"
-    [boundaryNumbers]="1"
-    [limit]="5"
-    [total]="total"
-    class="slds-float_right"
-  ></ngl-pagination>
+  <div class="slds-clearfix">
+    <ngl-pagination
+      (pageChange)="onPageChange($event)"
+      [page]="(applicantsCurrentPage$ | async)!"
+      [perPage]="(applicantsPageSize$ | async)!"
+      [boundaryNumbers]="1"
+      [limit]="5"
+      [total]="(totalApplicants$ | async)!"
+      class="slds-float_right"
+    ></ngl-pagination>
+  </div>
 </section>
 
 <ng-template #applicantDetailsBlock>
@@ -113,33 +90,5 @@
     >
       Close
     </button>
-  </div>
-</ng-template>
-
-<ng-template #widgetFilter>
-  <div class="slds-p-around_small slds-grid slds-wrap slds-p-bottom--large">
-    <brd-date-picker
-      [startDate]="filters.date.startDate"
-      [endDate]="filters.date.endDate"
-      (dateChanged)="changeCustomDate($event)"
-    ></brd-date-picker>
-
-    <brd-combobox
-      class="u-w-100"
-      label="Select Option"
-      [options]="jobsLabels"
-      (selectionChanged)="onItemSelected($event)"
-      [selections]="itemSelected"
-    ></brd-combobox>
-  </div>
-</ng-template>
-
-<ng-template #loaderBlock>
-  <div class="loader-overlay">
-    <ngl-spinner
-      size="large"
-      variant="brand"
-      alternativeText="Loading"
-    ></ngl-spinner>
   </div>
 </ng-template>

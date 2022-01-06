@@ -2,9 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
-import { DataTableComponent } from './dashboard-widget/data-table/data-table.component';
 import { NglDatatablesModule, NglModule } from 'ng-lightning';
-import { DashboardPieChartComponent } from './dashboard-widget/dashboard-pie-chart/dashboard-pie-chart.component';
 import { NgChartsModule } from 'ng2-charts';
 import { PageFilterWidgetComponent } from './dashboard-widget/page-filter-widget/page-filter-widget.component';
 import { WidgetsFilterComponent } from './shared/widgets-filter/widgets-filter.component';
@@ -20,24 +18,26 @@ import {
 } from '../shared/pipes';
 import { BRDDatePickerModule } from '../shared/components/date-picker/date-picker.module';
 import { ApplicantDetailsModule } from '../shared/components';
-import { DashboardBarChartComponent } from './dashboard-widget/dashboard-bar-chart/dashboard-bar-chart.component';
-import { DashboardLineChartComponent } from './dashboard-widget/dashboard-line-chart/dashboard-line-chart.component';
-import { DashboardDoughnutChartComponent } from './dashboard-widget/dashboard-doughnut-chart/dashboard-doughnut-chart.component';
+import { WidgetWrapperComponent } from './dashboard-widget/widget-wrapper.component';
+import { WidgetRecruitingStageExitedComponent } from './dashboard-widget/widget-recruiting-stage-exited/widget-recruiting-stage-exited.component';
+import { WidgetJobsApplicantsComponent } from './dashboard-widget/widget-jobs-applicants/widget-jobs-applicants.component';
+import { WidgetNewApplicantsComponent } from './dashboard-widget/widget-new-applicants/widget-new-applicants.component';
+import { WidgetApplicantsTableComponent } from './dashboard-widget/widget-applicants-table/widget-applicants-table.component';
 
 const routes: Routes = [{ path: '', component: DashboardComponent }];
 
 @NgModule({
   declarations: [
     DashboardComponent,
-    DataTableComponent,
-    DashboardBarChartComponent,
-    DashboardLineChartComponent,
-    DashboardPieChartComponent,
-    DashboardDoughnutChartComponent,
     PageFilterWidgetComponent,
     WidgetsFilterComponent,
     ComboboxComponent,
     HeaderComponent,
+    WidgetWrapperComponent,
+    WidgetRecruitingStageExitedComponent,
+    WidgetJobsApplicantsComponent,
+    WidgetNewApplicantsComponent,
+    WidgetApplicantsTableComponent,
   ],
   imports: [
     CommonModule,

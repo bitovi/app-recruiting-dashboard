@@ -1,30 +1,7 @@
-$layout-small: 960px;
-
 .table {
   min-height: 40.4vh;
 }
 
-.line-bar-chart {
-  min-height: 37.3vh;
-  max-height: 37.3vh;
-}
-
-.pie-chart {
-  min-height: 31.3vh;
-}
-
-.pie-doughnut-chart {
-  min-height: 37.3vh;
-  max-height: 37.3vh;
-}
-
 .other-info {
   min-height: 60vh;
-}
-
-@media screen and (min-height: $layout-small) {
-  .pie-doughnut-chart {
-    min-height: 37.3vh;
-    height: auto;
-  }
 }
