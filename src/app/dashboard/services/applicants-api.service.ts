@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { INglDatatableSort } from 'ng-lightning';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { ApplicantFilterState, ApplicantResponse } from '../../core/interfaces';
+import { ApplicantResponse } from '../../core/interfaces';
 
 @Injectable()
 export class ApplicantService {
@@ -18,11 +18,9 @@ export class ApplicantService {
     pageSize: number,
     currentPage: number,
     sort: INglDatatableSort,
-    filters: ApplicantFilterState,
+    position: string[],
     [startDate, endDate]: [Date, Date]
   ): HttpParams {
-    const position = filters.position;
-
     let params = new HttpParams()
       .set('$limit', pageSize)
       .set('$skip', currentPage * pageSize - pageSize)
@@ -33,7 +31,7 @@ export class ApplicantService {
       params = params.set(`$sort[${sort.key}]`, sort.order === 'asc' ? 1 : -1);
     }
 
-    if (position.length) {
+    if (position?.length) {
       position.forEach((pos) => {
         params = params.append(`jobs.job_title[$in][]`, pos);
       });

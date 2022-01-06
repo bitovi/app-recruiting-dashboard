@@ -10,12 +10,12 @@ import {
   map,
   tap,
 } from 'rxjs/operators';
+import { Applicant, IDateFilter } from '../../core/interfaces';
 import {
-  Applicant,
-  ApplicantFilterState,
-  IDateFilter,
-} from '../../core/interfaces';
-import { WidgetFilter } from '../dashboard-widget/widget.model';
+  WidgetFilter,
+  WidgetFilterSelectJob,
+  WidgetFilterUnion,
+} from '../widgets/widget.model';
 import { ApplicantService } from '../services/applicants-api.service';
 import { FilterStore } from './filter.store';
 
@@ -27,7 +27,6 @@ export interface ApplicantsState {
   pageSize: number;
   totalApplicants: number;
   sort: INglDatatableSort;
-  filters: ApplicantFilterState;
 }
 
 @Injectable()
@@ -44,16 +43,17 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
     (state) => state.totalApplicants
   );
   public readonly sort$ = this.select((state) => state.sort);
-  public readonly filters$ = this.select((state) => state.filters);
+  public readonly id$ = this.select((state) => state.id);
+  public readonly filters$: Observable<Map<string, WidgetFilterUnion>> =
+    combineLatest([this.id$, this.filterStore.widgetFilters$]).pipe(
+      map(([id, widgetFilters]) => widgetFilters?.get(id))
+    );
   public readonly dateFilters$: Observable<[Date, Date]> = combineLatest([
-    this.select((state) => state.id),
-    this.filterStore.widgetFilters$,
+    this.filters$,
     this.filterStore.combinedDates$,
   ]).pipe(
-    map(([id, widgetFilters, globalDates]) => {
-      const filter = widgetFilters
-        ?.get(id)
-        ?.get('date-interval') as WidgetFilter<IDateFilter>;
+    map(([filters, globalDates]) => {
+      const filter = filters?.get('date-interval') as WidgetFilter<IDateFilter>;
       const startDate = filter?.value.startDate || globalDates[0];
       const endDate = filter?.value.endDate || globalDates[1];
 
@@ -66,18 +66,23 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
         endDate1.getTime() === endDate2.getTime()
     )
   );
+  public readonly positionFilter$: Observable<string[]> = this.filters$.pipe(
+    map(
+      (filters) => (filters?.get('select-job') as WidgetFilterSelectJob)?.value
+    )
+  );
 
   private readonly fetchApplicantsData$ = this.select(
     this.pageSize$,
     this.currentPage$,
     this.sort$,
-    this.filters$,
+    this.positionFilter$,
     this.dateFilters$,
-    (pageSize, currentPage, sort, filters, dateFilters) => ({
+    (pageSize, currentPage, sort, positionFilter, dateFilters) => ({
       pageSize,
       currentPage,
       sort,
-      filters,
+      positionFilter,
       dateFilters,
     }),
     { debounce: true }
@@ -95,7 +100,6 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
       pageSize: 10,
       totalApplicants: 0,
       sort: { key: '', order: 'desc' },
-      filters: { position: [] },
     });
 
     this.fetchApplicants(this.fetchApplicantsData$);
@@ -119,16 +123,6 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
     (state, sort: INglDatatableSort): ApplicantsState => ({
       ...state,
       sort,
-    })
-  );
-
-  readonly setFilter = this.updater(
-    (state, filters: Partial<ApplicantFilterState>): ApplicantsState => ({
-      ...state,
-      filters: {
-        ...state.filters,
-        ...filters,
-      },
     })
   );
 
@@ -161,30 +155,32 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
         pageSize: number;
         currentPage: number;
         sort: INglDatatableSort;
-        filters: ApplicantFilterState;
+        positionFilter: string[];
         dateFilters: [Date, Date];
       }>
     ) => {
       return data$.pipe(
-        concatMap(({ pageSize, currentPage, sort, filters, dateFilters }) => {
-          const params: HttpParams = this.applicantService.getHttpParams(
-            pageSize,
-            currentPage,
-            sort,
-            filters,
-            dateFilters
-          );
+        concatMap(
+          ({ pageSize, currentPage, sort, positionFilter, dateFilters }) => {
+            const params: HttpParams = this.applicantService.getHttpParams(
+              pageSize,
+              currentPage,
+              sort,
+              positionFilter,
+              dateFilters
+            );
 
-          this.updateLoading(true);
+            this.updateLoading(true);
 
-          return this.applicantService.getApplicants(params).pipe(
-            tap((result) => {
-              this.updateApplicants(result.data);
-              this.updateTotalApplicants(result.total);
-            }),
-            finalize(() => this.updateLoading(false))
-          );
-        })
+            return this.applicantService.getApplicants(params).pipe(
+              tap((result) => {
+                this.updateApplicants(result.data);
+                this.updateTotalApplicants(result.total);
+              }),
+              finalize(() => this.updateLoading(false))
+            );
+          }
+        )
       );
     }
   );

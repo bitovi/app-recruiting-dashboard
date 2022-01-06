@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
 import moment from 'moment';
 import { combineLatest, Observable } from 'rxjs';
-import { WidgetFilterUnion } from '../dashboard-widget/widget.model';
+import { WidgetFilterUnion } from '../widgets/widget.model';
 
 export interface FilterDateState {
   startDate: Date;
