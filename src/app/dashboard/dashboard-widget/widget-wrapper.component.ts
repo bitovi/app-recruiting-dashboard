@@ -33,8 +33,6 @@ export class WidgetWrapperComponent implements OnChanges {
    * without instantiating the component twice
    * suggestion: render dialog by changing css only
    */
-  @ViewChild('childModal', { read: ViewContainerRef, static: true })
-  viewContainerModalRef!: ViewContainerRef;
 
   private id = crypto.randomUUID();
   fullscreen = false;
@@ -59,19 +57,14 @@ export class WidgetWrapperComponent implements OnChanges {
     }
 
     this.viewContainerRef.clear();
-    this.viewContainerModalRef.clear();
 
     if (this.config.component) {
       const componentRef =
         this.viewContainerRef.createComponent<EntryComponentsUnion>(
           entryComponents[this.config.component]
         );
-      const modalComponentRef =
-        this.viewContainerModalRef.createComponent<EntryComponentsUnion>(
-          entryComponents[this.config.component]
-        );
+
       componentRef.instance.id = this.id;
-      modalComponentRef.instance.id = this.id;
       this.loading$ = componentRef.instance.loading$;
     }
   }
