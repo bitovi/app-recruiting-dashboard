@@ -4,9 +4,11 @@ import moment from 'moment';
 import { combineLatest, Observable } from 'rxjs';
 import { WidgetFilterUnion } from '../dashboard-widget/widget.model';
 
-export interface FilterState {
+export interface FilterDateState {
   startDate: Date;
   endDate: Date;
+}
+export interface FilterState extends FilterDateState {
   widgetFilters: Map<string, Map<string, WidgetFilterUnion>>;
 }
 
