@@ -28,11 +28,6 @@ export class WidgetWrapperComponent implements OnChanges {
   @Input() config: WidgetConfig = defaultWidgetConfig;
   @ViewChild('child', { read: ViewContainerRef, static: true })
   viewContainerRef!: ViewContainerRef;
-  /**
-   * TO-DO: remove childModal if we have a way to render dialog
-   * without instantiating the component twice
-   * suggestion: render dialog by changing css only
-   */
 
   private id = crypto.randomUUID();
   fullscreen = false;

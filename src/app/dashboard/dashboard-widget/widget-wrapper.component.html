@@ -8,7 +8,7 @@
         <div class="slds-media__body">
           <button
             (click)="toggleFullscreen()"
-            iconName="utility:expand"
+            [iconName]="fullscreen? 'utility:close' : 'utility:expand'"
             nglButtonIcon
             title="Expand Chart"
             type="button"

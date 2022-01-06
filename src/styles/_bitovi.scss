@@ -123,5 +123,9 @@ section.app-container {
     min-height: 92% !important;
     max-height: 92% !important;
   }
+  tbody {
+    height: calc(85vh - 80px);
+    max-height: calc(85vh - 80px);
+  }
 }
 
