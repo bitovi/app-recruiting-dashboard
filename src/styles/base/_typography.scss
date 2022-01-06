@@ -1,3 +1,7 @@
+/*
+TODO:
+ Consider this in the future?.
+ */
 @import "responsive-width-mixins";
 
 body {
@@ -54,6 +58,6 @@ label,
 
   &-bold {
     font-size: 1rem;
-    weight: 500;
+    font-weight: 500;
   }
 }
