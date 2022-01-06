@@ -1,76 +1,59 @@
-<div class="slds-card pie-doughnut-chart">
-  <div class="slds-card__header slds-m-bottom_none slds-clearfix">
-    <div
-      *ngIf="config.fullscreen"
-      class="slds-media slds-media_center slds-has-flexi-truncate slds-float_left"
-    >
-      <div class="slds-media__body">
+<div [class.chart-full-screen]="fullscreen">
+  <div class="slds-card widget-charts">
+    <div class="slds-card__header slds-m-bottom_none slds-clearfix">
+      <div
+        *ngIf="config.fullscreen"
+        class="slds-media slds-media_center slds-has-flexi-truncate slds-float_left"
+      >
+        <div class="slds-media__body">
+          <button
+            (click)="toggleFullscreen()"
+            [iconName]="fullscreen? 'utility:close' : 'utility:expand'"
+            nglButtonIcon
+            title="Expand Chart"
+            type="button"
+            variant="bare"
+          ></button>
+        </div>
+      </div>
+      <div *ngIf="config.filters?.length > 0" class="slds-float_right">
         <button
-          (click)="toggleFullscreen()"
-          iconName="utility:expand"
-          nglButtonIcon
-          title="Expand Chart"
+          [(nglPopoverOpen)]="openedFilter"
+          [nglPopover]="widgetFilter"
+          class="slds-button--icon-more"
+          nglButton
+          nglPopoverHeader="Filter Table"
+          nglPopoverPlacement="bottom-right"
+          nglPopoverSize="large"
           type="button"
-          variant="bare"
-        ></button>
+        >
+          <ngl-icon
+            alternativeText="Filter"
+            iconName="utility:filter"
+            size="x-small"
+          ></ngl-icon>
+          <ngl-icon
+            alternativeText="Filter"
+            class="slds-m-left--x-small"
+            iconName="utility:down"
+            size="x-small"
+          ></ngl-icon>
+        </button>
       </div>
     </div>
-    <div *ngIf="config.filters?.length > 0" class="slds-float_right">
-      <button
-        [(nglPopoverOpen)]="openedFilter"
-        [nglPopover]="widgetFilter"
-        class="slds-button--icon-more"
-        nglButton
-        nglPopoverHeader="Filter Table"
-        nglPopoverPlacement="bottom-right"
-        nglPopoverSize="large"
-        type="button"
-      >
-        <ngl-icon
-          alternativeText="Filter"
-          iconName="utility:filter"
-          size="x-small"
-        ></ngl-icon>
-        <ngl-icon
-          alternativeText="Filter"
-          class="slds-m-left--x-small"
-          iconName="utility:down"
-          size="x-small"
-        ></ngl-icon>
-      </button>
+    <div class="slds-box_x-small slds-text-align_center slds-m-around_x-small">
+      <div class="loader-overlay" *ngIf="loading$ | async">
+        <ngl-spinner
+          size="large"
+          variant="brand"
+          alternativeText="Loading"
+        ></ngl-spinner>
+      </div>
+      <ng-template #child></ng-template>
     </div>
   </div>
-  <div class="slds-box_x-small slds-text-align_center slds-m-around_x-small">
-    <div class="loader-overlay" *ngIf="loading$ | async">
-      <ngl-spinner
-        size="large"
-        variant="brand"
-        alternativeText="Loading"
-      ></ngl-spinner>
-    </div>
-    <ng-template #child></ng-template>
-  </div>
-</div>
 
-<ngl-modal
-  (close)="toggleFullscreen()"
-  [(open)]="fullscreen"
-  [dismissOnClickOutside]="false"
-  prompt="info"
-  size="large"
->
-  <div class="slds-p-around_medium">
-    <ng-template #childModal></ng-template>
-  </div>
-  <ng-template nglModalFooter>
-    <button
-      (click)="toggleFullscreen()"
-      class="slds-button slds-button_neutral"
-    >
-      Okay
-    </button>
-  </ng-template>
-</ngl-modal>
+</div>
 
 <ng-template #widgetFilter>
   <div
