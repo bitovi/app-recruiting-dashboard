@@ -15,7 +15,7 @@ import {
   ApplicantFilterState,
   IDateFilter,
 } from '../../core/interfaces';
-import { WidgetFilter } from '../dashboard-widget/widget.model';
+import { WidgetFilter } from '../widgets/widget.model';
 import { ApplicantService } from '../services/applicants-api.service';
 import { FilterStore } from './filter.store';
 
