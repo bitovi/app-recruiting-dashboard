@@ -8,15 +8,13 @@ import {
 } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { DateSide } from 'src/app/core/enums';
-import { IDatePickerEvent } from 'src/app/core/interfaces/date-picker-event.interface';
 import { FilterStore } from '../store/filter.store';
 import {
   defaultWidgetConfig,
   entryComponents,
   EntryComponentsUnion,
   WidgetConfig,
-  WidgetFilterDateInterval,
+  WidgetFilterUnion,
 } from './widget.model';
 
 @Component({
@@ -84,21 +82,7 @@ export class WidgetWrapperComponent implements OnChanges {
     console.log('remove called');
   }
 
-  filterDateIntervalChange(
-    datePickerEvent: IDatePickerEvent,
-    currentFilter: WidgetFilterDateInterval
-  ) {
-    const isStartDate = datePickerEvent.dateSide === DateSide.StartDate;
-    this.filterStore.setWidgetFilter(this.id, {
-      ...currentFilter,
-      value: {
-        startDate: isStartDate
-          ? datePickerEvent.date
-          : currentFilter.value.startDate,
-        endDate: isStartDate
-          ? currentFilter.value.endDate
-          : datePickerEvent.date,
-      },
-    });
+  filterChange(filter: WidgetFilterUnion) {
+    this.filterStore.setWidgetFilter(this.id, filter);
   }
 }

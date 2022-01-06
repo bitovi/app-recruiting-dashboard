@@ -6,7 +6,6 @@ import { NglDatatablesModule, NglModule } from 'ng-lightning';
 import { NgChartsModule } from 'ng2-charts';
 import { PageFilterWidgetComponent } from './widgets/page-filter-widget/page-filter-widget.component';
 import { WidgetsFilterComponent } from './shared/widgets-filter/widgets-filter.component';
-import { ComboboxComponent } from './shared/combobox/combobox.component';
 import { HeaderComponent } from './header/header.component';
 import { ClickOutsideToCloseDirectiveModule } from '../shared/directives';
 import { ApplicantService } from './services/applicants-api.service';
@@ -23,6 +22,8 @@ import { WidgetRecruitingStageExitedComponent } from './widgets/widget-recruitin
 import { WidgetJobsApplicantsComponent } from './widgets/widget-jobs-applicants/widget-jobs-applicants.component';
 import { WidgetNewApplicantsComponent } from './widgets/widget-new-applicants/widget-new-applicants.component';
 import { WidgetApplicantsTableComponent } from './widgets/widget-applicants-table/widget-applicants-table.component';
+import { WidgetFilterModule } from './widgets/filters/widget-filter.module';
+import { ComboboxModule } from './shared/combobox/combobox.module';
 
 const routes: Routes = [{ path: '', component: DashboardComponent }];
 
@@ -31,7 +32,6 @@ const routes: Routes = [{ path: '', component: DashboardComponent }];
     DashboardComponent,
     PageFilterWidgetComponent,
     WidgetsFilterComponent,
-    ComboboxComponent,
     HeaderComponent,
     WidgetWrapperComponent,
     WidgetRecruitingStageExitedComponent,
@@ -41,6 +41,7 @@ const routes: Routes = [{ path: '', component: DashboardComponent }];
   ],
   imports: [
     CommonModule,
+    RouterModule.forChild(routes),
     NglModule,
     NglDatatablesModule,
     NgChartsModule,
@@ -49,7 +50,8 @@ const routes: Routes = [{ path: '', component: DashboardComponent }];
     SelectedOptionPipeModule,
     BRDDatePickerModule,
     ApplicantDetailsModule,
-    RouterModule.forChild(routes),
+    ComboboxModule,
+    WidgetFilterModule,
   ],
   providers: [ApplicantService, ChartApiService, JobsApiService],
 })
