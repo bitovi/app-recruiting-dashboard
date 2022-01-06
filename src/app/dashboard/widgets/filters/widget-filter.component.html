@@ -1,0 +1,11 @@
+<brd-date-picker
+  *ngIf="filter.type === 'date-interval'"
+  [startDate]="filter.value.startDate"
+  [endDate]="filter.value.endDate"
+  (dateChanged)="filterDateIntervalChange($event, filter)"
+></brd-date-picker>
+<brd-filter-select-job
+  *ngIf="filter.type === 'select-job'"
+  [filter]="filter"
+  (changed)="filterChange($event)"
+></brd-filter-select-job>
