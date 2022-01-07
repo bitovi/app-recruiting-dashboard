@@ -10,7 +10,7 @@ import {
   GridsterItem,
   GridType,
 } from 'angular-gridster2';
-import { WidgetConfig } from './dashboard-widget/widget.model';
+import { WidgetConfig } from './widgets/widget.model';
 
 @Component({
   selector: 'brd-dashboard',
@@ -43,9 +43,9 @@ export class DashboardComponent implements OnInit {
           },
         },
         {
-          id: 'test2',
-          type: 'select',
-          value: 'test',
+          id: 'select-job',
+          type: 'select-job',
+          value: [],
         },
       ],
       fullscreen: true,

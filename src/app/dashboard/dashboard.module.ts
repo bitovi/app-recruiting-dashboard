@@ -52,7 +52,6 @@ const routes: Routes = [{ path: '', component: DashboardComponent }];
     BRDDatePickerModule,
     ApplicantDetailsModule,
     GridsterModule,
-    RouterModule.forChild(routes),
     ComboboxModule,
     WidgetFilterModule,
   ],
