@@ -23,6 +23,7 @@ import { WidgetRecruitingStageExitedComponent } from './dashboard-widget/widget-
 import { WidgetJobsApplicantsComponent } from './dashboard-widget/widget-jobs-applicants/widget-jobs-applicants.component';
 import { WidgetNewApplicantsComponent } from './dashboard-widget/widget-new-applicants/widget-new-applicants.component';
 import { WidgetApplicantsTableComponent } from './dashboard-widget/widget-applicants-table/widget-applicants-table.component';
+import { GridsterModule } from 'angular-gridster2';
 
 const routes: Routes = [{ path: '', component: DashboardComponent }];
 
@@ -49,6 +50,7 @@ const routes: Routes = [{ path: '', component: DashboardComponent }];
     SelectedOptionPipeModule,
     BRDDatePickerModule,
     ApplicantDetailsModule,
+    GridsterModule,
     RouterModule.forChild(routes),
   ],
   providers: [ApplicantService, ChartApiService, JobsApiService],

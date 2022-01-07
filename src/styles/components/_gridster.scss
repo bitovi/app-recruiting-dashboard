@@ -1,0 +1,13 @@
+gridster.no-background {
+  background: transparent;
+}
+
+gridster.hide-border .gridster-row,
+gridster.hide-border .gridster-column {
+  border: 0;
+}
+
+gridster.green-preview gridster-preview {
+  background: #eef9f3;
+  border: 2px solid #59be84;
+}
