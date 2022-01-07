@@ -17,6 +17,7 @@ import {
 } from '../shared/pipes';
 import { BRDDatePickerModule } from '../shared/components/date-picker/date-picker.module';
 import { ApplicantDetailsModule } from '../shared/components';
+import { GridsterModule } from 'angular-gridster2';
 import { WidgetWrapperComponent } from './widgets/widget-wrapper.component';
 import { WidgetRecruitingStageExitedComponent } from './widgets/widget-recruiting-stage-exited/widget-recruiting-stage-exited.component';
 import { WidgetJobsApplicantsComponent } from './widgets/widget-jobs-applicants/widget-jobs-applicants.component';
@@ -50,6 +51,7 @@ const routes: Routes = [{ path: '', component: DashboardComponent }];
     SelectedOptionPipeModule,
     BRDDatePickerModule,
     ApplicantDetailsModule,
+    GridsterModule,
     ComboboxModule,
     WidgetFilterModule,
   ],

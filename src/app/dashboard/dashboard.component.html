@@ -1,85 +1,24 @@
 <brd-header></brd-header>
-<section class="slds-p-around_small slds-container_fluid app-container">
+<section
+  class="slds-p-around_small slds-container_fluid app-container"
+  style="height: calc(100% - 10rem)"
+>
   <brd-page-filter-widget
     (selected)="setFilterState($event)"
     [endDate]="(endDate$ | async)!"
     [startDate]="(startDate$ | async)!"
     [totalApplicants]="(totalApplicants$ | async)!"
   ></brd-page-filter-widget>
-  <div class="slds-grid slds-gutters_xxx-small slds-wrap">
-    <div
-      class="slds-col slds-grid_vertical slds-grid_vertical-stretch slds-size_1-of-1 slds-large-size_8-of-12"
-    >
-      <div class="slds-grid slds-wrap">
-        <div class="slds-col slds-size_2-of-2">
-          <div class="slds-card table">
-            <brd-widget-wrapper
-              [config]="{
-                component: 'widget-applicants-table',
-                filters: [
-                  {
-                    id: 'date-interval',
-                    type: 'date-interval',
-                    value: {
-                      startDate: null,
-                      endDate: null
-                    }
-                  },
-                  {
-                    id: 'select-job',
-                    type: 'select-job',
-                    value: []
-                  }
-                ],
-                fullscreen: true
-              }"
-            ></brd-widget-wrapper>
-          </div>
-        </div>
-        <div
-          class="slds-col slds-m-top_small slds-large-size_1-of-2 slds-size_2-of-2"
-        >
-          <brd-widget-wrapper
-            [config]="{
-              component: 'widget-recruiting-stage-exited',
-              fullscreen: true
-            }"
-          ></brd-widget-wrapper>
-        </div>
-        <div
-          class="slds-col slds-m-top_small slds-large-size_1-of-2 slds-size_2-of-2"
-        >
-          <brd-widget-wrapper
-            [config]="{
-              component: 'widget-jobs-applicants',
-              fullscreen: true
-            }"
-          ></brd-widget-wrapper>
-        </div>
-      </div>
-    </div>
 
-    <div
-      class="slds-col slds-grid_vertical slds-grid_vertical-stretch slds-size_1-of-1 slds-large-size_4-of-12"
+  <gridster
+    [options]="gridOptions"
+    class="no-background hide-border green-preview"
+  >
+    <gridster-item
+      [item]="initialGridItems[index]"
+      *ngFor="let widgetConfig of widgetConfigs; let index = index"
     >
-      <div class="slds-m-top_small slds-hide_small"></div>
-      <div class="slds-col slds-small-size_2-of-2">
-        <brd-widget-wrapper
-          [config]="{
-            component: 'widget-new-applicants',
-            fullscreen: true
-          }"
-        ></brd-widget-wrapper>
-      </div>
-      <div class="slds-col slds-m-top_small slds-small-size_2-of-2">
-        <div class="slds-card other-info">
-          <div
-            class="slds-box_x-small slds-text-align_center slds-m-around_x-small"
-          >
-            <!--<ngl-datepicker class="slds-box slds-box_x-small" [(date)]="date"></ngl-datepicker>-->
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+      <brd-widget-wrapper [config]="widgetConfig"></brd-widget-wrapper>
+    </gridster-item>
+  </gridster>
 </section>
