@@ -23,12 +23,14 @@ export interface WidgetFilterDateInterval extends WidgetFilter<IDateFilter> {
   type: 'date-interval';
 }
 
-export interface WidgetFilterSelect extends WidgetFilter<string> {
-  type: 'select';
+export interface WidgetFilterSelectJob extends WidgetFilter<string[]> {
+  type: 'select-job';
 }
 
-export type WidgetFilterTypes = 'date-interval' | 'select';
-export type WidgetFilterUnion = WidgetFilterDateInterval | WidgetFilterSelect;
+export type WidgetFilterTypes = 'date-interval' | 'select-job';
+export type WidgetFilterUnion =
+  | WidgetFilterDateInterval
+  | WidgetFilterSelectJob;
 
 export type EntryComponents = {
   'widget-recruiting-stage-exited': WidgetRecruitingStageExitedComponent;

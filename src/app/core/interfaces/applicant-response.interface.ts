@@ -6,7 +6,3 @@ export interface ApplicantResponse {
   skip: number;
   data: Applicant[];
 }
-
-export interface ApplicantFilterState {
-  position: string[];
-}
