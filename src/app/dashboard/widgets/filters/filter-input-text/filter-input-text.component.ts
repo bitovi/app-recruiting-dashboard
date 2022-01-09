@@ -29,7 +29,7 @@ export class FilterInputTextComponent implements FilterComponent, OnChanges {
   constructor(private fb: FormBuilder) {}
 
   ngOnChanges(_changes: SimpleChanges): void {
-    if (this.input) {
+    if (this.filter) {
       this.input.setValue(this.filter.value || '', { emitEvent: false });
     }
   }
