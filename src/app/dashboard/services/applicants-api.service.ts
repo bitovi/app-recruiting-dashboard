@@ -14,12 +14,14 @@ export class ApplicantService {
   public getApplicants(params: HttpParams): Observable<ApplicantResponse> {
     return this.http.get<ApplicantResponse>(this.applicantsApiURL, { params });
   }
+
   public getHttpParams(
     pageSize: number,
     currentPage: number,
     sort: INglDatatableSort,
     position: string[],
-    [startDate, endDate]: [Date, Date]
+    [startDate, endDate]: [Date, Date],
+    applicantName: string
   ): HttpParams {
     let params = new HttpParams()
       .set('$limit', pageSize)
@@ -35,6 +37,10 @@ export class ApplicantService {
       position.forEach((pos) => {
         params = params.append(`jobs.job_title[$in][]`, pos);
       });
+    }
+
+    if (applicantName?.length) {
+      params = params.set('full_name[$search]', `${applicantName}`);
     }
 
     return params;

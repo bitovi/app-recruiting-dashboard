@@ -47,6 +47,11 @@ export class DashboardComponent implements OnInit {
           type: 'select-job',
           value: [],
         },
+        {
+          id: 'input-text',
+          type: 'input-text',
+          value: '',
+        },
       ],
       fullscreen: true,
     },
