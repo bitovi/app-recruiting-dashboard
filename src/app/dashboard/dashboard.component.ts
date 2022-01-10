@@ -10,7 +10,7 @@ import {
   GridsterItem,
   GridType,
 } from 'angular-gridster2';
-import { WidgetConfig } from './widgets/widget.model';
+import { EntryComponents, WidgetConfig } from './widgets/widget.model';
 
 @Component({
   selector: 'brd-dashboard',
@@ -69,6 +69,10 @@ export class DashboardComponent implements OnInit {
     },
   ];
 
+  private draggedWidget: keyof EntryComponents = null;
+  private defaultWidgetRows = 2;
+  private defaultWidgetColumns = 2;
+
   constructor(
     private readonly filterStore: FilterStore,
     private readonly applicantsStore: ApplicantsStore
@@ -87,10 +91,35 @@ export class DashboardComponent implements OnInit {
       resizable: {
         enabled: true,
       },
+      enableOccupiedCellDrop: true,
+      enableEmptyCellDrop: true,
+      emptyCellDropCallback: (event: DragEvent, item: GridsterItem) =>
+        this.addWidgetToBoard(event, item),
     };
   }
 
   public setFilterState(state: FilterDateState) {
     this.filterStore.setDates(state.startDate, state.endDate);
+  }
+
+  public setDraggedElement(widget: keyof EntryComponents) {
+    this.draggedWidget = widget;
+  }
+
+  private addWidgetToBoard(event: DragEvent, item: GridsterItem): void {
+    console.log(this.draggedWidget);
+    const widgetToAdd: WidgetConfig = {
+      component: this.draggedWidget,
+      fullscreen: true,
+    };
+    this.widgetConfigs = [...this.widgetConfigs, widgetToAdd];
+
+    const itemConfig: GridsterItem = {
+      ...item,
+      rows: this.defaultWidgetRows,
+      cols: this.defaultWidgetColumns,
+    };
+
+    this.initialGridItems = [...this.initialGridItems, itemConfig];
   }
 }

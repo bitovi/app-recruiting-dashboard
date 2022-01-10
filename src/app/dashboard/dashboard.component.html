@@ -1,7 +1,6 @@
 <brd-header></brd-header>
 <section
-  class="slds-p-around_small slds-container_fluid app-container"
-  style="height: calc(100% - 10rem)"
+  class="slds-p-around_small slds-container_fluid app-container dashboard-height"
 >
   <brd-page-filter-widget
     (selected)="setFilterState($event)"
@@ -9,6 +8,9 @@
     [startDate]="(startDate$ | async)!"
     [totalApplicants]="(totalApplicants$ | async)!"
   ></brd-page-filter-widget>
+  <brd-chart-picker
+    (elementDragged)="setDraggedElement($event)"
+  ></brd-chart-picker>
 
   <gridster
     [options]="gridOptions"
