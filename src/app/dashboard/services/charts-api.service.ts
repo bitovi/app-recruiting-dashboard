@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import {
+  IApplicantsBySourceResponse,
   IDateFilter,
   IJobsApplicantsResponse,
   INewApplicantsResponse,
@@ -31,14 +32,21 @@ export class ChartApiService {
     );
   }
 
+  public getApplicantsBySource(
+    params: HttpParams
+  ): Observable<IApplicantsBySourceResponse[]> {
+    return this.http.get<IApplicantsBySourceResponse[]>(
+      `${environment.api}/charts/applicants-by-source`,
+      { params }
+    );
+  }
+
   public getApplicantJobs(
     params: HttpParams
   ): Observable<IJobsApplicantsResponse[]> {
     return this.http.get<IJobsApplicantsResponse[]>(
       `${environment.api}/charts/jobs`,
-      {
-        params,
-      }
+      { params }
     );
   }
 

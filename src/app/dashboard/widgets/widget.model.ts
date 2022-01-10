@@ -1,4 +1,5 @@
 import { IDateFilter } from 'src/app/core/interfaces';
+import { WidgetApplicantsBySourceComponent } from './widget-applicants-by-source/widget-applicants-by-source.component';
 import { WidgetApplicantsTableComponent } from './widget-applicants-table/widget-applicants-table.component';
 import { WidgetJobsApplicantsComponent } from './widget-jobs-applicants/widget-jobs-applicants.component';
 import { WidgetNewApplicantsComponent } from './widget-new-applicants/widget-new-applicants.component';
@@ -37,6 +38,7 @@ export type EntryComponents = {
   'widget-jobs-applicants': WidgetJobsApplicantsComponent;
   'widget-new-applicants': WidgetNewApplicantsComponent;
   'widget-applicants-table': WidgetApplicantsTableComponent;
+  'widget-applicants-by-source': WidgetApplicantsBySourceComponent;
 };
 
 export type EntryComponentsUnion = EntryComponents[keyof EntryComponents];
@@ -46,6 +48,7 @@ export const entryComponents = {
   'widget-jobs-applicants': WidgetJobsApplicantsComponent,
   'widget-new-applicants': WidgetNewApplicantsComponent,
   'widget-applicants-table': WidgetApplicantsTableComponent,
+  'widget-applicants-by-source': WidgetApplicantsBySourceComponent,
 };
 
 export const defaultWidgetConfig: WidgetConfig = {

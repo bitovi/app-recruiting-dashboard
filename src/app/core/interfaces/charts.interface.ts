@@ -12,3 +12,8 @@ export interface IJobsApplicantsResponse {
   jobTitle: string;
   total: number;
 }
+
+export interface IApplicantsBySourceResponse {
+  source: string;
+  total: number;
+}
