@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ChartOptions, ChartType } from 'chart.js';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { ChartsStore } from '../../store/charts.store';
 import { DefaultWidgetComponent } from '../default-widget.component';
 
@@ -11,6 +11,7 @@ import { DefaultWidgetComponent } from '../default-widget.component';
 })
 export class WidgetRecruitingStageExitedComponent extends DefaultWidgetComponent {
   readonly data$ = this.chartsStore.recruitingStageExited$.pipe(
+    filter((data) => data.length !== 0),
     map((recruitingStageExitedResponse) => ({
       datasets: [
         {
