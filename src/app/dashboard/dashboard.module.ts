@@ -25,6 +25,7 @@ import { WidgetNewApplicantsComponent } from './widgets/widget-new-applicants/wi
 import { WidgetApplicantsTableComponent } from './widgets/widget-applicants-table/widget-applicants-table.component';
 import { WidgetFilterModule } from './widgets/filters/widget-filter.module';
 import { ComboboxModule } from './shared/combobox/combobox.module';
+import { WidgetApplicantsBySourceComponent } from './widgets/widget-applicants-by-source/widget-applicants-by-source.component';
 
 const routes: Routes = [{ path: '', component: DashboardComponent }];
 
@@ -39,6 +40,7 @@ const routes: Routes = [{ path: '', component: DashboardComponent }];
     WidgetJobsApplicantsComponent,
     WidgetNewApplicantsComponent,
     WidgetApplicantsTableComponent,
+    WidgetApplicantsBySourceComponent,
   ],
   imports: [
     CommonModule,

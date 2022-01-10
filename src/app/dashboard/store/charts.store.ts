@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { concatMap, finalize, map, tap } from 'rxjs/operators';
 import { FilterStore } from './filter.store';
 import {
+  IApplicantsBySourceResponse,
   IDateFilter,
   IJobsApplicantsResponse,
   INewApplicantsResponse,
@@ -16,12 +17,14 @@ export interface ChartLoading {
   recruitingStageExited: number;
   newApplicants: number;
   jobsApplicants: number;
+  applicantsBySource: number;
 }
 
 export interface ChartsState {
   recruitingStageExited: IRecruitingStageExitedResponse[];
   newApplicants: INewApplicantsResponse[];
   jobsApplicants: IJobsApplicantsResponse[];
+  applicantsBySource: IApplicantsBySourceResponse[];
   loading: ChartLoading;
   filter: IDateFilter;
 }
@@ -38,6 +41,9 @@ export class ChartsStore extends ComponentStore<ChartsState> {
   readonly loadingJobsApplicants$ = this.loading$.pipe(
     map((loading: ChartLoading) => loading.jobsApplicants !== 0)
   );
+  readonly loadingApplicantsBySource$ = this.loading$.pipe(
+    map((loading: ChartLoading) => loading.applicantsBySource !== 0)
+  );
 
   readonly filter$ = this.select((state: ChartsState) => state.filter);
   readonly globalCombinedDates$ = this.filterStore.combinedDates$;
@@ -49,6 +55,9 @@ export class ChartsStore extends ComponentStore<ChartsState> {
   );
   readonly jobsApplicants$ = this.select(
     (state: ChartsState) => state.jobsApplicants
+  );
+  readonly applicantsBySource$ = this.select(
+    (state: ChartsState) => state.applicantsBySource
   );
 
   private readonly fetchChartsData$ = this.select(
@@ -69,10 +78,12 @@ export class ChartsStore extends ComponentStore<ChartsState> {
       recruitingStageExited: [],
       newApplicants: [],
       jobsApplicants: [],
+      applicantsBySource: [],
       loading: {
         recruitingStageExited: 0,
         newApplicants: 0,
         jobsApplicants: 0,
+        applicantsBySource: 0,
       },
       filter: { startDate: null, endDate: null },
     });
@@ -80,6 +91,7 @@ export class ChartsStore extends ComponentStore<ChartsState> {
     this.fetchRecruitingStageExited(this.fetchChartsData$);
     this.fetchNewApplicants(this.fetchChartsData$);
     this.fetchJobsApplicants(this.fetchChartsData$);
+    this.fetchApplicantsBySource(this.fetchChartsData$);
   }
 
   readonly setFilter = this.updater(
@@ -125,6 +137,16 @@ export class ChartsStore extends ComponentStore<ChartsState> {
     (state, jobsApplicants: IJobsApplicantsResponse[]): ChartsState => ({
       ...state,
       jobsApplicants,
+    })
+  );
+
+  private readonly updateApplicantsBySource = this.updater(
+    (
+      state,
+      applicantsBySource: IApplicantsBySourceResponse[]
+    ): ChartsState => ({
+      ...state,
+      applicantsBySource,
     })
   );
 
@@ -213,6 +235,37 @@ export class ChartsStore extends ComponentStore<ChartsState> {
             finalize(() =>
               this.updateLoading({
                 key: 'jobsApplicants',
+                loading: false,
+              })
+            )
+          );
+        })
+      );
+    }
+  );
+
+  private readonly fetchApplicantsBySource = this.effect(
+    (
+      data$: Observable<{
+        filter: IDateFilter;
+        globalCombinedDates: [Date, Date];
+      }>
+    ) => {
+      return data$.pipe(
+        concatMap(({ filter, globalCombinedDates }) => {
+          const params: HttpParams = this.chartApiService.getHttpParams(
+            filter,
+            globalCombinedDates
+          );
+          this.updateLoading({ key: 'applicantsBySource', loading: true });
+
+          return this.chartApiService.getApplicantsBySource(params).pipe(
+            tap((result: IApplicantsBySourceResponse[]) =>
+              this.updateApplicantsBySource(result)
+            ),
+            finalize(() =>
+              this.updateLoading({
+                key: 'applicantsBySource',
                 loading: false,
               })
             )

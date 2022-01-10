@@ -29,6 +29,7 @@ export class DashboardComponent implements OnInit {
     { cols: 2, rows: 2, x: 2, y: 0 },
     { cols: 2, rows: 2, x: 0, y: 2 },
     { cols: 2, rows: 2, x: 2, y: 2 },
+    { cols: 2, rows: 2, x: 0, y: 4 },
   ];
   public widgetConfigs: WidgetConfig[] = [
     {
@@ -60,6 +61,10 @@ export class DashboardComponent implements OnInit {
     },
     {
       component: 'widget-new-applicants',
+      fullscreen: true,
+    },
+    {
+      component: 'widget-applicants-by-source',
       fullscreen: true,
     },
   ];

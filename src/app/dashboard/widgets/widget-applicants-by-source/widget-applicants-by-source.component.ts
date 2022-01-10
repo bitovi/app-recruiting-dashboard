@@ -1,22 +1,23 @@
 import { Component } from '@angular/core';
 import { ChartOptions, ChartType } from 'chart.js';
 import { map } from 'rxjs/operators';
-import { LabelToArrayPipe } from 'src/app/shared/pipes/label-to-array/label-to-array.pipe';
 import { ChartsStore } from '../../store/charts.store';
 import { DefaultWidgetComponent } from '../default-widget.component';
 
 @Component({
-  selector: 'brd-widget-jobs-applicants',
-  templateUrl: './widget-jobs-applicants.component.html',
-  styleUrls: ['./widget-jobs-applicants.component.scss'],
+  selector: 'brd-widget-applicants-by-source',
+  templateUrl: './widget-applicants-by-source.component.html',
+  styleUrls: ['./widget-applicants-by-source.component.scss'],
 })
-export class WidgetJobsApplicantsComponent extends DefaultWidgetComponent {
-  readonly data$ = this.chartsStore.jobsApplicants$.pipe(
-    map((jobsApplicantsData) => {
-      const labels = jobsApplicantsData.map((jobApplicant) =>
-        this.labelToArrayPipe.transform(jobApplicant.jobTitle, 2)
+export class WidgetApplicantsBySourceComponent extends DefaultWidgetComponent {
+  readonly data$ = this.chartsStore.applicantsBySource$.pipe(
+    map((applicantsBySourceData) => {
+      const labels = applicantsBySourceData.map(
+        (applicantsBySource) => applicantsBySource.source
       );
-      const data = jobsApplicantsData.map((jobApplicant) => jobApplicant.total);
+      const data = applicantsBySourceData.map(
+        (applicantsBySource) => applicantsBySource.total
+      );
       return {
         labels,
         datasets: [
@@ -33,7 +34,7 @@ export class WidgetJobsApplicantsComponent extends DefaultWidgetComponent {
       };
     })
   );
-  readonly loading$ = this.chartsStore.loadingJobsApplicants$;
+  readonly loading$ = this.chartsStore.loadingApplicantsBySource$;
 
   public barChartOptions: ChartOptions = {
     responsive: true,
@@ -51,7 +52,7 @@ export class WidgetJobsApplicantsComponent extends DefaultWidgetComponent {
       legend: {
         title: {
           display: true,
-          text: 'Job Openings',
+          text: 'Applicants by Source',
         },
       },
     },
@@ -59,10 +60,7 @@ export class WidgetJobsApplicantsComponent extends DefaultWidgetComponent {
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
 
-  constructor(
-    private readonly chartsStore: ChartsStore,
-    private labelToArrayPipe: LabelToArrayPipe
-  ) {
+  constructor(private readonly chartsStore: ChartsStore) {
     super();
   }
 }
