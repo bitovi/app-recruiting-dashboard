@@ -4,10 +4,27 @@ import { ComboboxModule } from '../../shared/combobox/combobox.module';
 import { WidgetFilterComponent } from './widget-filter.component';
 import { FilterSelectJobComponent } from './filter-select-jobs/filter-select-job.component';
 import { BRDDatePickerModule } from 'src/app/shared/components/date-picker/date-picker.module';
+import { FilterInputTextComponent } from './filter-input-text/filter-input-text.component';
+import { NglInputModule } from 'ng-lightning';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [WidgetFilterComponent, FilterSelectJobComponent],
-  exports: [WidgetFilterComponent, FilterSelectJobComponent],
-  imports: [CommonModule, ComboboxModule, BRDDatePickerModule],
+  declarations: [
+    WidgetFilterComponent,
+    FilterSelectJobComponent,
+    FilterInputTextComponent,
+  ],
+  exports: [
+    WidgetFilterComponent,
+    FilterSelectJobComponent,
+    FilterInputTextComponent,
+  ],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    ComboboxModule,
+    BRDDatePickerModule,
+    NglInputModule,
+  ],
 })
 export class WidgetFilterModule {}

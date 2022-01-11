@@ -13,6 +13,7 @@ import {
 import { Applicant, IDateFilter } from '../../core/interfaces';
 import {
   WidgetFilter,
+  WidgetFilterInputText,
   WidgetFilterSelectJob,
   WidgetFilterUnion,
 } from '../widgets/widget.model';
@@ -69,7 +70,14 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
   public readonly positionFilter$: Observable<string[]> = this.filters$.pipe(
     map(
       (filters) => (filters?.get('select-job') as WidgetFilterSelectJob)?.value
-    )
+    ),
+    distinctUntilChanged()
+  );
+  public readonly applicantNameFilter$: Observable<string> = this.filters$.pipe(
+    map(
+      (filters) => (filters?.get('input-text') as WidgetFilterInputText)?.value
+    ),
+    distinctUntilChanged()
   );
 
   private readonly fetchApplicantsData$ = this.select(
@@ -78,12 +86,21 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
     this.sort$,
     this.positionFilter$,
     this.dateFilters$,
-    (pageSize, currentPage, sort, positionFilter, dateFilters) => ({
+    this.applicantNameFilter$,
+    (
       pageSize,
       currentPage,
       sort,
       positionFilter,
       dateFilters,
+      applicantNameFilter
+    ) => ({
+      pageSize,
+      currentPage,
+      sort,
+      positionFilter,
+      dateFilters,
+      applicantNameFilter,
     }),
     { debounce: true }
   );
@@ -157,17 +174,26 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
         sort: INglDatatableSort;
         positionFilter: string[];
         dateFilters: [Date, Date];
+        applicantNameFilter: string;
       }>
     ) => {
       return data$.pipe(
         concatMap(
-          ({ pageSize, currentPage, sort, positionFilter, dateFilters }) => {
+          ({
+            pageSize,
+            currentPage,
+            sort,
+            positionFilter,
+            dateFilters,
+            applicantNameFilter,
+          }) => {
             const params: HttpParams = this.applicantService.getHttpParams(
               pageSize,
               currentPage,
               sort,
               positionFilter,
-              dateFilters
+              dateFilters,
+              applicantNameFilter
             );
 
             this.updateLoading(true);

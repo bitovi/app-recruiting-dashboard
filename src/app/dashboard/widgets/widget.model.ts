@@ -28,10 +28,15 @@ export interface WidgetFilterSelectJob extends WidgetFilter<string[]> {
   type: 'select-job';
 }
 
-export type WidgetFilterTypes = 'date-interval' | 'select-job';
+export interface WidgetFilterInputText extends WidgetFilter<string> {
+  type: 'input-text';
+}
+
+export type WidgetFilterTypes = 'date-interval' | 'select-job' | 'input-text';
 export type WidgetFilterUnion =
   | WidgetFilterDateInterval
-  | WidgetFilterSelectJob;
+  | WidgetFilterSelectJob
+  | WidgetFilterInputText;
 
 export type EntryComponents = {
   'widget-recruiting-stage-exited': WidgetRecruitingStageExitedComponent;
