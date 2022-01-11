@@ -23,6 +23,7 @@ export class DashboardComponent implements OnInit {
   public readonly startDate$: Observable<Date> = this.filterStore.startDate$;
   public readonly endDate$: Observable<Date> = this.filterStore.endDate$;
 
+  public selectedFullscreenWidget: WidgetConfig = null;
   public gridOptions: GridsterConfig;
   public initialGridItems: GridsterItem[] = [
     { cols: 2, rows: 2, x: 0, y: 0 },
@@ -104,6 +105,11 @@ export class DashboardComponent implements OnInit {
 
   public setDraggedElement(widget: keyof EntryComponents) {
     this.draggedWidget = widget;
+  }
+
+  public setFullScreenWidget(widgetConfig: WidgetConfig): void {
+    console.log(widgetConfig);
+    this.selectedFullscreenWidget = widgetConfig;
   }
 
   private addWidgetToBoard(event: DragEvent, item: GridsterItem): void {

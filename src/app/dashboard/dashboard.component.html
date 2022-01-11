@@ -20,7 +20,22 @@
       [item]="initialGridItems[index]"
       *ngFor="let widgetConfig of widgetConfigs; let index = index"
     >
-      <brd-widget-wrapper [config]="widgetConfig"></brd-widget-wrapper>
+      <brd-widget-wrapper
+        [config]="widgetConfig"
+        (fullScreenChange)="setFullScreenWidget($event)"
+      ></brd-widget-wrapper>
     </gridster-item>
   </gridster>
 </section>
+
+<ng-container *ngIf="selectedFullscreenWidget">
+  <div class="chart-full-screen" (click)="setFullScreenWidget(null)">
+    <brd-widget-wrapper
+      [config]="selectedFullscreenWidget"
+      [fullscreen]="true"
+      (fullScreenChange)="setFullScreenWidget($event)"
+      (click)="$event.stopPropagation()"
+      style="width: 90%"
+    ></brd-widget-wrapper>
+  </div>
+</ng-container>

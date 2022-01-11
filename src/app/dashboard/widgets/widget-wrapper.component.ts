@@ -1,7 +1,9 @@
 import {
   Component,
+  EventEmitter,
   Input,
   OnChanges,
+  Output,
   SimpleChanges,
   ViewChild,
   ViewContainerRef,
@@ -24,16 +26,18 @@ import {
 })
 export class WidgetWrapperComponent implements OnChanges {
   @Input() config: WidgetConfig = defaultWidgetConfig;
+  @Input() public fullscreen = false;
+  @Output() public fullScreenChange = new EventEmitter<WidgetConfig>();
   @ViewChild('child', { read: ViewContainerRef, static: true })
   viewContainerRef!: ViewContainerRef;
 
-  private id = crypto.randomUUID();
-  fullscreen = false;
-  openedFilter = false;
-  loading$: Observable<boolean> = of(true);
-  filters$ = this.filterStore.widgetFilters$.pipe(
+  public openedFilter = false;
+  public loading$: Observable<boolean> = of(true);
+  public filters$ = this.filterStore.widgetFilters$.pipe(
     map((widgetFilters) => widgetFilters.get(this.id))
   );
+
+  private id = crypto.randomUUID();
 
   constructor(private readonly filterStore: FilterStore) {}
 
@@ -62,15 +66,17 @@ export class WidgetWrapperComponent implements OnChanges {
     }
   }
 
-  toggleFullscreen(): void {
-    this.fullscreen = !this.fullscreen;
+  public changeFullscreen(): void {
+    const widgetConfig: WidgetConfig = this.fullscreen ? null : this.config;
+
+    this.fullScreenChange.emit(widgetConfig);
   }
 
-  remove(): void {
+  public remove(): void {
     console.log('remove called');
   }
 
-  filterChange(filter: WidgetFilterUnion) {
+  public filterChange(filter: WidgetFilterUnion) {
     this.filterStore.setWidgetFilter(this.id, filter);
   }
 }
