@@ -26,11 +26,11 @@ export class DashboardComponent implements OnInit {
   public selectedFullscreenWidget: WidgetConfig = null;
   public gridOptions: GridsterConfig;
   public initialGridItems: GridsterItem[] = [
-    { cols: 10, rows: 20, x: 0, y: 0 },
-    { cols: 10, rows: 20, x: 2, y: 0 },
-    { cols: 10, rows: 20, x: 0, y: 2 },
-    { cols: 10, rows: 20, x: 2, y: 2 },
-    { cols: 10, rows: 20, x: 0, y: 4 },
+    { cols: 2, rows: 5, x: 0, y: 0 },
+    { cols: 2, rows: 3, x: 2, y: 0 },
+    { cols: 2, rows: 4, x: 0, y: 2 },
+    { cols: 2, rows: 4, x: 2, y: 2 },
+    { cols: 2, rows: 4, x: 0, y: 4 },
   ];
   public widgetConfigs: WidgetConfig[] = [
     {
@@ -86,7 +86,9 @@ export class DashboardComponent implements OnInit {
 
   public ngOnInit() {
     this.gridOptions = {
-      gridType: GridType.Fit,
+      gridType: GridType.VerticalFixed,
+      fixedRowHeight: 90,
+      compactType: 'compactUp',
       displayGrid: DisplayGrid.Always,
       pushItems: true,
       swap: true,
@@ -111,6 +113,15 @@ export class DashboardComponent implements OnInit {
 
   public setFullScreenWidget(widgetConfig: WidgetConfig): void {
     this.selectedFullscreenWidget = widgetConfig;
+  }
+
+  public removeWidget(widgetId: string): void {
+    const widgetIndex: number = this.widgetConfigs.findIndex(
+      (widget: WidgetConfig) => widget.id === widgetId
+    );
+
+    this.widgetConfigs.splice(widgetIndex, 1);
+    this.initialGridItems.splice(widgetIndex, 1);
   }
 
   private addWidgetToBoard(event: DragEvent, item: GridsterItem): void {

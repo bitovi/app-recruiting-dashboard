@@ -24,6 +24,7 @@
       <brd-widget-wrapper
         [config]="widgetConfig"
         (fullScreenChange)="setFullScreenWidget($event)"
+        (removeWidget)="removeWidget($event)"
       ></brd-widget-wrapper>
     </gridster-item>
   </gridster>

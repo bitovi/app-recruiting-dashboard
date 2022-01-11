@@ -29,6 +29,7 @@ export class WidgetWrapperComponent implements OnChanges {
   @Input() config: WidgetConfig = defaultWidgetConfig;
   @Input() public fullscreen = false;
   @Output() public fullScreenChange = new EventEmitter<WidgetConfig>();
+  @Output() public removeWidget = new EventEmitter<string>();
   @ViewChild('child', { read: ViewContainerRef, static: true })
   viewContainerRef!: ViewContainerRef;
 
@@ -56,7 +57,7 @@ export class WidgetWrapperComponent implements OnChanges {
   }
 
   public remove(): void {
-    console.log('remove called');
+    this.removeWidget.emit(this.config.id);
   }
 
   public filterChange(filter: WidgetFilterUnion) {
