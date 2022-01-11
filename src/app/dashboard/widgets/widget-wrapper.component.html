@@ -15,6 +15,7 @@
 
       <button
         *ngIf="!fullscreen"
+        (mousedown)="$event.stopPropagation()"
         (click)="remove()"
         [iconName]="'utility:delete'"
         nglButtonIcon
