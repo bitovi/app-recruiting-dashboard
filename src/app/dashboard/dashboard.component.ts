@@ -26,11 +26,11 @@ export class DashboardComponent implements OnInit {
   public selectedFullscreenWidget: WidgetConfig = null;
   public gridOptions: GridsterConfig;
   public initialGridItems: GridsterItem[] = [
-    { cols: 2, rows: 2, x: 0, y: 0 },
-    { cols: 2, rows: 2, x: 2, y: 0 },
-    { cols: 2, rows: 2, x: 0, y: 2 },
-    { cols: 2, rows: 2, x: 2, y: 2 },
-    { cols: 2, rows: 2, x: 0, y: 4 },
+    { cols: 10, rows: 20, x: 0, y: 0 },
+    { cols: 10, rows: 20, x: 2, y: 0 },
+    { cols: 10, rows: 20, x: 0, y: 2 },
+    { cols: 10, rows: 20, x: 2, y: 2 },
+    { cols: 10, rows: 20, x: 0, y: 4 },
   ];
   public widgetConfigs: WidgetConfig[] = [
     {
@@ -94,9 +94,6 @@ export class DashboardComponent implements OnInit {
       draggable: {
         enabled: true,
       },
-      resizable: {
-        enabled: true,
-      },
       enableOccupiedCellDrop: true,
       enableEmptyCellDrop: true,
       emptyCellDropCallback: (event: DragEvent, item: GridsterItem) =>
@@ -113,12 +110,10 @@ export class DashboardComponent implements OnInit {
   }
 
   public setFullScreenWidget(widgetConfig: WidgetConfig): void {
-    console.log(widgetConfig);
     this.selectedFullscreenWidget = widgetConfig;
   }
 
   private addWidgetToBoard(event: DragEvent, item: GridsterItem): void {
-    console.log(this.draggedWidget);
     const widgetToAdd: WidgetConfig = {
       component: this.draggedWidget,
       fullscreen: true,
