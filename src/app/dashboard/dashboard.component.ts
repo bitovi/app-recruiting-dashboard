@@ -51,22 +51,27 @@ export class DashboardComponent implements OnInit {
         },
       ],
       fullscreen: true,
+      id: crypto.randomUUID(),
     },
     {
       component: 'widget-recruiting-stage-exited',
       fullscreen: true,
+      id: crypto.randomUUID(),
     },
     {
       component: 'widget-jobs-applicants',
       fullscreen: true,
+      id: crypto.randomUUID(),
     },
     {
       component: 'widget-new-applicants',
       fullscreen: true,
+      id: crypto.randomUUID(),
     },
     {
       component: 'widget-applicants-by-source',
       fullscreen: true,
+      id: crypto.randomUUID(),
     },
   ];
 
@@ -117,6 +122,7 @@ export class DashboardComponent implements OnInit {
     const widgetToAdd: WidgetConfig = {
       component: this.draggedWidget,
       fullscreen: true,
+      id: crypto.randomUUID(),
     };
     this.widgetConfigs = [...this.widgetConfigs, widgetToAdd];
 

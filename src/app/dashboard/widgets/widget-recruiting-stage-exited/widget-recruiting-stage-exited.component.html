@@ -1,6 +1,6 @@
 <div
-  *ngIf="data$ | async as data"
-  class="slds-box_x-small slds-text-align_center slds-m-around_x-small"
+  #chartContainer
+  class="slds-text-align_center slds-m-around_x-small u-overflow-hidden u-w-100 u-height-100"
 >
   <canvas
     baseChart
@@ -9,6 +9,8 @@
     [options]="doughnutOptions"
     [legend]="barChartLegend"
     [type]="doughnutChartType"
+    [ngStyle]="{ 'height.px': chartHeight, 'width.px': chartHeight }"
+    *ngIf="data$ | async as data"
   >
   </canvas>
 </div>

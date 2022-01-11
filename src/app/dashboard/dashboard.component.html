@@ -19,6 +19,7 @@
     <gridster-item
       [item]="initialGridItems[index]"
       *ngFor="let widgetConfig of widgetConfigs; let index = index"
+      [id]="widgetConfig.id"
     >
       <brd-widget-wrapper
         [config]="widgetConfig"

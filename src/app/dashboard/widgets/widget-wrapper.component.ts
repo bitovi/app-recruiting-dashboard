@@ -1,5 +1,6 @@
 import {
   Component,
+  ComponentRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -34,36 +35,18 @@ export class WidgetWrapperComponent implements OnChanges {
   public openedFilter = false;
   public loading$: Observable<boolean> = of(true);
   public filters$ = this.filterStore.widgetFilters$.pipe(
-    map((widgetFilters) => widgetFilters.get(this.id))
+    map((widgetFilters) => widgetFilters.get(this.config.id))
   );
 
-  private id = crypto.randomUUID();
+  private componentRef: ComponentRef<EntryComponentsUnion>;
 
   constructor(private readonly filterStore: FilterStore) {}
 
-  ngOnChanges(_changes: SimpleChanges): void {
+  public ngOnChanges(_changes: SimpleChanges): void {
     if (this.config.filters?.length > 0) {
-      this.filterStore.setWidgetFilters(this.id, this.config.filters);
+      this.filterStore.setWidgetFilters(this.config.id, this.config.filters);
     }
     this.loadComponent();
-  }
-
-  loadComponent(): void {
-    if (!this.viewContainerRef) {
-      return;
-    }
-
-    this.viewContainerRef.clear();
-
-    if (this.config.component) {
-      const componentRef =
-        this.viewContainerRef.createComponent<EntryComponentsUnion>(
-          entryComponents[this.config.component]
-        );
-
-      componentRef.instance.id = this.id;
-      this.loading$ = componentRef.instance.loading$;
-    }
   }
 
   public changeFullscreen(): void {
@@ -77,6 +60,24 @@ export class WidgetWrapperComponent implements OnChanges {
   }
 
   public filterChange(filter: WidgetFilterUnion) {
-    this.filterStore.setWidgetFilter(this.id, filter);
+    this.filterStore.setWidgetFilter(this.config.id, filter);
+  }
+
+  private loadComponent(): void {
+    if (!this.viewContainerRef) {
+      return;
+    }
+
+    this.viewContainerRef.clear();
+
+    if (this.config.component) {
+      this.componentRef =
+        this.viewContainerRef.createComponent<EntryComponentsUnion>(
+          entryComponents[this.config.component]
+        );
+
+      this.componentRef.instance.id = this.config.id;
+      this.loading$ = this.componentRef.instance.loading$;
+    }
   }
 }
