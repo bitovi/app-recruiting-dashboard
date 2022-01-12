@@ -13,6 +13,13 @@ export class WidgetPanelComponent {
       title: 'Job Openings',
       description: 'A bar chart indicating list of all Job Openings',
       initials: 'JO',
+      config: { type: 'widget-applicants-table', columns: 2 },
+    },
+    {
+      title: 'Jobs Applicants',
+      description: 'A bar chart indicating list of all Job Openings',
+      initials: 'JO',
+      config: { type: 'widget-jobs-applicants', columns: 1 },
     },
   ];
 
