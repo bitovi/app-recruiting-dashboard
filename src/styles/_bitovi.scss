@@ -9,6 +9,7 @@ section.app-container {
 // override context bar
 .slds-context-bar {
   border-bottom: 3px solid var(--color-bitovi-red);
+  padding-right: 3rem;
 }
 
 .logo-img {
@@ -127,5 +128,12 @@ section.app-container {
     height: calc(85vh - 80px);
     max-height: calc(85vh - 80px);
   }
+}
+
+.side-panel {
+  position: fixed;
+  z-index: 2;
+  right: 0;
+  top: 9.5%;
 }
 

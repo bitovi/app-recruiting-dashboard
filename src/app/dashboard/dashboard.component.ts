@@ -73,6 +73,7 @@ export class DashboardComponent implements OnInit {
       fullscreen: true,
     },
   ];
+  isOpenedWidgetPanel = false;
 
   constructor(
     private readonly filterStore: FilterStore,
@@ -97,5 +98,9 @@ export class DashboardComponent implements OnInit {
 
   public setFilterState(state: FilterDateState) {
     this.filterStore.setDates(state.startDate, state.endDate);
+  }
+  onOpenedPanel(status: boolean) {
+    console.log(status, 'unless');
+    this.isOpenedWidgetPanel = status;
   }
 }

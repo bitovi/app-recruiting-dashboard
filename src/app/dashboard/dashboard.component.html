@@ -1,8 +1,10 @@
-<brd-header></brd-header>
+<brd-header [(isOpenedPanel)]="isOpenedWidgetPanel"></brd-header>
+<brd-widget-panel [openPanel]="isOpenedWidgetPanel" [widgetList]=""></brd-widget-panel>
 <section
   class="slds-p-around_small slds-container_fluid app-container"
   style="height: calc(100% - 10rem)"
 >
+
   <brd-page-filter-widget
     (selected)="setFilterState($event)"
     [endDate]="(endDate$ | async)!"
@@ -22,3 +24,5 @@
     </gridster-item>
   </gridster>
 </section>
+
+

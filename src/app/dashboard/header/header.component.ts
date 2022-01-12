@@ -1,5 +1,5 @@
 import { AuthService } from '@auth0/auth0-angular';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 interface MenuItems {
   value: string;
@@ -19,11 +19,19 @@ export class HeaderComponent {
   public open = false;
   public openAppList = false;
 
+  @Input() isOpenedPanel = false;
+  @Output() isOpenedPanelChange = new EventEmitter<boolean>();
+
   constructor(private authService: AuthService) {}
 
   public onClickMenuItem(type: string) {
     if (type === 'Logout') {
       this.authService.logout();
     }
+  }
+
+  onClickOpenPanel() {
+    this.isOpenedPanel = !this.isOpenedPanel;
+    this.isOpenedPanelChange.emit(this.isOpenedPanel);
   }
 }
