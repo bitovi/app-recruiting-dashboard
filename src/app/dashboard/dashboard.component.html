@@ -1,35 +1,47 @@
 <brd-header [(isOpenedPanel)]="isOpenedWidgetPanel"></brd-header>
-<brd-widget-panel [openPanel]="isOpenedWidgetPanel" [widgetList]=""></brd-widget-panel>
+<brd-widget-panel
+  [openPanel]="isOpenedWidgetPanel"
+  [addedWidgetConfig]="widgetConfigs"
+></brd-widget-panel>
 <section
+  (dragover)="onDragOver($event)"
+  (drop)="onWidgetDrop($event)"
   class="slds-p-around_small slds-container_fluid app-container u-height-100"
 >
-
   <brd-page-filter-widget
     (selected)="setFilterState($event)"
     [endDate]="(endDate$ | async)!"
     [startDate]="(startDate$ | async)!"
     [totalApplicants]="(totalApplicants$ | async)!"
   ></brd-page-filter-widget>
-  <brd-chart-picker
-    (elementDragged)="setDraggedElement($event)"
-  ></brd-chart-picker>
+  <!--  <brd-chart-picker-->
+  <!--    (elementDragged)="setDraggedElement($event)"-->
+  <!--  ></brd-chart-picker>-->
 
-  <gridster
-    [options]="gridOptions"
-    class="no-background hide-border green-preview"
-  >
-    <gridster-item
-      [item]="initialGridItems[index]"
-      *ngFor="let widgetConfig of widgetConfigs; let index = index"
-      [id]="widgetConfig.id"
-    >
-      <brd-widget-wrapper
-        [config]="widgetConfig"
-        (fullScreenChange)="setFullScreenWidget($event)"
-        (removeWidget)="removeWidget($event)"
-      ></brd-widget-wrapper>
-    </gridster-item>
-  </gridster>
+  <!--    <gridster-->
+  <!--      [options]="gridOptions"-->
+  <!--      class="no-background hide-border green-preview"-->
+  <!--    >-->
+  <!--      <gridster-item-->
+  <!--        [item]="initialGridItems[index]"-->
+  <!--        *ngFor="let widgetConfig of widgetConfigs; let index = index"-->
+  <!--        [id]="widgetConfig.id"-->
+  <!--      >-->
+  <!--        <brd-widget-wrapper-->
+  <!--          [config]="widgetConfig"-->
+  <!--          (fullScreenChange)="setFullScreenWidget($event)"-->
+  <!--          (removeWidget)="removeWidget($event)"-->
+  <!--        ></brd-widget-wrapper>-->
+  <!--      </gridster-item>-->
+  <!--    </gridster>-->
+
+  <ng-container *ngFor="let widgetConfig of widgetConfigs; let index = index">
+    <brd-widget-wrapper
+      [config]="widgetConfig"
+      (fullScreenChange)="setFullScreenWidget($event)"
+      (removeWidget)="removeWidget($event)"
+    ></brd-widget-wrapper>
+  </ng-container>
 </section>
 
 <ng-container *ngIf="selectedFullscreenWidget">
@@ -43,5 +55,3 @@
     ></brd-widget-wrapper>
   </div>
 </ng-container>
-
-

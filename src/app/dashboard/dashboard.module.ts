@@ -12,6 +12,7 @@ import { ApplicantService } from './services/applicants-api.service';
 import { ChartApiService } from './services/charts-api.service';
 import { JobsApiService } from './services/jobs-api.service';
 import {
+  DisableWidgetListPipeModule,
   LabelToArrayPipeModule,
   SelectedOptionPipeModule,
 } from '../shared/pipes';
@@ -60,6 +61,7 @@ const routes: Routes = [{ path: '', component: DashboardComponent }];
     GridsterModule,
     ComboboxModule,
     WidgetFilterModule,
+    DisableWidgetListPipeModule,
   ],
   providers: [ApplicantService, ChartApiService, JobsApiService],
 })

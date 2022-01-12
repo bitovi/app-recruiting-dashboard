@@ -21,8 +21,14 @@
           ></div>
           <ul class="slds-grid slds-grid_pull-padded slds-wrap">
             <ng-container *ngFor="let widget of widgetList">
-              <li class="slds-p-horizontal_small slds-size_1-of-1">
+              <li class="slds-size_1-of-1" style="position: relative">
                 <div
+                  class="disabled-widget"
+                  *ngIf="addedWidgetConfig | disableWidgetList: widget.widget"
+                ></div>
+
+                <div
+                  (dragstart)="onDrag($event, widget)"
                   draggable="true"
                   class="slds-app-launcher__tile slds-text-link_reset slds-is-draggable"
                 >

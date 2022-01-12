@@ -20,7 +20,7 @@ export class ChartPickerComponent implements OnInit {
 
   public drag(widget?: string) {
     const revertedName: keyof EntryComponents = widget
-      ? this.revertFromDisplayName(widget)
+      ? ChartPickerComponent.revertFromDisplayName(widget)
       : null;
 
     this.elementDragged.emit(revertedName);
@@ -30,23 +30,20 @@ export class ChartPickerComponent implements OnInit {
     const widgetKeys: string[] = Object.keys(entryComponents);
 
     for (const widget of widgetKeys) {
-      const convertedWidgetName: string = this.convertToDisplayName(widget);
+      const convertedWidgetName: string =
+        ChartPickerComponent.convertToDisplayName(widget);
       this.availableWidgets = [...this.availableWidgets, convertedWidgetName];
     }
   }
 
-  private convertToDisplayName(widgetKey: string): string {
-    const convertedKey: string = widgetKey
-      .replace(/widget/, '')
-      .replace(/-/g, ' ');
-
-    return convertedKey;
+  private static convertToDisplayName(widgetKey: string): string {
+    return widgetKey.replace(/widget/, '').replace(/-/g, ' ');
   }
-  private revertFromDisplayName(widgetKey: string): keyof EntryComponents {
-    const convertedKey: keyof EntryComponents = `widget-${widgetKey.trim()}`
+  private static revertFromDisplayName(
+    widgetKey: string
+  ): keyof EntryComponents {
+    return `widget-${widgetKey.trim()}`
       .toLocaleLowerCase()
       .replace(/\s/g, '-') as keyof EntryComponents;
-
-    return convertedKey;
   }
 }

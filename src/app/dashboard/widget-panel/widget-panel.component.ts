@@ -1,27 +1,38 @@
-import { Component, Input } from '@angular/core';
-import { WidgetPanelModel } from './widget-panel-model';
+import { Component, Input, OnInit } from '@angular/core';
+import { CHART_WIDGET, WidgetPanelModel } from './widget-panel-model';
+import {
+  EntryComponents,
+  entryComponents,
+  WidgetConfig,
+} from '../widgets/widget.model';
 
 @Component({
   selector: 'brd-widget-panel',
   templateUrl: './widget-panel.component.html',
   styleUrls: ['./widget-panel.component.scss'],
 })
-export class WidgetPanelComponent {
+export class WidgetPanelComponent implements OnInit {
   @Input() openPanel = false;
-  @Input() widgetList: WidgetPanelModel[] = [
-    {
-      title: 'Job Openings',
-      description: 'A bar chart indicating list of all Job Openings',
-      initials: 'JO',
-      config: { type: 'widget-applicants-table', columns: 2 },
-    },
-    {
-      title: 'Jobs Applicants',
-      description: 'A bar chart indicating list of all Job Openings',
-      initials: 'JO',
-      config: { type: 'widget-jobs-applicants', columns: 1 },
-    },
-  ];
+  @Input() addedWidgetConfig: WidgetConfig[] = [];
+  widgetList: WidgetPanelModel[] = [];
 
   constructor() {}
+
+  ngOnInit(): void {
+    this.initAllWidget();
+  }
+
+  initAllWidget() {
+    const widgetKeys: string[] = Object.keys(entryComponents);
+    for (const widget of widgetKeys) {
+      const widgetItem: WidgetPanelModel =
+        CHART_WIDGET[widget as keyof EntryComponents];
+      this.widgetList.push(widgetItem);
+    }
+  }
+
+  onDrag(ev: DragEvent, dragItem: WidgetPanelModel) {
+    ev.dataTransfer.setData('widget-item', JSON.stringify(dragItem));
+    ev.dataTransfer.setData('widget-component', dragItem.widget);
+  }
 }

@@ -10,7 +10,12 @@ import {
   GridsterItem,
   GridType,
 } from 'angular-gridster2';
-import { EntryComponents, WidgetConfig } from './widgets/widget.model';
+import {
+  EntryComponents,
+  WidgetConfig,
+  WidgetLabels,
+} from './widgets/widget.model';
+import { WidgetPanelModel } from './widget-panel/widget-panel-model';
 
 @Component({
   selector: 'brd-dashboard',
@@ -34,7 +39,7 @@ export class DashboardComponent implements OnInit {
   ];
   public widgetConfigs: WidgetConfig[] = [
     {
-      component: 'widget-applicants-table',
+      component: WidgetLabels.ApplicantTable,
       filters: [
         {
           id: 'date-interval',
@@ -59,28 +64,28 @@ export class DashboardComponent implements OnInit {
       id: crypto.randomUUID(),
     },
     {
-      component: 'widget-recruiting-stage-exited',
+      component: WidgetLabels.RecruitingStageExited,
       fullscreen: true,
       id: crypto.randomUUID(),
     },
     {
-      component: 'widget-jobs-applicants',
+      component: WidgetLabels.JobApplicants,
       fullscreen: true,
       id: crypto.randomUUID(),
     },
     {
-      component: 'widget-new-applicants',
+      component: WidgetLabels.ApplicantTable,
       fullscreen: true,
       id: crypto.randomUUID(),
     },
     {
-      component: 'widget-applicants-by-source',
+      component: WidgetLabels.ApplicantBySource,
       fullscreen: true,
       id: crypto.randomUUID(),
     },
   ];
 
-  private draggedWidget: keyof EntryComponents = null;
+  private draggedWidget!: WidgetLabels;
   private defaultWidgetRows = 2;
   private defaultWidgetColumns = 2;
   isOpenedWidgetPanel = false;
@@ -145,5 +150,31 @@ export class DashboardComponent implements OnInit {
     };
 
     this.initialGridItems = [...this.initialGridItems, itemConfig];
+  }
+
+  onWidgetDrop(dragEvent: DragEvent) {
+    const widgetName = dragEvent.dataTransfer.getData('widget-component');
+    const dropZoneContainsEvent = this.widgetConfigs.findIndex(
+      (value) => value.component === widgetName
+    );
+    if (dropZoneContainsEvent > -1) {
+      return;
+    }
+
+    const data = dragEvent.dataTransfer.getData('widget-item');
+    if (data) {
+      const widgetItem: WidgetPanelModel = JSON.parse(data);
+      const widgetToAdd: WidgetConfig = {
+        component: widgetItem.widget,
+        fullscreen: true,
+        filters: widgetItem.widgetFilters,
+        id: crypto.randomUUID(),
+      };
+      this.widgetConfigs = [...this.widgetConfigs, widgetToAdd];
+    }
+  }
+
+  onDragOver(ev: DragEvent) {
+    ev.preventDefault();
   }
 }
