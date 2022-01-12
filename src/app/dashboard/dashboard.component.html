@@ -1,8 +1,7 @@
 <brd-header [(isOpenedPanel)]="isOpenedWidgetPanel"></brd-header>
 <brd-widget-panel [openPanel]="isOpenedWidgetPanel" [widgetList]=""></brd-widget-panel>
 <section
-  class="slds-p-around_small slds-container_fluid app-container"
-  style="height: calc(100% - 10rem)"
+  class="slds-p-around_small slds-container_fluid app-container u-height-100"
 >
 
   <brd-page-filter-widget
@@ -11,6 +10,9 @@
     [startDate]="(startDate$ | async)!"
     [totalApplicants]="(totalApplicants$ | async)!"
   ></brd-page-filter-widget>
+  <brd-chart-picker
+    (elementDragged)="setDraggedElement($event)"
+  ></brd-chart-picker>
 
   <gridster
     [options]="gridOptions"
@@ -19,10 +21,27 @@
     <gridster-item
       [item]="initialGridItems[index]"
       *ngFor="let widgetConfig of widgetConfigs; let index = index"
+      [id]="widgetConfig.id"
     >
-      <brd-widget-wrapper [config]="widgetConfig"></brd-widget-wrapper>
+      <brd-widget-wrapper
+        [config]="widgetConfig"
+        (fullScreenChange)="setFullScreenWidget($event)"
+        (removeWidget)="removeWidget($event)"
+      ></brd-widget-wrapper>
     </gridster-item>
   </gridster>
 </section>
+
+<ng-container *ngIf="selectedFullscreenWidget">
+  <div class="chart-full-screen" (click)="setFullScreenWidget(null)">
+    <brd-widget-wrapper
+      [config]="selectedFullscreenWidget"
+      [fullscreen]="true"
+      (fullScreenChange)="setFullScreenWidget($event)"
+      (click)="$event.stopPropagation()"
+      style="width: 90%"
+    ></brd-widget-wrapper>
+  </div>
+</ng-container>
 
 

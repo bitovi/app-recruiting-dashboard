@@ -10,7 +10,7 @@ import {
   GridsterItem,
   GridType,
 } from 'angular-gridster2';
-import { WidgetConfig } from './widgets/widget.model';
+import { EntryComponents, WidgetConfig } from './widgets/widget.model';
 
 @Component({
   selector: 'brd-dashboard',
@@ -23,13 +23,14 @@ export class DashboardComponent implements OnInit {
   public readonly startDate$: Observable<Date> = this.filterStore.startDate$;
   public readonly endDate$: Observable<Date> = this.filterStore.endDate$;
 
+  public selectedFullscreenWidget: WidgetConfig = null;
   public gridOptions: GridsterConfig;
   public initialGridItems: GridsterItem[] = [
-    { cols: 2, rows: 2, x: 0, y: 0 },
-    { cols: 2, rows: 2, x: 2, y: 0 },
-    { cols: 2, rows: 2, x: 0, y: 2 },
-    { cols: 2, rows: 2, x: 2, y: 2 },
-    { cols: 2, rows: 2, x: 0, y: 4 },
+    { cols: 2, rows: 5, x: 0, y: 0 },
+    { cols: 2, rows: 3, x: 2, y: 0 },
+    { cols: 2, rows: 4, x: 0, y: 2 },
+    { cols: 2, rows: 4, x: 2, y: 2 },
+    { cols: 2, rows: 4, x: 0, y: 4 },
   ];
   public widgetConfigs: WidgetConfig[] = [
     {
@@ -55,24 +56,33 @@ export class DashboardComponent implements OnInit {
         },
       ],
       fullscreen: true,
+      id: crypto.randomUUID(),
     },
     {
       component: 'widget-recruiting-stage-exited',
       fullscreen: true,
+      id: crypto.randomUUID(),
     },
     {
       component: 'widget-jobs-applicants',
       fullscreen: true,
+      id: crypto.randomUUID(),
     },
     {
       component: 'widget-new-applicants',
       fullscreen: true,
+      id: crypto.randomUUID(),
     },
     {
       component: 'widget-applicants-by-source',
       fullscreen: true,
+      id: crypto.randomUUID(),
     },
   ];
+
+  private draggedWidget: keyof EntryComponents = null;
+  private defaultWidgetRows = 2;
+  private defaultWidgetColumns = 2;
   isOpenedWidgetPanel = false;
 
   constructor(
@@ -82,7 +92,9 @@ export class DashboardComponent implements OnInit {
 
   public ngOnInit() {
     this.gridOptions = {
-      gridType: GridType.Fit,
+      gridType: GridType.VerticalFixed,
+      fixedRowHeight: 90,
+      compactType: 'compactUp',
       displayGrid: DisplayGrid.Always,
       pushItems: true,
       swap: true,
@@ -90,17 +102,48 @@ export class DashboardComponent implements OnInit {
       draggable: {
         enabled: true,
       },
-      resizable: {
-        enabled: true,
-      },
+      enableOccupiedCellDrop: true,
+      enableEmptyCellDrop: true,
+      emptyCellDropCallback: (event: DragEvent, item: GridsterItem) =>
+        this.addWidgetToBoard(event, item),
     };
   }
 
   public setFilterState(state: FilterDateState) {
     this.filterStore.setDates(state.startDate, state.endDate);
   }
-  onOpenedPanel(status: boolean) {
-    console.log(status, 'unless');
-    this.isOpenedWidgetPanel = status;
+
+  public setDraggedElement(widget: keyof EntryComponents) {
+    this.draggedWidget = widget;
+  }
+
+  public setFullScreenWidget(widgetConfig: WidgetConfig): void {
+    this.selectedFullscreenWidget = widgetConfig;
+  }
+
+  public removeWidget(widgetId: string): void {
+    const widgetIndex: number = this.widgetConfigs.findIndex(
+      (widget: WidgetConfig) => widget.id === widgetId
+    );
+
+    this.widgetConfigs.splice(widgetIndex, 1);
+    this.initialGridItems.splice(widgetIndex, 1);
+  }
+
+  private addWidgetToBoard(event: DragEvent, item: GridsterItem): void {
+    const widgetToAdd: WidgetConfig = {
+      component: this.draggedWidget,
+      fullscreen: true,
+      id: crypto.randomUUID(),
+    };
+    this.widgetConfigs = [...this.widgetConfigs, widgetToAdd];
+
+    const itemConfig: GridsterItem = {
+      ...item,
+      rows: this.defaultWidgetRows,
+      cols: this.defaultWidgetColumns,
+    };
+
+    this.initialGridItems = [...this.initialGridItems, itemConfig];
   }
 }

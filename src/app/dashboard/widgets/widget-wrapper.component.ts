@@ -1,7 +1,10 @@
 import {
   Component,
+  ComponentRef,
+  EventEmitter,
   Input,
   OnChanges,
+  Output,
   SimpleChanges,
   ViewChild,
   ViewContainerRef,
@@ -24,27 +27,44 @@ import {
 })
 export class WidgetWrapperComponent implements OnChanges {
   @Input() config: WidgetConfig = defaultWidgetConfig;
+  @Input() public fullscreen = false;
+  @Output() public fullScreenChange = new EventEmitter<WidgetConfig>();
+  @Output() public removeWidget = new EventEmitter<string>();
   @ViewChild('child', { read: ViewContainerRef, static: true })
   viewContainerRef!: ViewContainerRef;
 
-  private id = crypto.randomUUID();
-  fullscreen = false;
-  openedFilter = false;
-  loading$: Observable<boolean> = of(true);
-  filters$ = this.filterStore.widgetFilters$.pipe(
-    map((widgetFilters) => widgetFilters.get(this.id))
+  public openedFilter = false;
+  public loading$: Observable<boolean> = of(true);
+  public filters$ = this.filterStore.widgetFilters$.pipe(
+    map((widgetFilters) => widgetFilters.get(this.config.id))
   );
+
+  private componentRef: ComponentRef<EntryComponentsUnion>;
 
   constructor(private readonly filterStore: FilterStore) {}
 
-  ngOnChanges(_changes: SimpleChanges): void {
+  public ngOnChanges(_changes: SimpleChanges): void {
     if (this.config.filters?.length > 0) {
-      this.filterStore.setWidgetFilters(this.id, this.config.filters);
+      this.filterStore.setWidgetFilters(this.config.id, this.config.filters);
     }
     this.loadComponent();
   }
 
-  loadComponent(): void {
+  public changeFullscreen(): void {
+    const widgetConfig: WidgetConfig = this.fullscreen ? null : this.config;
+
+    this.fullScreenChange.emit(widgetConfig);
+  }
+
+  public remove(): void {
+    this.removeWidget.emit(this.config.id);
+  }
+
+  public filterChange(filter: WidgetFilterUnion) {
+    this.filterStore.setWidgetFilter(this.config.id, filter);
+  }
+
+  private loadComponent(): void {
     if (!this.viewContainerRef) {
       return;
     }
@@ -52,25 +72,13 @@ export class WidgetWrapperComponent implements OnChanges {
     this.viewContainerRef.clear();
 
     if (this.config.component) {
-      const componentRef =
+      this.componentRef =
         this.viewContainerRef.createComponent<EntryComponentsUnion>(
           entryComponents[this.config.component]
         );
 
-      componentRef.instance.id = this.id;
-      this.loading$ = componentRef.instance.loading$;
+      this.componentRef.instance.id = this.config.id;
+      this.loading$ = this.componentRef.instance.loading$;
     }
-  }
-
-  toggleFullscreen(): void {
-    this.fullscreen = !this.fullscreen;
-  }
-
-  remove(): void {
-    console.log('remove called');
-  }
-
-  filterChange(filter: WidgetFilterUnion) {
-    this.filterStore.setWidgetFilter(this.id, filter);
   }
 }

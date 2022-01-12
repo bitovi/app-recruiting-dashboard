@@ -12,6 +12,7 @@ export interface WidgetConfig {
    * allow fullscreen mode
    */
   fullscreen: boolean;
+  id: string;
 }
 
 export interface WidgetFilter<T> {
@@ -60,4 +61,5 @@ export const defaultWidgetConfig: WidgetConfig = {
   fullscreen: false,
   component: 'widget-recruiting-stage-exited',
   filters: [],
+  id: 'default',
 };

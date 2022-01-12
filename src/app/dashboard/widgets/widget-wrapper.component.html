@@ -1,58 +1,64 @@
-<div [class.chart-full-screen]="fullscreen">
-  <div class="slds-card widget-charts">
-    <div class="slds-card__header slds-m-bottom_none slds-clearfix">
-      <div
-        *ngIf="config.fullscreen"
-        class="slds-media slds-media_center slds-has-flexi-truncate slds-float_left"
-      >
-        <div class="slds-media__body">
-          <button
-            (click)="toggleFullscreen()"
-            [iconName]="fullscreen? 'utility:close' : 'utility:expand'"
-            nglButtonIcon
-            title="Expand Chart"
-            type="button"
-            variant="bare"
-          ></button>
-        </div>
-      </div>
-      <div *ngIf="config.filters?.length > 0" class="slds-float_right">
-        <button
-          [(nglPopoverOpen)]="openedFilter"
-          [nglPopover]="widgetFilter"
-          class="slds-button--icon-more"
-          nglButton
-          nglPopoverHeader="Filter Table"
-          nglPopoverPlacement="bottom-right"
-          nglPopoverSize="large"
-          type="button"
-        >
-          <ngl-icon
-            alternativeText="Filter"
-            iconName="utility:filter"
-            size="x-small"
-          ></ngl-icon>
-          <ngl-icon
-            alternativeText="Filter"
-            class="slds-m-left--x-small"
-            iconName="utility:down"
-            size="x-small"
-          ></ngl-icon>
-        </button>
-      </div>
+<div class="slds-card u-w-100 u-height-100">
+  <div class="slds-card__header slds-m-bottom_none slds-clearfix u-w-100">
+    <div
+      *ngIf="config.fullscreen"
+      class="slds-media slds-media_center slds-has-flexi-truncate slds-float_left u-w-100 slds-grid_align-spread slds-m-bottom_xx-small"
+    >
+      <button
+        (click)="changeFullscreen()"
+        [iconName]="fullscreen ? 'utility:close' : 'utility:expand'"
+        nglButtonIcon
+        title="Expand Chart"
+        type="button"
+        variant="bare"
+      ></button>
+
+      <button
+        *ngIf="!fullscreen"
+        (mousedown)="$event.stopPropagation()"
+        (click)="remove()"
+        [iconName]="'utility:delete'"
+        nglButtonIcon
+        title="Delete Chart"
+        type="button"
+        variant="bare"
+      ></button>
     </div>
-    <div class="slds-box_x-small slds-text-align_center slds-m-around_x-small">
-      <div class="loader-overlay" *ngIf="loading$ | async">
-        <ngl-spinner
-          size="large"
-          variant="brand"
-          alternativeText="Loading"
-        ></ngl-spinner>
-      </div>
-      <ng-template #child></ng-template>
+    <div *ngIf="config.filters?.length > 0" class="slds-float_right">
+      <button
+        [(nglPopoverOpen)]="openedFilter"
+        [nglPopover]="widgetFilter"
+        class="slds-button--icon-more"
+        nglButton
+        nglPopoverHeader="Filter Table"
+        nglPopoverPlacement="bottom-right"
+        nglPopoverSize="large"
+        type="button"
+      >
+        <ngl-icon
+          alternativeText="Filter"
+          iconName="utility:filter"
+          size="x-small"
+        ></ngl-icon>
+        <ngl-icon
+          alternativeText="Filter"
+          class="slds-m-left--x-small"
+          iconName="utility:down"
+          size="x-small"
+        ></ngl-icon>
+      </button>
     </div>
   </div>
-
+  <div class="slds-box_x-small slds-text-align_center chart-container">
+    <div class="loader-overlay" *ngIf="loading$ | async">
+      <ngl-spinner
+        size="large"
+        variant="brand"
+        alternativeText="Loading"
+      ></ngl-spinner>
+    </div>
+    <ng-template #child></ng-template>
+  </div>
 </div>
 
 <ng-template #widgetFilter>
