@@ -22,6 +22,10 @@ import {
   WidgetLabels,
 } from './widgets/widget.model';
 import { WidgetPanelModel } from './widget-panel/widget-panel-model';
+import {
+  WidgetDragAction,
+  WidgetDragActionEvent,
+} from './widgets/widget-wrapper.model';
 
 @Component({
   selector: 'brd-dashboard',
@@ -140,7 +144,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     const gridElement = this.gridSectionElement.nativeElement;
     const el = gridElement.querySelectorAll('brd-widget-wrapper')[index];
     gridElement.insertBefore(this.placeholderBeforeElement.nativeElement, el);
-    el.insertAdjacentElement('afterend', this.placeholderAfterElement.nativeElement);
+    el.insertAdjacentElement(
+      'afterend',
+      this.placeholderAfterElement.nativeElement
+    );
   }
 
   public setFilterState(state: FilterDateState) {
@@ -174,6 +181,54 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     };
 
     this.initialGridItems = [...this.initialGridItems, itemConfig];
+  }
+
+  onWidgetDragAction(index: number, event: WidgetDragActionEvent): void {
+    switch (event.action) {
+      case WidgetDragAction.Enter:
+        this.injectPlaceholders(index);
+        if (event.position > 0) {
+          this.placeholderAfterElement.nativeElement.setAttribute(
+            'style',
+            '--size: 1'
+          );
+          this.placeholderBeforeElement.nativeElement.setAttribute(
+            'style',
+            '--size: 0'
+          );
+        } else {
+          this.placeholderAfterElement.nativeElement.setAttribute(
+            'style',
+            '--size: 0'
+          );
+          this.placeholderBeforeElement.nativeElement.setAttribute(
+            'style',
+            '--size: 1'
+          );
+        }
+        break;
+      // case WidgetDragAction.Leave:
+      //   this.placeholderBeforeElement.nativeElement.setAttribute(
+      //     'style',
+      //     '--size: 0'
+      //   );
+      //   this.placeholderAfterElement.nativeElement.setAttribute(
+      //     'style',
+      //     '--size: 0'
+      //   );
+      //   break;
+      case WidgetDragAction.Change:
+        console.info('Drag action!', { index, event });
+        this.placeholderBeforeElement.nativeElement.setAttribute(
+          'style',
+          `--size: ${event.position < 0 ? 1 : 0}`
+        );
+        this.placeholderAfterElement.nativeElement.setAttribute(
+          'style',
+          `--size: ${event.position > 0 ? 1 : 0}`
+        );
+        break;
+    }
   }
 
   onWidgetDrop(dragEvent: DragEvent) {

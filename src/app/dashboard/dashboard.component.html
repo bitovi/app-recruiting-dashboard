@@ -25,6 +25,7 @@
         [widgetInEditMode]="isOpenedWidgetPanel"
         (fullScreenChange)="setFullScreenWidget($event)"
         (removeWidget)="removeWidget($event)"
+        (dragAction)="onWidgetDragAction(index, $event)"
       ></brd-widget-wrapper>
     </ng-container>
   </section>
