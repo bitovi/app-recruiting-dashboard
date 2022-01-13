@@ -62,7 +62,7 @@ section.app-container {
     @extend %table-fix-header;
 
     display: block;
-    height: calc(vars.$table-widget-height - 148px);
+    height: calc(vars.$table-widget-height - 150px);
     overflow-y: scroll;
   }
 

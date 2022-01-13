@@ -9,7 +9,7 @@ export class WidgetGridSizeClassPipe implements PipeTransform {
 
   transform(widgetLabel: WidgetLabels): string {
     const colSpan = CHART_WIDGET[widgetLabel].columnSpan * 2;
-    return `slds-col slds-size-1-of-1 slds-medium-size_${colSpan}-of-6`;
+    return `slds-col slds-size_1-of-1 slds-large-size_${colSpan}-of-6`;
   }
 
 }

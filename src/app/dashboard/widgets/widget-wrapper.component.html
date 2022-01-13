@@ -1,8 +1,12 @@
 <div
+  #container
   [class.chart-full-screen]="fullscreen"
   [ngClass]="{ 'slds-drop-zone__container slds-is-hovered ': widgetInEditMode }"
-  class="slds-has-drag slds-col slds-p-bottom_x-small"
+  class="slds-has-drag slds-col slds-m-bottom_x-small"
   tabindex="-1"
+  (dragenter)="onDragEnter($event)"
+  (dragover)="onDragOver($event)"
+  (dragleave)="onDragLeave($event)"
   [draggable]="moveButtonPressed"
 >
   <ng-container *ngTemplateOutlet="containerTitle"> </ng-container>
