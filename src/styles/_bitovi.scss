@@ -131,12 +131,12 @@ section.app-container {
 }
 
 .side-panel {
-  position: fixed;
-  z-index: vars.$overlay-z-index;
-  right: 0;
-  top: vars.$header-height + 5px;
-  bottom: 0;
-  height: unset;
+  //position: fixed;
+  //z-index: vars.$overlay-z-index;
+  //right: 0;
+  //top: vars.$header-height + 5px;
+  //bottom: 0;
+  //height: unset;
 }
 .svg-edit-color{
   fill: #fff !important;
