@@ -3,12 +3,7 @@
   [openPanel]="isOpenedWidgetPanel"
   [addedWidgetConfig]="widgetConfigs"
 ></brd-widget-panel>
-<section
-  (dragover)="onDragOver($event)"
-  (drop)="onWidgetDrop($event)"
-  class="slds-p-around_small slds-container_fluid app-container u-height-100 slds-drop-zone"
-  [class.slds-drop-zone]="isOpenedWidgetPanel"
->
+<section class="slds-p-around_small slds-container_fluid app-container">
   <brd-page-filter-widget
     (selected)="setFilterState($event)"
     [endDate]="(endDate$ | async)!"
@@ -16,14 +11,21 @@
     [totalApplicants]="(totalApplicants$ | async)!"
   ></brd-page-filter-widget>
 
-  <ng-container *ngFor="let widgetConfig of widgetConfigs; let index = index">
-    <brd-widget-wrapper
-      [config]="widgetConfig"
-      [widgetInEditMode]="isOpenedWidgetPanel"
-      (fullScreenChange)="setFullScreenWidget($event)"
-      (removeWidget)="removeWidget($event)"
-    ></brd-widget-wrapper>
-  </ng-container>
+  <section
+    (dragover)="onDragOver($event)"
+    (drop)="onWidgetDrop($event)"
+    class="slds-container_fluid u-height-100 slds-drop-zone"
+    [class.slds-drop-zone]="isOpenedWidgetPanel"
+  >
+    <ng-container *ngFor="let widgetConfig of widgetConfigs; let index = index">
+      <brd-widget-wrapper
+        [config]="widgetConfig"
+        [widgetInEditMode]="isOpenedWidgetPanel"
+        (fullScreenChange)="setFullScreenWidget($event)"
+        (removeWidget)="removeWidget($event)"
+      ></brd-widget-wrapper>
+    </ng-container>
+  </section>
 </section>
 
 <ng-container *ngIf="selectedFullscreenWidget">

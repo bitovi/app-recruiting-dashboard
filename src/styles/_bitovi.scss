@@ -1,3 +1,5 @@
+@use "./vars" as vars;
+
 /* App Container */
 section.app-container {
   position: absolute;
@@ -126,8 +128,10 @@ section.app-container {
 
 .side-panel {
   position: fixed;
-  z-index: 2;
+  z-index: vars.$overlay-z-index;
   right: 0;
-  top: 9.5%;
+  top: vars.$header-height + 5px;
+  bottom: 0;
+  height: unset;
 }
 
