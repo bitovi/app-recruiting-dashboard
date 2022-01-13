@@ -41,6 +41,8 @@ export class WidgetWrapperComponent implements OnChanges {
 
   private componentRef: ComponentRef<EntryComponentsUnion>;
 
+  @Input() public widgetInEditMode = false;
+
   constructor(private readonly filterStore: FilterStore) {}
 
   public ngOnChanges(_changes: SimpleChanges): void {

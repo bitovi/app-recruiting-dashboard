@@ -1,64 +1,75 @@
-<div class="slds-card u-w-100 u-height-100">
-  <div class="slds-card__header slds-m-bottom_none slds-clearfix u-w-100">
-    <div
-      *ngIf="config.fullscreen"
-      class="slds-media slds-media_center slds-has-flexi-truncate slds-float_left u-w-100 slds-grid_align-spread slds-m-bottom_xx-small"
-    >
-      <button
-        (click)="changeFullscreen()"
-        [iconName]="fullscreen ? 'utility:close' : 'utility:expand'"
-        nglButtonIcon
-        title="Expand Chart"
-        type="button"
-        variant="bare"
-      ></button>
+<div
+  [ngClass]="{ 'slds-drop-zone__container slds-is-hovered ': widgetInEditMode }"
+  class="slds-has-drag slds-col"
+  tabindex="-1"
+  draggable="true"
+>
+  <ng-container *ngTemplateOutlet="containerTitle"> </ng-container>
 
-      <button
-        *ngIf="!fullscreen"
-        (mousedown)="$event.stopPropagation()"
-        (click)="remove()"
-        [iconName]="'utility:delete'"
-        nglButtonIcon
-        title="Delete Chart"
-        type="button"
-        variant="bare"
-      ></button>
-    </div>
-    <div *ngIf="config.filters?.length > 0" class="slds-float_right">
-      <button
-        [(nglPopoverOpen)]="openedFilter"
-        [nglPopover]="widgetFilter"
-        class="slds-button--icon-more"
-        nglButton
-        nglPopoverHeader="Filter Table"
-        nglPopoverPlacement="bottom-right"
-        nglPopoverSize="large"
-        type="button"
+  <div class="slds-card u-w-100 u-height-100">
+    <div class="slds-card__header slds-m-bottom_none slds-clearfix u-w-100">
+      <div
+        *ngIf="config.fullscreen && !widgetInEditMode"
+        class="slds-media slds-media_center slds-has-flexi-truncate slds-float_left u-w-100 slds-grid_align-spread slds-m-bottom_xx-small"
       >
-        <ngl-icon
-          alternativeText="Filter"
-          iconName="utility:filter"
-          size="x-small"
-        ></ngl-icon>
-        <ngl-icon
-          alternativeText="Filter"
-          class="slds-m-left--x-small"
-          iconName="utility:down"
-          size="x-small"
-        ></ngl-icon>
-      </button>
+        <button
+          (click)="changeFullscreen()"
+          [iconName]="fullscreen ? 'utility:close' : 'utility:expand'"
+          nglButtonIcon
+          title="Expand Chart"
+          type="button"
+          variant="bare"
+        ></button>
+
+        <!--        <button-->
+        <!--          *ngIf="!fullscreen"-->
+        <!--          (mousedown)="$event.stopPropagation()"-->
+        <!--          (click)="remove()"-->
+        <!--          [iconName]="'utility:delete'"-->
+        <!--          nglButtonIcon-->
+        <!--          title="Delete Chart"-->
+        <!--          type="button"-->
+        <!--          variant="bare"-->
+        <!--        ></button>-->
+      </div>
+      <div *ngIf="config.filters?.length > 0" class="slds-float_right">
+        <button
+          [(nglPopoverOpen)]="openedFilter"
+          [nglPopover]="widgetFilter"
+          class="slds-button--icon-more"
+          nglButton
+          nglPopoverHeader="Filter Table"
+          nglPopoverPlacement="bottom-right"
+          nglPopoverSize="large"
+          type="button"
+        >
+          <ngl-icon
+            alternativeText="Filter"
+            iconName="utility:filter"
+            size="x-small"
+          ></ngl-icon>
+          <ngl-icon
+            alternativeText="Filter"
+            class="slds-m-left--x-small"
+            iconName="utility:down"
+            size="x-small"
+          ></ngl-icon>
+        </button>
+      </div>
+    </div>
+    <div class="slds-box_x-small slds-text-align_center chart-container">
+      <div class="loader-overlay" *ngIf="loading$ | async">
+        <ngl-spinner
+          size="large"
+          variant="brand"
+          alternativeText="Loading"
+        ></ngl-spinner>
+      </div>
+      <ng-template #child></ng-template>
     </div>
   </div>
-  <div class="slds-box_x-small slds-text-align_center chart-container">
-    <div class="loader-overlay" *ngIf="loading$ | async">
-      <ngl-spinner
-        size="large"
-        variant="brand"
-        alternativeText="Loading"
-      ></ngl-spinner>
-    </div>
-    <ng-template #child></ng-template>
-  </div>
+
+  <ng-container *ngTemplateOutlet="containerActions"> </ng-container>
 </div>
 
 <ng-template #widgetFilter>
@@ -73,5 +84,67 @@
         (changed)="filterChange($event)"
       ></brd-widget-filter>
     </ng-container>
+  </div>
+</ng-template>
+
+<ng-template #containerTitle>
+  <div class="slds-drop-zone__container" tabindex="-1" *ngIf="widgetInEditMode">
+    <div class="slds-drop-zone__label slds-drop-zone__label_container">
+      <div class="slds-media slds-media_center">
+        <div class="slds-media__figure">
+          <span
+            class="slds-icon_container slds-icon-utility-connected_apps slds-current-color"
+          >
+            <svg
+              class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default"
+              aria-hidden="true"
+            >
+              <use
+                xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#connected_apps"
+              ></use>
+            </svg>
+          </span>
+        </div>
+        <div class="slds-media__body">
+          <h2>
+            <button class="slds-drop-zone__label_button slds-button_reset">
+              <span class="slds-assistive-text">Edit: </span>
+              <span>Component Name</span>
+            </button>
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div style="width: 50%"></div>
+  </div>
+</ng-template>
+
+<ng-template #containerActions>
+  <div class="slds-drop-zone__actions" *ngIf="widgetInEditMode">
+    <div class="slds-button-group" role="group">
+      <button
+        class="slds-button slds-button_icon slds-button_icon-brand slds-button_icon-x-small"
+        title="Move"
+      >
+        <svg class="slds-button__icon" aria-hidden="true">
+          <use
+            xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#move"
+          ></use>
+        </svg>
+        <span class="slds-assistive-text">Move</span>
+      </button>
+      <button
+        (click)="remove()"
+        class="slds-button slds-button_icon slds-button_icon-brand slds-button_icon-x-small"
+        title="Close"
+      >
+        <svg class="slds-button__icon" aria-hidden="true">
+          <use
+            xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"
+          ></use>
+        </svg>
+        <span class="slds-assistive-text">Close</span>
+      </button>
+    </div>
   </div>
 </ng-template>

@@ -74,7 +74,7 @@ export class DashboardComponent implements OnInit {
       id: crypto.randomUUID(),
     },
     {
-      component: WidgetLabels.ApplicantTable,
+      component: WidgetLabels.NewApplicants,
       fullscreen: true,
       id: crypto.randomUUID(),
     },

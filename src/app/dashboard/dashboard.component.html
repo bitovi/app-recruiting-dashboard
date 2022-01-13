@@ -6,7 +6,8 @@
 <section
   (dragover)="onDragOver($event)"
   (drop)="onWidgetDrop($event)"
-  class="slds-p-around_small slds-container_fluid app-container u-height-100"
+  class="slds-p-around_small slds-container_fluid app-container u-height-100 slds-drop-zone"
+  [class.slds-drop-zone]="isOpenedWidgetPanel"
 >
   <brd-page-filter-widget
     (selected)="setFilterState($event)"
@@ -14,30 +15,11 @@
     [startDate]="(startDate$ | async)!"
     [totalApplicants]="(totalApplicants$ | async)!"
   ></brd-page-filter-widget>
-  <!--  <brd-chart-picker-->
-  <!--    (elementDragged)="setDraggedElement($event)"-->
-  <!--  ></brd-chart-picker>-->
-
-  <!--    <gridster-->
-  <!--      [options]="gridOptions"-->
-  <!--      class="no-background hide-border green-preview"-->
-  <!--    >-->
-  <!--      <gridster-item-->
-  <!--        [item]="initialGridItems[index]"-->
-  <!--        *ngFor="let widgetConfig of widgetConfigs; let index = index"-->
-  <!--        [id]="widgetConfig.id"-->
-  <!--      >-->
-  <!--        <brd-widget-wrapper-->
-  <!--          [config]="widgetConfig"-->
-  <!--          (fullScreenChange)="setFullScreenWidget($event)"-->
-  <!--          (removeWidget)="removeWidget($event)"-->
-  <!--        ></brd-widget-wrapper>-->
-  <!--      </gridster-item>-->
-  <!--    </gridster>-->
 
   <ng-container *ngFor="let widgetConfig of widgetConfigs; let index = index">
     <brd-widget-wrapper
       [config]="widgetConfig"
+      [widgetInEditMode]="isOpenedWidgetPanel"
       (fullScreenChange)="setFullScreenWidget($event)"
       (removeWidget)="removeWidget($event)"
     ></brd-widget-wrapper>
@@ -55,3 +37,67 @@
     ></brd-widget-wrapper>
   </div>
 </ng-container>
+
+<!--<ng-template #containerTitle>-->
+<!--  <div class="slds-drop-zone__container slds-is-hovered" tabindex="-1">-->
+<!--    <div-->
+<!--      class="slds-drop-zone__label slds-drop-zone__label_container"-->
+<!--      *ngIf="isOpenedWidgetPanel"-->
+<!--    >-->
+<!--      <div class="slds-media slds-media_center" *ngIf="isOpenedWidgetPanel">-->
+<!--        <div class="slds-media__figure">-->
+<!--          <span-->
+<!--            class="slds-icon_container slds-icon-utility-connected_apps slds-current-color"-->
+<!--          >-->
+<!--            <svg-->
+<!--              class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default"-->
+<!--              aria-hidden="true"-->
+<!--            >-->
+<!--              <use-->
+<!--                xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#connected_apps"-->
+<!--              ></use>-->
+<!--            </svg>-->
+<!--          </span>-->
+<!--        </div>-->
+<!--        <div class="slds-media__body">-->
+<!--          <h2>-->
+<!--            <button class="slds-drop-zone__label_button slds-button_reset">-->
+<!--              <span class="slds-assistive-text">Edit: </span>-->
+<!--              <span>Component Name</span>-->
+<!--            </button>-->
+<!--          </h2>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div style="width: 50%"></div>-->
+<!--  </div>-->
+<!--</ng-template>-->
+
+<!--<ng-template #containerActions>-->
+<!--  <div class="slds-drop-zone__actions">-->
+<!--    <div class="slds-button-group" role="group">-->
+<!--      <button-->
+<!--        class="slds-button slds-button_icon slds-button_icon-brand slds-button_icon-x-small"-->
+<!--        title="Move"-->
+<!--      >-->
+<!--        <svg class="slds-button__icon" aria-hidden="true">-->
+<!--          <use-->
+<!--            xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#move"-->
+<!--          ></use>-->
+<!--        </svg>-->
+<!--        <span class="slds-assistive-text">Move</span>-->
+<!--      </button>-->
+<!--      <button-->
+<!--        class="slds-button slds-button_icon slds-button_icon-brand slds-button_icon-x-small"-->
+<!--        title="Close"-->
+<!--      >-->
+<!--        <svg class="slds-button__icon" aria-hidden="true">-->
+<!--          <use-->
+<!--            xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"-->
+<!--          ></use>-->
+<!--        </svg>-->
+<!--        <span class="slds-assistive-text">Close</span>-->
+<!--      </button>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</ng-template>-->
