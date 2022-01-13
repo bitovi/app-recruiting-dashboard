@@ -38,6 +38,8 @@ export class WidgetWrapperComponent implements OnChanges {
   public filters$ = this.filterStore.widgetFilters$.pipe(
     map((widgetFilters) => widgetFilters.get(this.config.id))
   );
+  /** Controls whether widget is draggable */
+  moveButtonPressed = false;
 
   private componentRef: ComponentRef<EntryComponentsUnion>;
 
@@ -56,6 +58,14 @@ export class WidgetWrapperComponent implements OnChanges {
     const widgetConfig: WidgetConfig = this.fullscreen ? null : this.config;
 
     this.fullScreenChange.emit(widgetConfig);
+  }
+
+  /**
+   * Toggles whether widget can be dragged
+   * @param pressed Whether button is pressed
+   */
+  onMoveButton(pressed: boolean): void {
+    this.moveButtonPressed = pressed;
   }
 
   public remove(): void {

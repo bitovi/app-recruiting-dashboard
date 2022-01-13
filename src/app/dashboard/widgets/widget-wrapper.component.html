@@ -2,7 +2,7 @@
   [ngClass]="{ 'slds-drop-zone__container slds-is-hovered ': widgetInEditMode }"
   class="slds-has-drag slds-col"
   tabindex="-1"
-  draggable="true"
+  [draggable]="moveButtonPressed"
 >
   <ng-container *ngTemplateOutlet="containerTitle"> </ng-container>
 
@@ -125,6 +125,8 @@
       <button
         class="slds-button slds-button_icon slds-button_icon-brand slds-button_icon-x-small"
         title="Move"
+        (mousedown)="onMoveButton(true)"
+        (mouseup)="onMoveButton(false)"
       >
         <svg class="slds-button__icon" aria-hidden="true">
           <use
