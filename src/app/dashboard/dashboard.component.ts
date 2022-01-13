@@ -127,12 +127,7 @@ export class DashboardComponent implements OnInit {
   }
 
   public removeWidget(widgetId: string): void {
-    const widgetIndex: number = this.widgetConfigs.findIndex(
-      (widget: WidgetConfig) => widget.id === widgetId
-    );
-
-    this.widgetConfigs.splice(widgetIndex, 1);
-    this.initialGridItems.splice(widgetIndex, 1);
+    this.widgetConfigs = this.widgetConfigs.filter(w => w.id !== widgetId);
   }
 
   private addWidgetToBoard(event: DragEvent, item: GridsterItem): void {
