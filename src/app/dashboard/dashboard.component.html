@@ -27,12 +27,13 @@
             [config]="widgetConfig"
             [widgetInEditMode]="isOpenedWidgetPanel"
             (removeWidget)="removeWidget($event)"
+            (dragAction)="onWidgetDragAction(index, $event)"
           ></brd-widget-wrapper>
         </ng-container>
       </section>
     </div>
   </div>
-</section>
 
-<div #placeholderBefore class="placeholder"></div>
-<div #placeholderAfter class="placeholder"></div>
+  <div #placeholderBefore class="placeholder"></div>
+  <div #placeholderAfter class="placeholder"></div>
+</section>
