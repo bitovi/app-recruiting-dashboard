@@ -13,10 +13,14 @@
   justify-content: center;
 }
 
+.card-container {
+  min-height: vars.$table-widget-height;
+}
+
 .chart-container {
   width: 100%;
   // height: calc(100% - 3rem);
-  height: vars.$table-widget-height;
+
 }
 
 .component-name {

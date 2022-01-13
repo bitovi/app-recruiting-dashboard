@@ -6,10 +6,10 @@
 >
   <ng-container *ngTemplateOutlet="containerTitle"> </ng-container>
 
-  <div class="slds-card u-w-100 u-height-100">
+  <div class="slds-card card-container">
     <div class="slds-card__header slds-m-bottom_none slds-clearfix u-w-100">
       <div
-        *ngIf="config.fullscreen && !widgetInEditMode"
+        *ngIf="config.fullscreen"
         class="slds-media slds-media_center slds-has-flexi-truncate slds-float_left u-w-100 slds-grid_align-spread slds-m-bottom_xx-small"
       >
         <button
@@ -19,42 +19,33 @@
           title="Expand Chart"
           type="button"
           variant="bare"
+          [style.visibility]="widgetInEditMode ? 'hidden' : 'visible'"
         ></button>
-
-        <!--        <button-->
-        <!--          *ngIf="!fullscreen"-->
-        <!--          (mousedown)="$event.stopPropagation()"-->
-        <!--          (click)="remove()"-->
-        <!--          [iconName]="'utility:delete'"-->
-        <!--          nglButtonIcon-->
-        <!--          title="Delete Chart"-->
-        <!--          type="button"-->
-        <!--          variant="bare"-->
-        <!--        ></button>-->
-      </div>
-      <div *ngIf="config.filters?.length > 0" class="slds-float_right">
-        <button
-          [(nglPopoverOpen)]="openedFilter"
-          [nglPopover]="widgetFilter"
-          class="slds-button--icon-more"
-          nglButton
-          nglPopoverHeader="Filter Table"
-          nglPopoverPlacement="bottom-right"
-          nglPopoverSize="large"
-          type="button"
-        >
-          <ngl-icon
-            alternativeText="Filter"
-            iconName="utility:filter"
-            size="x-small"
-          ></ngl-icon>
-          <ngl-icon
-            alternativeText="Filter"
-            class="slds-m-left--x-small"
-            iconName="utility:down"
-            size="x-small"
-          ></ngl-icon>
-        </button>
+        <div *ngIf="config.filters?.length > 0" class="slds-float_right">
+          <button
+            [(nglPopoverOpen)]="openedFilter"
+            [nglPopover]="widgetFilter"
+            class="slds-button--icon-more"
+            nglButton
+            nglPopoverHeader="Filter Table"
+            nglPopoverPlacement="bottom-right"
+            nglPopoverSize="large"
+            type="button"
+            [disabled]="widgetInEditMode"
+          >
+            <ngl-icon
+              alternativeText="Filter"
+              iconName="utility:filter"
+              size="x-small"
+            ></ngl-icon>
+            <ngl-icon
+              alternativeText="Filter"
+              class="slds-m-left--x-small"
+              iconName="utility:down"
+              size="x-small"
+            ></ngl-icon>
+          </button>
+        </div>
       </div>
     </div>
     <div class="slds-box_x-small slds-text-align_center chart-container">
