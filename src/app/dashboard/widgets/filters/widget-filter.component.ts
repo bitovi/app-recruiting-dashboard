@@ -12,7 +12,7 @@ export class WidgetFilterComponent {
   @Input() filter: WidgetFilterUnion;
   @Output() changed = new EventEmitter<WidgetFilterUnion>();
 
-  filterDateIntervalChange(
+  public filterDateIntervalChange(
     datePickerEvent: IDatePickerEvent,
     currentFilter: WidgetFilterDateInterval
   ) {
@@ -30,7 +30,7 @@ export class WidgetFilterComponent {
     });
   }
 
-  filterChange(filter: WidgetFilterUnion) {
+  public filterChange(filter: WidgetFilterUnion) {
     this.changed.emit(filter);
   }
 }

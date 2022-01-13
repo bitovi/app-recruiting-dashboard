@@ -9,13 +9,15 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { combineLatest, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FilterStore } from '../store/filter.store';
+import { JobsStore } from '../store/jobs.store';
 import {
   defaultWidgetConfig,
   entryComponents,
   EntryComponentsUnion,
+  WidgetComponents,
   WidgetConfig,
   WidgetFilterUnion,
 } from './widget.model';
@@ -35,13 +37,17 @@ export class WidgetWrapperComponent implements OnChanges {
 
   public openedFilter = false;
   public loading$: Observable<boolean> = of(true);
-  public filters$ = this.filterStore.widgetFilters$.pipe(
-    map((widgetFilters) => widgetFilters.get(this.config.id))
-  );
+  public filters$: Observable<Map<string, WidgetFilterUnion>> =
+    this.filterStore.widgetFilters$.pipe(
+      map((widgetFilters) => widgetFilters.get(this.config.id))
+    );
 
   private componentRef: ComponentRef<EntryComponentsUnion>;
 
-  constructor(private readonly filterStore: FilterStore) {}
+  constructor(
+    private readonly filterStore: FilterStore,
+    private readonly jobsStore: JobsStore
+  ) {}
 
   public ngOnChanges(_changes: SimpleChanges): void {
     if (this.config.filters?.length > 0) {
@@ -79,6 +85,18 @@ export class WidgetWrapperComponent implements OnChanges {
 
       this.componentRef.instance.id = this.config.id;
       this.loading$ = this.componentRef.instance.loading$;
+
+      if (this.config.component === WidgetComponents.ApplicantsTable) {
+        this.loading$ = combineLatest([
+          this.componentRef.instance.loading$,
+          this.jobsStore.loading$,
+        ]).pipe(
+          map(
+            ([isInstanceLoading, isJobsLoading]: boolean[]) =>
+              isInstanceLoading || isJobsLoading
+          )
+        );
+      }
     }
   }
 }

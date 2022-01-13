@@ -33,6 +33,14 @@ export interface WidgetFilterInputText extends WidgetFilter<string> {
   type: 'input-text';
 }
 
+export enum WidgetComponents {
+  RecruitingStageExited = 'widget-recruiting-stage-exited',
+  JobApplicants = 'widget-jobs-applicants',
+  NewApplicants = 'widget-new-applicants',
+  ApplicantsTable = 'widget-applicants-table',
+  ApplicantsBySource = 'widget-applicants-by-source',
+}
+
 export type WidgetFilterTypes = 'date-interval' | 'select-job' | 'input-text';
 export type WidgetFilterUnion =
   | WidgetFilterDateInterval
