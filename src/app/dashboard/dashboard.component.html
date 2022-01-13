@@ -12,8 +12,8 @@
         [startDate]="(startDate$ | async)!"
         [totalApplicants]="(totalApplicants$ | async)!"
       ></brd-page-filter-widget>
-
       <section
+        #gridSection
         (dragover)="onDragOver($event)"
         (drop)="onWidgetDrop($event)"
         class="slds-container_fluid u-height-100 slds-drop-zone slds-grid slds-grid_flex-start slds-wrap slds-gutters slds-gutters_xxx-small"
@@ -32,52 +32,7 @@
       </section>
     </div>
   </div>
-  <section
-    #gridSection
-    (dragover)="onDragOver($event)"
-    (drop)="onWidgetDrop($event)"
-    class="slds-container_fluid u-height-100 slds-drop-zone slds-grid slds-grid_flex-start slds-wrap slds-gutters slds-gutters_xxx-small"
-    [class.slds-drop-zone]="isOpenedWidgetPanel"
-  >
-    <ng-container *ngFor="let widgetConfig of widgetConfigs; let index = index">
-      <brd-widget-wrapper
-        [class]="widgetConfig.component | widgetGridSizeClass"
-        [config]="widgetConfig"
-        [widgetInEditMode]="isOpenedWidgetPanel"
-        (removeWidget)="removeWidget($event)"
-      ></brd-widget-wrapper>
-    </ng-container>
-  </section>
 </section>
 
 <div #placeholderBefore class="placeholder"></div>
 <div #placeholderAfter class="placeholder"></div>
-
-<!--<brd-widget-panel-->
-<!--  [openPanel]="isOpenedWidgetPanel"-->
-<!--  [addedWidgetConfig]="widgetConfigs"-->
-<!--&gt;</brd-widget-panel>-->
-<!--<section class="slds-p-around_small slds-container_fluid app-container">-->
-<!--  <brd-page-filter-widget-->
-<!--    (selected)="setFilterState($event)"-->
-<!--    [endDate]="(endDate$ | async)!"-->
-<!--    [startDate]="(startDate$ | async)!"-->
-<!--    [totalApplicants]="(totalApplicants$ | async)!"-->
-<!--  ></brd-page-filter-widget>-->
-
-<!--  <section-->
-<!--    (dragover)="onDragOver($event)"-->
-<!--    (drop)="onWidgetDrop($event)"-->
-<!--    class="slds-container_fluid u-height-100 slds-drop-zone slds-grid slds-grid_flex-start slds-wrap slds-gutters slds-gutters_xxx-small"-->
-<!--    [class.slds-drop-zone]="isOpenedWidgetPanel"-->
-<!--  >-->
-<!--    <ng-container *ngFor="let widgetConfig of widgetConfigs; let index = index">-->
-<!--      <brd-widget-wrapper-->
-<!--        [class]="widgetConfig.component | widgetGridSizeClass"-->
-<!--        [config]="widgetConfig"-->
-<!--        [widgetInEditMode]="isOpenedWidgetPanel"-->
-<!--        (removeWidget)="removeWidget($event)"-->
-<!--      ></brd-widget-wrapper>-->
-<!--    </ng-container>-->
-<!--  </section>-->
-<!--</section>-->
