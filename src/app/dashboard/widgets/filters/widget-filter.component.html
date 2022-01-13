@@ -5,12 +5,15 @@
   (dateChanged)="filterDateIntervalChange($event, filter)"
 ></brd-date-picker>
 <brd-filter-select-job
+  class="slds-col"
   *ngIf="filter.type === 'select-job'"
   [filter]="filter"
   (changed)="filterChange($event)"
 ></brd-filter-select-job>
 <brd-filter-input-text
+  class="slds-col"
   *ngIf="filter.type === 'input-text'"
   [filter]="filter"
+  [label]="'Search'"
   (changed)="filterChange($event)"
 ></brd-filter-input-text>

@@ -112,6 +112,7 @@
           <div class="slds-button-group">
             <button
               (click)="onClickOpenPanel()"
+              [class.slds-is-selected]="isOpenedPanel"
               class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border slds-button_icon-small"
               aria-pressed="true"
               title="Toggle Panel"
@@ -119,12 +120,14 @@
               <ngl-icon
                 alternativeText="Filter"
                 iconName="utility:edit"
+                [svgClass]="isOpenedPanel ? 'svg-edit-color' : ''"
                 size="xx-small"
               ></ngl-icon>
 
               <span class="slds-assistive-text">Toggle Panel</span>
             </button>
             <button
+              (click)="onClickOpenPanel()"
               class="slds-button slds-button_icon slds-global-actions__favorites-more slds-button_icon slds-button_icon-border slds-button_icon-small"
               title="View Panel"
             >

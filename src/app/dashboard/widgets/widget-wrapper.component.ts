@@ -19,6 +19,7 @@ import {
   WidgetConfig,
   WidgetFilterUnion,
 } from './widget.model';
+import { CHART_WIDGET } from '../widget-panel/widget-panel-model';
 
 @Component({
   selector: 'brd-widget-wrapper',
@@ -41,6 +42,7 @@ export class WidgetWrapperComponent implements OnChanges {
   moveButtonPressed = false;
   /** Controls whether widget is fullscreen */
   fullscreen = false;
+  chartWidget = CHART_WIDGET;
 
   private componentRef: ComponentRef<EntryComponentsUnion>;
 
