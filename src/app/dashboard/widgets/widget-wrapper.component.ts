@@ -1,6 +1,7 @@
 import {
   Component,
   ComponentRef,
+  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -12,6 +13,10 @@ import {
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FilterStore } from '../store/filter.store';
+import {
+  WidgetDragAction,
+  WidgetDragActionEvent,
+} from './widget-wrapper.model';
 import {
   defaultWidgetConfig,
   entryComponents,
@@ -30,6 +35,9 @@ export class WidgetWrapperComponent implements OnChanges {
   @Input() public fullscreen = false;
   @Output() public fullScreenChange = new EventEmitter<WidgetConfig>();
   @Output() public removeWidget = new EventEmitter<string>();
+  @Output() dragAction = new EventEmitter<WidgetDragActionEvent>();
+  @ViewChild('container', { static: true })
+  containerRef: ElementRef<HTMLDivElement>;
   @ViewChild('child', { read: ViewContainerRef, static: true })
   viewContainerRef!: ViewContainerRef;
 
@@ -42,6 +50,9 @@ export class WidgetWrapperComponent implements OnChanges {
   moveButtonPressed = false;
 
   private componentRef: ComponentRef<EntryComponentsUnion>;
+
+  private dropDomRect: DOMRect;
+  private dropSide = 0;
 
   @Input() public widgetInEditMode = false;
 
@@ -66,6 +77,37 @@ export class WidgetWrapperComponent implements OnChanges {
    */
   onMoveButton(pressed: boolean): void {
     this.moveButtonPressed = pressed;
+  }
+
+  onDragEnter(ev: DragEvent): void {
+    this.dropDomRect = this.containerRef.nativeElement.getBoundingClientRect();
+    this.dropSide =
+      ev.clientX > this.dropDomRect.x + 0.5 * this.dropDomRect.width ? 1 : -1;
+    this.dragAction.emit({
+      action: WidgetDragAction.Enter,
+      position: this.dropSide,
+    });
+  }
+
+  onDragOver(ev: DragEvent): void {
+    const side =
+      ev.clientX > this.dropDomRect.x + 0.5 * this.dropDomRect.width ? 1 : -1;
+    if (this.dropSide !== side) {
+      this.dropSide = side;
+      this.dragAction.emit({
+        action: WidgetDragAction.Change,
+        position: this.dropSide,
+      });
+    }
+  }
+
+  onDragLeave(ev: DragEvent): void {
+    this.dropSide =
+      ev.clientX > this.dropDomRect.x + 0.5 * this.dropDomRect.width ? 1 : -1;
+    this.dragAction.emit({
+      action: WidgetDragAction.Leave,
+      position: this.dropSide,
+    });
   }
 
   public remove(): void {

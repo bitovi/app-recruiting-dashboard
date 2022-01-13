@@ -12,6 +12,7 @@
   ></brd-page-filter-widget>
 
   <section
+    #gridSection
     (dragover)="onDragOver($event)"
     (drop)="onWidgetDrop($event)"
     class="slds-container_fluid u-height-100 slds-drop-zone slds-grid slds-grid_flex-start slds-wrap slds-gutters slds-gutters_xxx-small"
@@ -104,3 +105,6 @@
 <!--    </div>-->
 <!--  </div>-->
 <!--</ng-template>-->
+
+<div #placeholderBefore class="placeholder"></div>
+<div #placeholderAfter class="placeholder"></div>

@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { FilterDateState, FilterStore } from './store/filter.store';
 import { ApplicantsStore } from './store/applicants.store';
@@ -23,7 +29,13 @@ import { WidgetPanelModel } from './widget-panel/widget-panel-model';
   styleUrls: ['./dashboard.component.scss'],
   providers: [FilterStore, ApplicantsStore, ChartsStore, JobsStore],
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, AfterViewInit {
+  @ViewChild('placeholderBefore')
+  placeholderBeforeElement: ElementRef<HTMLDivElement>;
+  @ViewChild('placeholderAfter')
+  placeholderAfterElement: ElementRef<HTMLDivElement>;
+  @ViewChild('gridSection') gridSectionElement: ElementRef<HTMLElement>;
+
   public readonly totalApplicants$ = this.applicantsStore.totalApplicants$;
   public readonly startDate$: Observable<Date> = this.filterStore.startDate$;
   public readonly endDate$: Observable<Date> = this.filterStore.endDate$;
@@ -114,6 +126,23 @@ export class DashboardComponent implements OnInit {
     };
   }
 
+  ngAfterViewInit(): void {
+    console.info({
+      before: this.placeholderBeforeElement,
+      after: this.placeholderAfterElement,
+      section: this.gridSectionElement,
+    });
+    this.injectPlaceholders(2);
+    this.injectPlaceholders(3);
+  }
+
+  injectPlaceholders(index: number): void {
+    const gridElement = this.gridSectionElement.nativeElement;
+    const el = gridElement.querySelectorAll('brd-widget-wrapper')[index];
+    gridElement.insertBefore(this.placeholderBeforeElement.nativeElement, el);
+    el.insertAdjacentElement('afterend', this.placeholderAfterElement.nativeElement);
+  }
+
   public setFilterState(state: FilterDateState) {
     this.filterStore.setDates(state.startDate, state.endDate);
   }
@@ -127,7 +156,7 @@ export class DashboardComponent implements OnInit {
   }
 
   public removeWidget(widgetId: string): void {
-    this.widgetConfigs = this.widgetConfigs.filter(w => w.id !== widgetId);
+    this.widgetConfigs = this.widgetConfigs.filter((w) => w.id !== widgetId);
   }
 
   private addWidgetToBoard(event: DragEvent, item: GridsterItem): void {
