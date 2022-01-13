@@ -122,12 +122,8 @@ export class DashboardComponent implements OnInit {
     this.draggedWidget = widget;
   }
 
-  public setFullScreenWidget(widgetConfig: WidgetConfig): void {
-    this.selectedFullscreenWidget = widgetConfig;
-  }
-
   public removeWidget(widgetId: string): void {
-    this.widgetConfigs = this.widgetConfigs.filter(w => w.id !== widgetId);
+    this.widgetConfigs = this.widgetConfigs.filter((w) => w.id !== widgetId);
   }
 
   private addWidgetToBoard(event: DragEvent, item: GridsterItem): void {

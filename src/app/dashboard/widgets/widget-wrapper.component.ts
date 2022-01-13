@@ -27,19 +27,20 @@ import {
 })
 export class WidgetWrapperComponent implements OnChanges {
   @Input() config: WidgetConfig = defaultWidgetConfig;
-  @Input() public fullscreen = false;
-  @Output() public fullScreenChange = new EventEmitter<WidgetConfig>();
   @Output() public removeWidget = new EventEmitter<string>();
   @ViewChild('child', { read: ViewContainerRef, static: true })
   viewContainerRef!: ViewContainerRef;
 
   public openedFilter = false;
+
   public loading$: Observable<boolean> = of(true);
   public filters$ = this.filterStore.widgetFilters$.pipe(
     map((widgetFilters) => widgetFilters.get(this.config.id))
   );
   /** Controls whether widget is draggable */
   moveButtonPressed = false;
+  /** Controls whether widget is fullscreen */
+  fullscreen = false;
 
   private componentRef: ComponentRef<EntryComponentsUnion>;
 
@@ -55,9 +56,7 @@ export class WidgetWrapperComponent implements OnChanges {
   }
 
   public changeFullscreen(): void {
-    const widgetConfig: WidgetConfig = this.fullscreen ? null : this.config;
-
-    this.fullScreenChange.emit(widgetConfig);
+    this.fullscreen = !this.fullscreen;
   }
 
   /**
