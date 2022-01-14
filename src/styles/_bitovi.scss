@@ -6,7 +6,13 @@ section.app-container {
   right: 0;
   left: 0;
   top: 90px;
+  height: calc(100% - 90px);
   bottom: 0;
+}
+
+section.container-shrink {
+  width: calc(100vw - 300px);
+
 }
 
 // override context bar
@@ -131,12 +137,13 @@ section.app-container {
 }
 
 .side-panel {
-  //position: fixed;
-  //z-index: vars.$overlay-z-index;
-  //right: 0;
-  //top: vars.$header-height + 5px;
-  //bottom: 0;
-  //height: unset;
+  position: fixed;
+  z-index: vars.$overlay-z-index;
+  right: 0;
+  top: vars.$header-height + 3px;
+  bottom: 0;
+  height: unset;
+  max-width: 300px;
 }
 .svg-edit-color{
   fill: #fff !important;

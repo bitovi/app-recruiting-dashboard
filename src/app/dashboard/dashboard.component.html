@@ -1,5 +1,8 @@
 <brd-header [(isOpenedPanel)]="isOpenedWidgetPanel"></brd-header>
-<section class="slds-container_fluid app-container">
+<section
+  class="slds-container_fluid app-container"
+  [class.container-shrink]="isOpenedWidgetPanel"
+>
   <div style="position: relative; display: flex; flex-direction: row-reverse">
     <brd-widget-panel
       [openPanel]="isOpenedWidgetPanel"
@@ -16,7 +19,8 @@
         #gridSection
         (dragover)="onDragOver($event)"
         (drop)="onWidgetDrop($event)"
-        class="slds-container_fluid slds-drop-zone slds-grid slds-grid_flex-start slds-wrap slds-gutters slds-gutters_xxx-small"
+        [ngClass]="{ 'slds-drop-zone ': isOpenedWidgetPanel }"
+        class="slds-container_fluid slds-grid slds-grid_flex-start slds-wrap slds-gutters slds-gutters_xxx-small"
         [class.slds-drop-zone]="isOpenedWidgetPanel"
       >
         <ng-container
