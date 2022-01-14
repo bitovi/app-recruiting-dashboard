@@ -7,6 +7,8 @@
   (dragenter)="onDragEnter($event)"
   (dragover)="onDragOver($event)"
   (dragleave)="onDragLeave($event)"
+  (dragend)="onDragEnd()"
+  (dragstart)="onDragStart()"
   [draggable]="moveButtonPressed"
 >
   <ng-container *ngTemplateOutlet="containerTitle"> </ng-container>

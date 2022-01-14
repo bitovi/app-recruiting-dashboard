@@ -1,5 +1,7 @@
 @use '../../styles/vars' as vars;
 
+$transition-speed: 250ms;
+
 .table {
   min-height: 40.4vh;
 }
@@ -16,7 +18,5 @@
 .placeholder {
   height: vars.$table-widget-height;
   width: calc(calc(var(--size, 0) / 3) * 100%);
-  transition: width 1s ease-in-out;
-  background-color: red;
-
+  transition: width $transition-speed ease-in-out;
 }

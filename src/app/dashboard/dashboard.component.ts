@@ -1,27 +1,11 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FilterDateState, FilterStore } from './store/filter.store';
 import { ApplicantsStore } from './store/applicants.store';
 import { ChartsStore } from './store/charts.store';
 import { JobsStore } from './store/jobs.store';
-import {
-  DisplayGrid,
-  GridsterConfig,
-  GridsterItem,
-  GridType,
-} from 'angular-gridster2';
-import {
-  EntryComponents,
-  WidgetConfig,
-  WidgetLabels,
-} from './widgets/widget.model';
-import { WidgetPanelModel } from './widget-panel/widget-panel-model';
+import { WidgetConfig, WidgetLabels } from './widgets/widget.model';
+import { CHART_WIDGET, WidgetPanelModel } from './widget-panel/widget-panel-model';
 import {
   WidgetDragAction,
   WidgetDragActionEvent,
@@ -33,27 +17,22 @@ import {
   styleUrls: ['./dashboard.component.scss'],
   providers: [FilterStore, ApplicantsStore, ChartsStore, JobsStore],
 })
-export class DashboardComponent implements OnInit, AfterViewInit {
+export class DashboardComponent implements AfterViewInit {
   @ViewChild('placeholderBefore')
   placeholderBeforeElement: ElementRef<HTMLDivElement>;
   @ViewChild('placeholderAfter')
   placeholderAfterElement: ElementRef<HTMLDivElement>;
   @ViewChild('gridSection') gridSectionElement: ElementRef<HTMLElement>;
 
-  public readonly totalApplicants$ = this.applicantsStore.totalApplicants$;
-  public readonly startDate$: Observable<Date> = this.filterStore.startDate$;
-  public readonly endDate$: Observable<Date> = this.filterStore.endDate$;
+  readonly totalApplicants$ = this.applicantsStore.totalApplicants$;
+  readonly startDate$: Observable<Date> = this.filterStore.startDate$;
+  readonly endDate$: Observable<Date> = this.filterStore.endDate$;
 
-  public selectedFullscreenWidget: WidgetConfig = null;
-  public gridOptions: GridsterConfig;
-  public initialGridItems: GridsterItem[] = [
-    { cols: 2, rows: 5, x: 0, y: 0 },
-    { cols: 2, rows: 3, x: 2, y: 0 },
-    { cols: 2, rows: 4, x: 0, y: 2 },
-    { cols: 2, rows: 4, x: 2, y: 2 },
-    { cols: 2, rows: 4, x: 0, y: 4 },
-  ];
-  public widgetConfigs: WidgetConfig[] = [
+  selectedFullscreenWidget: WidgetConfig = null;
+
+  isOpenedWidgetPanel = false;
+
+  widgetConfigs: WidgetConfig[] = [
     {
       component: WidgetLabels.ApplicantTable,
       filters: [
@@ -102,33 +81,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   ];
 
   private draggedWidget!: WidgetLabels;
-  private defaultWidgetRows = 2;
-  private defaultWidgetColumns = 2;
-  isOpenedWidgetPanel = false;
 
   constructor(
     private readonly filterStore: FilterStore,
     private readonly applicantsStore: ApplicantsStore
   ) {}
-
-  public ngOnInit() {
-    this.gridOptions = {
-      gridType: GridType.VerticalFixed,
-      fixedRowHeight: 90,
-      compactType: 'compactUp',
-      displayGrid: DisplayGrid.Always,
-      pushItems: true,
-      swap: true,
-      swapWhileDragging: false,
-      draggable: {
-        enabled: true,
-      },
-      enableOccupiedCellDrop: true,
-      enableEmptyCellDrop: true,
-      emptyCellDropCallback: (event: DragEvent, item: GridsterItem) =>
-        this.addWidgetToBoard(event, item),
-    };
-  }
 
   ngAfterViewInit(): void {
     console.info({
@@ -150,79 +107,49 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     );
   }
 
-  public setFilterState(state: FilterDateState) {
-    this.filterStore.setDates(state.startDate, state.endDate);
+  setPlaceholderWidths(before: number | string, after: number | string): void {
+    this.placeholderBeforeElement.nativeElement.setAttribute(
+      'style',
+      `--size: ${before}`
+    );
+    this.placeholderAfterElement.nativeElement.setAttribute(
+      'style',
+      `--size: ${after}`
+    );
   }
 
-  public setDraggedElement(widget: keyof EntryComponents) {
-    this.draggedWidget = widget;
+  public setFilterState(state: FilterDateState) {
+    this.filterStore.setDates(state.startDate, state.endDate);
   }
 
   public removeWidget(widgetId: string): void {
     this.widgetConfigs = this.widgetConfigs.filter((w) => w.id !== widgetId);
   }
 
-  private addWidgetToBoard(event: DragEvent, item: GridsterItem): void {
-    const widgetToAdd: WidgetConfig = {
-      component: this.draggedWidget,
-      fullscreen: true,
-      id: crypto.randomUUID(),
-    };
-    this.widgetConfigs = [...this.widgetConfigs, widgetToAdd];
-
-    const itemConfig: GridsterItem = {
-      ...item,
-      rows: this.defaultWidgetRows,
-      cols: this.defaultWidgetColumns,
-    };
-
-    this.initialGridItems = [...this.initialGridItems, itemConfig];
+  onWidgetDragStart(widget: WidgetLabels): void {
+    console.info('DragStart', {widget, oldValue: this.draggedWidget});
+    this.draggedWidget = widget;
   }
 
   onWidgetDragAction(index: number, event: WidgetDragActionEvent): void {
+    const colSize = CHART_WIDGET[this.draggedWidget].columnSpan;
     switch (event.action) {
       case WidgetDragAction.Enter:
         this.injectPlaceholders(index);
         if (event.position > 0) {
-          this.placeholderAfterElement.nativeElement.setAttribute(
-            'style',
-            '--size: 1'
-          );
-          this.placeholderBeforeElement.nativeElement.setAttribute(
-            'style',
-            '--size: 0'
-          );
+          this.setPlaceholderWidths(0, colSize);
         } else {
-          this.placeholderAfterElement.nativeElement.setAttribute(
-            'style',
-            '--size: 0'
-          );
-          this.placeholderBeforeElement.nativeElement.setAttribute(
-            'style',
-            '--size: 1'
-          );
+          this.setPlaceholderWidths(colSize, 0);
         }
         break;
-      // case WidgetDragAction.Leave:
-      //   this.placeholderBeforeElement.nativeElement.setAttribute(
-      //     'style',
-      //     '--size: 0'
-      //   );
-      //   this.placeholderAfterElement.nativeElement.setAttribute(
-      //     'style',
-      //     '--size: 0'
-      //   );
-      //   break;
       case WidgetDragAction.Change:
-        console.info('Drag action!', { index, event });
-        this.placeholderBeforeElement.nativeElement.setAttribute(
-          'style',
-          `--size: ${event.position < 0 ? 1 : 0}`
+        this.setPlaceholderWidths(
+          event.position < 0 ? colSize : 0,
+          event.position > 0 ? colSize : 0
         );
-        this.placeholderAfterElement.nativeElement.setAttribute(
-          'style',
-          `--size: ${event.position > 0 ? 1 : 0}`
-        );
+        break;
+      case WidgetDragAction.Cancel:
+        this.setPlaceholderWidths(0, 0);
         break;
     }
   }
@@ -235,7 +162,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     if (dropZoneContainsEvent > -1) {
       return;
     }
-
     const data = dragEvent.dataTransfer.getData('widget-item');
     if (data) {
       const widgetItem: WidgetPanelModel = JSON.parse(data);
@@ -245,6 +171,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         filters: widgetItem.widgetFilters,
         id: crypto.randomUUID(),
       };
+      this.setPlaceholderWidths(0, 0);
       this.widgetConfigs = [...this.widgetConfigs, widgetToAdd];
     }
   }

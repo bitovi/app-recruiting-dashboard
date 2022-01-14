@@ -23,6 +23,7 @@ import {
   EntryComponentsUnion,
   WidgetConfig,
   WidgetFilterUnion,
+  WidgetLabels,
 } from './widget.model';
 import { CHART_WIDGET } from '../widget-panel/widget-panel-model';
 
@@ -33,8 +34,11 @@ import { CHART_WIDGET } from '../widget-panel/widget-panel-model';
 })
 export class WidgetWrapperComponent implements OnChanges {
   @Input() config: WidgetConfig = defaultWidgetConfig;
-  @Output() public removeWidget = new EventEmitter<string>();
+  @Input() widgetInEditMode = false;
+  @Output() removeWidget = new EventEmitter<string>();
   @Output() dragAction = new EventEmitter<WidgetDragActionEvent>();
+  @Output() dragStart = new EventEmitter<WidgetLabels>();
+
   @ViewChild('container', { static: true })
   containerRef: ElementRef<HTMLDivElement>;
   @ViewChild('child', { read: ViewContainerRef, static: true })
@@ -54,10 +58,10 @@ export class WidgetWrapperComponent implements OnChanges {
 
   private componentRef: ComponentRef<EntryComponentsUnion>;
 
+  // #region [Drag State]
   private dropDomRect: DOMRect;
   private dropSide = 0;
-
-  @Input() public widgetInEditMode = false;
+  // #endregion
 
   constructor(private readonly filterStore: FilterStore) {}
 
@@ -78,6 +82,11 @@ export class WidgetWrapperComponent implements OnChanges {
    */
   onMoveButton(pressed: boolean): void {
     this.moveButtonPressed = pressed;
+  }
+
+
+  onDragStart(): void {
+    this.dragStart.emit(this.config.component);
   }
 
   onDragEnter(ev: DragEvent): void {
@@ -108,6 +117,13 @@ export class WidgetWrapperComponent implements OnChanges {
     this.dragAction.emit({
       action: WidgetDragAction.Leave,
       position: this.dropSide,
+    });
+  }
+
+  onDragEnd(): void {
+    this.dragAction.emit({
+      action: WidgetDragAction.Cancel,
+      position: 0,
     });
   }
 

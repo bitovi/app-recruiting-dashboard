@@ -1,9 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CHART_WIDGET, WidgetPanelModel } from './widget-panel-model';
 import {
   EntryComponents,
   entryComponents,
   WidgetConfig,
+  WidgetLabels,
 } from '../widgets/widget.model';
 
 @Component({
@@ -14,6 +15,7 @@ import {
 export class WidgetPanelComponent implements OnInit {
   @Input() openPanel = false;
   @Input() addedWidgetConfig: WidgetConfig[] = [];
+  @Output() dragStart = new EventEmitter<WidgetLabels>();
   widgetList: WidgetPanelModel[] = [];
 
   constructor() {}
@@ -34,5 +36,6 @@ export class WidgetPanelComponent implements OnInit {
   onDrag(ev: DragEvent, dragItem: WidgetPanelModel) {
     ev.dataTransfer.setData('widget-item', JSON.stringify(dragItem));
     ev.dataTransfer.setData('widget-component', dragItem.widget);
+    this.dragStart.emit(dragItem.widget);
   }
 }
