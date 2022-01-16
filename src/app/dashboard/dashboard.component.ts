@@ -5,7 +5,10 @@ import { ApplicantsStore } from './store/applicants.store';
 import { ChartsStore } from './store/charts.store';
 import { JobsStore } from './store/jobs.store';
 import { WidgetConfig, WidgetLabels } from './widgets/widget.model';
-import { CHART_WIDGET, WidgetPanelModel } from './widget-panel/widget-panel-model';
+import {
+  CHART_WIDGET,
+  WidgetPanelModel,
+} from './widget-panel/widget-panel-model';
 import {
   WidgetDragAction,
   WidgetDragActionEvent,
@@ -80,7 +83,7 @@ export class DashboardComponent implements AfterViewInit {
     },
   ];
 
-  private draggedWidget!: WidgetLabels;
+  public draggedWidget!: WidgetLabels;
 
   constructor(
     private readonly filterStore: FilterStore,
@@ -97,7 +100,7 @@ export class DashboardComponent implements AfterViewInit {
     this.injectPlaceholders(3);
   }
 
-  injectPlaceholders(index: number): void {
+  injectPlaceholders(index: number, position?: number): void {
     const gridElement = this.gridSectionElement.nativeElement;
     const el = gridElement.querySelectorAll('brd-widget-wrapper')[index];
     gridElement.insertBefore(this.placeholderBeforeElement.nativeElement, el);
@@ -105,6 +108,38 @@ export class DashboardComponent implements AfterViewInit {
       'afterend',
       this.placeholderAfterElement.nativeElement
     );
+    // this.reArrangeWidgetItems(index, position);
+  }
+
+  reArrangeWidgetItems(index: number, position: number) {
+    if (!this.isOpenedWidgetPanel) {
+      return;
+    }
+    const getNodes = document.querySelectorAll('brd-widget-wrapper');
+    const tempArray = [...this.widgetConfigs];
+    const newArray: [] = [];
+
+    const draggedWidgetConfig = this.widgetConfigs.find(
+      (value) => value.component === this.draggedWidget
+    );
+    const draggedItemIndex = this.widgetConfigs.indexOf(draggedWidgetConfig);
+    const indexOfItemToReplaced = this.widgetConfigs.indexOf(tempArray[index]);
+    const newPosition = indexOfItemToReplaced + position;
+
+    console.log(
+      tempArray[draggedItemIndex].component,
+      'is currently over',
+      tempArray[index].component
+    );
+    console.log(
+      'indexOfItemToReplaced',
+      indexOfItemToReplaced,
+      'index of dragged item',
+      draggedItemIndex,
+      'replaced item new position',
+      newPosition
+    );
+    console.log(getNodes);
   }
 
   setPlaceholderWidths(before: number | string, after: number | string): void {
@@ -127,7 +162,7 @@ export class DashboardComponent implements AfterViewInit {
   }
 
   onWidgetDragStart(widget: WidgetLabels): void {
-    console.info('DragStart', {widget, oldValue: this.draggedWidget});
+    console.info('DragStart', { widget, oldValue: this.draggedWidget });
     this.draggedWidget = widget;
   }
 
@@ -135,12 +170,13 @@ export class DashboardComponent implements AfterViewInit {
     const colSize = CHART_WIDGET[this.draggedWidget].columnSpan;
     switch (event.action) {
       case WidgetDragAction.Enter:
-        this.injectPlaceholders(index);
+        this.injectPlaceholders(index, event.position);
         if (event.position > 0) {
           this.setPlaceholderWidths(0, colSize);
         } else {
           this.setPlaceholderWidths(colSize, 0);
         }
+        this.reArrangeWidgetItems(index, event.position);
         break;
       case WidgetDragAction.Change:
         this.setPlaceholderWidths(

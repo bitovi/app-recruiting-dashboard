@@ -84,7 +84,6 @@ export class WidgetWrapperComponent implements OnChanges {
     this.moveButtonPressed = pressed;
   }
 
-
   onDragStart(): void {
     this.dragStart.emit(this.config.component);
   }
@@ -125,6 +124,7 @@ export class WidgetWrapperComponent implements OnChanges {
       action: WidgetDragAction.Cancel,
       position: 0,
     });
+    this.moveButtonPressed = false;
   }
 
   public remove(): void {
