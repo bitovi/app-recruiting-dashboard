@@ -29,6 +29,10 @@ export interface WidgetFilterSelectJob extends WidgetFilter<string[]> {
   type: 'select-job';
 }
 
+export interface WidgetFilterSelectStage extends WidgetFilter<string[]> {
+  type: 'select-stage';
+}
+
 export interface WidgetFilterInputText extends WidgetFilter<string> {
   type: 'input-text';
 }
@@ -41,10 +45,16 @@ export enum WidgetComponents {
   ApplicantsBySource = 'widget-applicants-by-source',
 }
 
-export type WidgetFilterTypes = 'date-interval' | 'select-job' | 'input-text';
+export type WidgetFilterTypes =
+  | 'date-interval'
+  | 'select-job'
+  | 'select-stage'
+  | 'input-text';
+
 export type WidgetFilterUnion =
   | WidgetFilterDateInterval
   | WidgetFilterSelectJob
+  | WidgetFilterSelectStage
   | WidgetFilterInputText;
 
 export type EntryComponents = {

@@ -54,6 +54,11 @@ export class DashboardComponent implements OnInit {
           value: [],
         },
         {
+          id: 'select-stage',
+          type: 'select-stage',
+          value: [],
+        },
+        {
           id: 'input-text',
           type: 'input-text',
           value: '',

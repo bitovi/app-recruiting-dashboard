@@ -11,7 +11,11 @@
     [filter]="filter"
     (changed)="filterChange($event)"
   ></brd-filter-select-job>
-
+  <brd-filter-select-stage
+    *ngIf="filter.type === 'select-stage'"
+    [filter]="filter"
+    (changed)="filterChange($event)"
+  ></brd-filter-select-stage>
   <brd-filter-input-text
     class="u-w-100"
     *ngIf="filter.type === 'input-text'"
