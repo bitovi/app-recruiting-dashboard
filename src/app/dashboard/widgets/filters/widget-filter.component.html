@@ -1,24 +1,24 @@
 <div class="flex flex-column">
   <brd-date-picker
-    *ngIf="filter.type === 'date-interval'"
+    *ngIf="filter.type === WidgetFilterTypes.DateInterval"
     [startDate]="filter.value.startDate"
     [endDate]="filter.value.endDate"
     (dateChanged)="filterDateIntervalChange($event, filter)"
   ></brd-date-picker>
   <brd-filter-select-job
     class="u-w-100"
-    *ngIf="filter.type === 'select-job'"
+    *ngIf="filter.type === WidgetFilterTypes.SelectJob"
     [filter]="filter"
     (changed)="filterChange($event)"
   ></brd-filter-select-job>
   <brd-filter-select-stage
-    *ngIf="filter.type === 'select-stage'"
+    *ngIf="filter.type === WidgetFilterTypes.SelectStage"
     [filter]="filter"
     (changed)="filterChange($event)"
   ></brd-filter-select-stage>
   <brd-filter-input-text
     class="u-w-100"
-    *ngIf="filter.type === 'input-text'"
+    *ngIf="filter.type === WidgetFilterTypes.InputText"
     [filter]="filter"
     (changed)="filterChange($event)"
   ></brd-filter-input-text>

@@ -14,6 +14,7 @@ import {
   EntryComponents,
   WidgetComponents,
   WidgetConfig,
+  WidgetFilterTypes,
 } from './widgets/widget.model';
 
 @Component({
@@ -42,7 +43,7 @@ export class DashboardComponent implements OnInit {
       filters: [
         {
           id: 'date-interval',
-          type: 'date-interval',
+          type: WidgetFilterTypes.DateInterval,
           value: {
             startDate: null,
             endDate: null,
@@ -50,17 +51,17 @@ export class DashboardComponent implements OnInit {
         },
         {
           id: 'select-job',
-          type: 'select-job',
+          type: WidgetFilterTypes.SelectJob,
           value: [],
         },
         {
           id: 'select-stage',
-          type: 'select-stage',
+          type: WidgetFilterTypes.SelectStage,
           value: [],
         },
         {
           id: 'input-text',
-          type: 'input-text',
+          type: WidgetFilterTypes.InputText,
           value: '',
           label: 'Name',
         },
