@@ -7,12 +7,14 @@ import { BRDDatePickerModule } from 'src/app/shared/components/date-picker/date-
 import { FilterInputTextComponent } from './filter-input-text/filter-input-text.component';
 import { NglInputModule } from 'ng-lightning';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FilterSelectSourceComponent } from './filter-select-source/filter-select-source.component';
 
 @NgModule({
   declarations: [
     WidgetFilterComponent,
     FilterSelectJobComponent,
     FilterInputTextComponent,
+    FilterSelectSourceComponent,
   ],
   exports: [
     WidgetFilterComponent,

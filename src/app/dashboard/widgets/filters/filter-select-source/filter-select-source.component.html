@@ -1,0 +1,7 @@
+<brd-combobox
+  class="u-w-100"
+  label="Select Option"
+  [options]="sources$ | async"
+  (selectionChanged)="onItemSelected($event)"
+  [selections]="[]"
+></brd-combobox>
