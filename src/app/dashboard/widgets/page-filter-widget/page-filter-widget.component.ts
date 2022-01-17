@@ -28,11 +28,11 @@ export class PageFilterWidgetComponent {
   filtersLabels = FiltersLabels;
   isCustomFilterPopoverOpen = false;
 
-  closeCustomFilterPopover() {
+  closeCustomFilterPopover(): void {
     this.isCustomFilterPopoverOpen = false;
   }
 
-  public onChange(selected: string) {
+  public onChange(selected: string): void {
     if (selected === FiltersLabels.CUSTOM) {
       return;
     }
@@ -50,7 +50,7 @@ export class PageFilterWidgetComponent {
     }
   }
 
-  public changeCustomDate(datePickerEvent: IDatePickerEvent) {
+  public changeCustomDate(datePickerEvent: IDatePickerEvent): void {
     if (datePickerEvent.dateSide === DateSide.StartDate) {
       this.selected.emit({
         startDate: datePickerEvent.date,

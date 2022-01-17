@@ -20,7 +20,7 @@ export class FilterSelectJobComponent implements FilterComponent {
 
   constructor(private readonly jobsStore: JobsStore) {}
 
-  onItemSelected(items: string[]) {
+  onItemSelected(items: string[]): void {
     this.changed.emit({
       ...this.filter,
       value: items,

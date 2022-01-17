@@ -29,7 +29,7 @@ export class ClickOutsideToCloseDirective implements OnDestroy {
       .subscribe();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.destroy$.next();
   }
 }

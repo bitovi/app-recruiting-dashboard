@@ -60,7 +60,7 @@ export class WidgetWrapperComponent implements OnChanges {
     this.removeWidget.emit(this.config.id);
   }
 
-  public filterChange(filter: WidgetFilterUnion) {
+  public filterChange(filter: WidgetFilterUnion): void {
     this.filterStore.setWidgetFilter(this.config.id, filter);
   }
 
