@@ -50,6 +50,10 @@ export class ChartApiService {
     );
   }
 
+  public getStages(): Observable<string[]> {
+    return this.http.get<string[]>(`${environment.api}/charts/stages`);
+  }
+
   public getHttpParams(
     { startDate, endDate }: IDateFilter,
     globalCombinedDates: [Date, Date]
