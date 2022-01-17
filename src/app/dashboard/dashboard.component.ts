@@ -62,6 +62,7 @@ export class DashboardComponent implements OnInit {
           id: 'input-text',
           type: 'input-text',
           value: '',
+          label: 'Name',
         },
       ],
       fullscreen: true,

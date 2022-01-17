@@ -1,2 +1,4 @@
-<input ngl [formControl]="input" type="text" />
+<ngl-input [label]="filter.label || 'Input Text'">
+  <input ngl [formControl]="input" type="text" />
+</ngl-input>
 <ng-container *ngIf="inputChanged$ | async"></ng-container>

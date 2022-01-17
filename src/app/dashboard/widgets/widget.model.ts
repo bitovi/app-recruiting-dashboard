@@ -19,6 +19,7 @@ export interface WidgetFilter<T> {
   id: string;
   type: WidgetFilterTypes;
   value: T;
+  label?: string;
 }
 
 export interface WidgetFilterDateInterval extends WidgetFilter<IDateFilter> {
