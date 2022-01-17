@@ -14,7 +14,6 @@
         class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click"
         [class.slds-is-open]="openDropDown"
         id="combobox-id-1"
-        *ngIf="options?.length"
       >
         <div
           class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right"
@@ -40,15 +39,16 @@
               }}</span
             >
           </button>
-          <span
+          <div
             class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right"
+            *ngIf="(isLoading$ | async) === false; else loadingBlock"
           >
             <ngl-icon
               iconName="utility:down"
               alternativeText="down"
               size="x-small"
             ></ngl-icon>
-          </span>
+          </div>
         </div>
         <div
           id="listbox-id-7"
@@ -114,3 +114,12 @@
     </div>
   </div>
 </div>
+
+<ng-template #loadingBlock>
+  <ngl-spinner
+    class="spinner-location"
+    size="small"
+    variant="brand"
+    alternativeText="Loading"
+  ></ngl-spinner>
+</ng-template>

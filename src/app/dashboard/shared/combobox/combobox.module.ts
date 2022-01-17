@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import {
   NglComboboxesModule,
   NglIconsModule,
+  NglSpinnersModule,
   NglPillsModule,
 } from 'ng-lightning';
 import { ComboboxComponent } from './combobox.component';
@@ -20,6 +21,7 @@ import {
     NglComboboxesModule,
     NglIconsModule,
     NglPillsModule,
+    NglSpinnersModule,
     ClickOutsideToCloseDirectiveModule,
     SelectedOptionPipeModule,
     LabelToArrayPipeModule,
