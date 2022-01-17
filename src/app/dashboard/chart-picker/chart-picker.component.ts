@@ -12,13 +12,11 @@ export class ChartPickerComponent implements OnInit {
 
   public availableWidgets: string[] = [];
 
-  constructor() {}
-
   public ngOnInit(): void {
     this.initAvailableWidgets();
   }
 
-  public drag(widget?: string) {
+  public drag(widget?: string): void {
     const revertedName: keyof EntryComponents = widget
       ? this.revertFromDisplayName(widget)
       : null;

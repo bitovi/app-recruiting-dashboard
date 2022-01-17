@@ -5,7 +5,6 @@ import { DashboardComponent } from './dashboard.component';
 import { NglDatatablesModule, NglModule } from 'ng-lightning';
 import { NgChartsModule } from 'ng2-charts';
 import { PageFilterWidgetComponent } from './widgets/page-filter-widget/page-filter-widget.component';
-import { WidgetsFilterComponent } from './shared/widgets-filter/widgets-filter.component';
 import { HeaderComponent } from './header/header.component';
 import { ClickOutsideToCloseDirectiveModule } from '../shared/directives';
 import { ApplicantService } from './services/applicants-api.service';
@@ -34,7 +33,6 @@ const routes: Routes = [{ path: '', component: DashboardComponent }];
   declarations: [
     DashboardComponent,
     PageFilterWidgetComponent,
-    WidgetsFilterComponent,
     HeaderComponent,
     WidgetWrapperComponent,
     WidgetRecruitingStageExitedComponent,

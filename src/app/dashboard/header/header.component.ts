@@ -21,7 +21,7 @@ export class HeaderComponent {
 
   constructor(private authService: AuthService) {}
 
-  public onClickMenuItem(type: string) {
+  public onClickMenuItem(type: string): void {
     if (type === 'Logout') {
       this.authService.logout();
     }

@@ -93,7 +93,7 @@ export class DashboardComponent implements OnInit {
     private readonly applicantsStore: ApplicantsStore
   ) {}
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.gridOptions = {
       gridType: GridType.VerticalFixed,
       fixedRowHeight: 90,
@@ -112,11 +112,11 @@ export class DashboardComponent implements OnInit {
     };
   }
 
-  public setFilterState(state: FilterDateState) {
+  public setFilterState(state: FilterDateState): void {
     this.filterStore.setDates(state.startDate, state.endDate);
   }
 
-  public setDraggedElement(widget: keyof EntryComponents) {
+  public setDraggedElement(widget: keyof EntryComponents): void {
     this.draggedWidget = widget;
   }
 

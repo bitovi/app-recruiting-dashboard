@@ -15,7 +15,7 @@ export class WidgetFilterComponent {
   public filterDateIntervalChange(
     datePickerEvent: IDatePickerEvent,
     currentFilter: WidgetFilterDateInterval
-  ) {
+  ): void {
     const isStartDate = datePickerEvent.dateSide === DateSide.StartDate;
     this.changed.emit({
       ...currentFilter,
@@ -30,7 +30,7 @@ export class WidgetFilterComponent {
     });
   }
 
-  public filterChange(filter: WidgetFilterUnion) {
+  public filterChange(filter: WidgetFilterUnion): void {
     this.changed.emit(filter);
   }
 }

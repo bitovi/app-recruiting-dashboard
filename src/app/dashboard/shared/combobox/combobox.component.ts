@@ -16,7 +16,7 @@ export class ComboboxComponent {
   @Input() isLoading$: Observable<boolean> = of(false);
   @Output() public selectionChanged = new EventEmitter<string[]>();
 
-  public onItemAction(option: string, type: ComboboxAction) {
+  public onItemAction(option: string, type: ComboboxAction): void {
     const indexItem: number = this.selections.indexOf(option);
     if (type === ComboboxAction.PILL_ACTION) {
       this.selections.splice(indexItem, 1);

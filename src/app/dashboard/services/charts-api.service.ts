@@ -56,7 +56,7 @@ export class ChartApiService {
   ): HttpParams {
     const [globalStartDate, globalEndDate] = globalCombinedDates;
 
-    let params = new HttpParams()
+    const params = new HttpParams()
       .set(
         'apply_date_date[$gte]',
         startDate ? startDate.toISOString() : globalStartDate.toISOString()
