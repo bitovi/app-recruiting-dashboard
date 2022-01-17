@@ -4,4 +4,5 @@
   [options]="jobs$ | async"
   (selectionChanged)="onItemSelected($event)"
   [selections]="filter.value"
+  [isLoading$]="isLoading$"
 ></brd-combobox>

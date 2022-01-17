@@ -13,6 +13,8 @@ import { FilterComponent } from '../filter.component';
 })
 export class FilterSelectJobComponent implements FilterComponent {
   @Input() filter: WidgetFilterSelectJob;
+  @Input() isLoading$: Observable<boolean> = this.jobsStore.loading$;
+
   @Output() changed = new EventEmitter<WidgetFilterSelectJob>();
   readonly jobs$: Observable<string[]> = this.jobsStore.jobs$.pipe(
     map((jobs: Job[]) => jobs.map((job) => job.title))

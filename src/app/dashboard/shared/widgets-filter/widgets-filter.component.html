@@ -1,10 +1,19 @@
 <div class="slds-card__header slds-m-bottom_none">
-
   <div class="slds-media slds-media_center slds-has-flexi-truncate">
     <div class="slds-media__body">
-      <button (click)="showModal.emit( {openModal: true , openedModal: widgetHeader.widgetType})"
-              iconName="utility:expand" nglButtonIcon title="expand Chart" type="button"
-              variant="bare"></button>
+      <button
+        (click)="
+          showModal.emit({
+            openModal: true,
+            openedModal: widgetHeader.widgetType
+          })
+        "
+        iconName="utility:expand"
+        nglButtonIcon
+        title="expand Chart"
+        type="button"
+        variant="bare"
+      ></button>
     </div>
     <ng-container *ngIf="widgetHeader?.widgetFilterFields?.length">
       <button
@@ -17,12 +26,20 @@
         nglPopoverHeader="Filter Widget"
         nglPopoverPlacement="bottom-right"
         nglPopoverSize="large"
-        type="button">
-        <ngl-icon alternativeText="Filter" iconName="utility:filter" size="x-small"></ngl-icon>
-        <ngl-icon alternativeText="Filter" class="slds-m-left--x-small" iconName="utility:down"
-                  size="x-small"></ngl-icon>
+        type="button"
+      >
+        <ngl-icon
+          alternativeText="Filter"
+          iconName="utility:filter"
+          size="x-small"
+        ></ngl-icon>
+        <ngl-icon
+          alternativeText="Filter"
+          class="slds-m-left--x-small"
+          iconName="utility:down"
+          size="x-small"
+        ></ngl-icon>
       </button>
-
     </ng-container>
   </div>
 </div>
@@ -30,9 +47,12 @@
 <ng-template #widgetFilter>
   <div class="slds-p-around_small">
     <div class="slds-grid slds-wrap slds-gutters_xx-small slds-p-bottom--large">
-      <ng-container *ngFor=" let widgetFilterField of widgetHeader.widgetFilterFields">
-        <ng-container *ngIf="widgetFilterField?.fieldType === fieldTypes.DATE_RANGE">
-
+      <ng-container
+        *ngFor="let widgetFilterField of widgetHeader.widgetFilterFields"
+      >
+        <ng-container
+          *ngIf="widgetFilterField?.fieldType === fieldTypes.DATE_RANGE"
+        >
           <div class="slds-grid slds-gutters">
             <div class="slds-col">
               <ngl-datepicker-input
@@ -41,7 +61,7 @@
                 format="little-endian"
                 label="Start Date"
               >
-                <input nglDatepickerInput type="text">
+                <input nglDatepickerInput type="text" />
               </ngl-datepicker-input>
             </div>
 
@@ -52,22 +72,21 @@
                 format="little-endian"
                 label="End Date"
               >
-                <input nglDatepickerInput type="text">
+                <input nglDatepickerInput type="text" />
               </ngl-datepicker-input>
             </div>
           </div>
-
         </ng-container>
 
-
-        <ng-container *ngIf="widgetFilterField?.fieldType === fieldTypes.CHECK_BOX">
+        <ng-container
+          *ngIf="widgetFilterField?.fieldType === fieldTypes.CHECK_BOX"
+        >
           <div class="slds-col slds-p-top_small">
             <ngl-checkbox label="Show/Hide">
-              <input ngl type="checkbox">
+              <input ngl type="checkbox" />
             </ngl-checkbox>
           </div>
         </ng-container>
-
       </ng-container>
     </div>
   </div>
@@ -75,12 +94,7 @@
 
 <ng-template #closeFilter>
   <div class="slds-align--absolute-center sdl_outline-button-bitovi">
-    <button
-      (click)="doFilter()"
-      nglButton
-      type="button"
-      variant="neutral"
-    >
+    <button (click)="doFilter()" nglButton type="button" variant="neutral">
       &nbsp; Filter &nbsp;
     </button>
   </div>
