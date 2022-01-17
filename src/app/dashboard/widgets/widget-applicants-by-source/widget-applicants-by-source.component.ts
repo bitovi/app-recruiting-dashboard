@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ChartOptions, ChartType } from 'chart.js';
 import { map } from 'rxjs/operators';
 import { ChartsStore } from '../../store/charts.store';
@@ -9,7 +9,10 @@ import { DefaultWidgetComponent } from '../default-widget.component';
   templateUrl: './widget-applicants-by-source.component.html',
   styleUrls: ['./widget-applicants-by-source.component.scss'],
 })
-export class WidgetApplicantsBySourceComponent extends DefaultWidgetComponent {
+export class WidgetApplicantsBySourceComponent
+  extends DefaultWidgetComponent
+  implements OnInit
+{
   readonly data$ = this.chartsStore.applicantsBySource$.pipe(
     map((applicantsBySourceData) => {
       const labels = applicantsBySourceData.map(
@@ -62,5 +65,9 @@ export class WidgetApplicantsBySourceComponent extends DefaultWidgetComponent {
 
   constructor(private readonly chartsStore: ChartsStore) {
     super();
+  }
+
+  ngOnInit(): void {
+    this.chartsStore.setId(this.id);
   }
 }

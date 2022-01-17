@@ -1,8 +1,14 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
-import { Observable, of } from 'rxjs';
-import { concatMap, finalize, map, tap } from 'rxjs/operators';
+import { combineLatest, Observable, of } from 'rxjs';
+import {
+  concatMap,
+  distinctUntilChanged,
+  finalize,
+  map,
+  tap,
+} from 'rxjs/operators';
 import { FilterStore } from './filter.store';
 import {
   IApplicantsBySourceResponse,
@@ -12,6 +18,10 @@ import {
   IRecruitingStageExitedResponse,
 } from '../../core/interfaces';
 import { ChartApiService } from '../services/charts-api.service';
+import {
+  WidgetFilterSelectStage,
+  WidgetFilterUnion,
+} from '../widgets/widget.model';
 
 export interface ChartLoading {
   recruitingStageExited: number;
@@ -22,6 +32,7 @@ export interface ChartLoading {
 }
 
 export interface ChartsState {
+  id: string;
   recruitingStageExited: IRecruitingStageExitedResponse[];
   newApplicants: INewApplicantsResponse[];
   jobsApplicants: IJobsApplicantsResponse[];
@@ -49,7 +60,11 @@ export class ChartsStore extends ComponentStore<ChartsState> {
   readonly loadingStages$ = this.loading$.pipe(
     map((loading: ChartLoading) => loading.stages !== 0)
   );
-
+  public readonly id$ = this.select((state) => state.id);
+  public readonly filters$: Observable<Map<string, WidgetFilterUnion>> =
+    combineLatest([this.id$, this.filterStore.widgetFilters$]).pipe(
+      map(([id, widgetFilters]) => widgetFilters?.get(id))
+    );
   readonly filter$ = this.select((state: ChartsState) => state.filter);
   readonly globalCombinedDates$ = this.filterStore.combinedDates$;
   readonly recruitingStageExited$ = this.select(
@@ -65,6 +80,13 @@ export class ChartsStore extends ComponentStore<ChartsState> {
     (state: ChartsState) => state.applicantsBySource
   );
   readonly stages$ = this.select((state: ChartsState) => state.stages);
+  public readonly stageFilter$: Observable<string[]> = this.filters$.pipe(
+    map(
+      (filters) =>
+        (filters?.get('select-stage') as WidgetFilterSelectStage)?.value
+    ),
+    distinctUntilChanged()
+  );
 
   private readonly fetchChartsData$ = this.select(
     this.filter$,
@@ -76,11 +98,24 @@ export class ChartsStore extends ComponentStore<ChartsState> {
     { debounce: true }
   );
 
+  private readonly fetchApplicantsBySourceChartsData$ = this.select(
+    this.filter$,
+    this.globalCombinedDates$,
+    this.stageFilter$,
+    (filter, globalCombinedDates, stageFilter) => ({
+      filter,
+      globalCombinedDates,
+      stageFilter,
+    }),
+    { debounce: true }
+  );
+
   constructor(
     private chartApiService: ChartApiService,
     private filterStore: FilterStore
   ) {
     super({
+      id: '',
       recruitingStageExited: [],
       newApplicants: [],
       jobsApplicants: [],
@@ -99,9 +134,16 @@ export class ChartsStore extends ComponentStore<ChartsState> {
     this.fetchRecruitingStageExited(this.fetchChartsData$);
     this.fetchNewApplicants(this.fetchChartsData$);
     this.fetchJobsApplicants(this.fetchChartsData$);
-    this.fetchApplicantsBySource(this.fetchChartsData$);
+    this.fetchApplicantsBySource(this.fetchApplicantsBySourceChartsData$);
     this.fetchStages();
   }
+
+  readonly setId = this.updater(
+    (state, id: string): ChartsState => ({
+      ...state,
+      id,
+    })
+  );
 
   readonly setFilter = this.updater(
     (state, filter: IDateFilter): ChartsState => ({
@@ -265,13 +307,15 @@ export class ChartsStore extends ComponentStore<ChartsState> {
       data$: Observable<{
         filter: IDateFilter;
         globalCombinedDates: [Date, Date];
+        stageFilter: string[];
       }>
     ) => {
       return data$.pipe(
-        concatMap(({ filter, globalCombinedDates }) => {
+        concatMap(({ filter, globalCombinedDates, stageFilter }) => {
           const params: HttpParams = this.chartApiService.getHttpParams(
             filter,
-            globalCombinedDates
+            globalCombinedDates,
+            stageFilter
           );
           this.updateLoading({ key: 'applicantsBySource', loading: true });
 

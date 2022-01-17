@@ -56,11 +56,12 @@ export class ChartApiService {
 
   public getHttpParams(
     { startDate, endDate }: IDateFilter,
-    globalCombinedDates: [Date, Date]
+    globalCombinedDates: [Date, Date],
+    stage?: string[]
   ): HttpParams {
     const [globalStartDate, globalEndDate] = globalCombinedDates;
 
-    const params = new HttpParams()
+    let params = new HttpParams()
       .set(
         'apply_date_date[$gte]',
         startDate ? startDate.toISOString() : globalStartDate.toISOString()
@@ -69,6 +70,12 @@ export class ChartApiService {
         'apply_date_date[$lte]',
         endDate ? endDate.toISOString() : globalEndDate.toISOString()
       );
+
+    if (stage?.length) {
+      stage.forEach((pos) => {
+        params = params.append(`jobs.applicant_progress[$in][]`, pos);
+      });
+    }
 
     return params;
   }
