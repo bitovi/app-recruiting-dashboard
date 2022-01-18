@@ -22,3 +22,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Added StyleLint
 - Implement ComboBox
 
+[Added Changes] 2022-01-18
+- restructure slds-grid for drag n drop
