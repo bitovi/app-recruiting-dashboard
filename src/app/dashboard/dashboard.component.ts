@@ -118,7 +118,11 @@ export class DashboardComponent implements AfterViewInit {
     );
     const draggedItemIndex = this.widgetConfigs.indexOf(draggedWidgetConfig);
     const itemToBeReplaced = this.widgetConfigs[index];
-    if (!this.isOpenedWidgetPanel || draggedItemIndex === index) {
+    if (
+      !this.isOpenedWidgetPanel ||
+      draggedItemIndex === index ||
+      draggedItemIndex < 0
+    ) {
       return;
     }
     const countUpOrDown = index < draggedItemIndex ? -1 : 1;
