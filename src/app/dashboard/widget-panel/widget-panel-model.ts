@@ -1,7 +1,11 @@
-import { WidgetFilterUnion, WidgetLabels } from '../widgets/widget.model';
+import {
+  WidgetComponents,
+  WidgetFilterTypes,
+  WidgetFilterUnion,
+} from '../widgets/widget.model';
 
 export interface WidgetPanelModel {
-  widget: WidgetLabels;
+  widget: WidgetComponents;
   title: string;
   description: string;
   initials: string;
@@ -10,7 +14,7 @@ export interface WidgetPanelModel {
 }
 
 const widget_jobs_applicants: WidgetPanelModel = {
-  widget: WidgetLabels.JobApplicants,
+  widget: WidgetComponents.JobApplicants,
   title: 'Jobs Applicants',
   description: 'A chart indicating list of all Job Openings',
   initials: 'JO',
@@ -19,7 +23,7 @@ const widget_jobs_applicants: WidgetPanelModel = {
 };
 
 const widget_applicants_table: WidgetPanelModel = {
-  widget: WidgetLabels.ApplicantTable,
+  widget: WidgetComponents.ApplicantsTable,
   title: 'Applicants Table',
   description:
     'A Datatable Indicating list of applicant and the position they applied to',
@@ -27,28 +31,28 @@ const widget_applicants_table: WidgetPanelModel = {
   columnSpan: 2,
   widgetFilters: [
     {
-      id: 'date-interval',
-      type: 'date-interval',
+      id: WidgetFilterTypes.DateInterval,
+      type: WidgetFilterTypes.DateInterval,
       value: {
         startDate: null,
         endDate: null,
       },
     },
     {
-      id: 'select-job',
-      type: 'select-job',
+      id: WidgetFilterTypes.SelectJob,
+      type: WidgetFilterTypes.SelectJob,
       value: [],
     },
     {
-      id: 'input-text',
-      type: 'input-text',
+      id: WidgetFilterTypes.InputText,
+      type: WidgetFilterTypes.InputText,
       value: '',
     },
   ],
 };
 
 const widget_applicants_by_source: WidgetPanelModel = {
-  widget: WidgetLabels.ApplicantBySource,
+  widget: WidgetComponents.ApplicantsBySource,
   title: 'Applicants By Source',
   description: 'A Chart showing list applicant by the medium of application',
   initials: 'ABS',
@@ -57,7 +61,7 @@ const widget_applicants_by_source: WidgetPanelModel = {
 };
 
 const widget_recruiting_stage_exited: WidgetPanelModel = {
-  widget: WidgetLabels.RecruitingStageExited,
+  widget: WidgetComponents.RecruitingStageExited,
   title: 'Recruiting Stage Exited',
   description:
     'A Datatable Indicating list of applicant and the position they applied to',
@@ -67,7 +71,7 @@ const widget_recruiting_stage_exited: WidgetPanelModel = {
 };
 
 const widget_new_applicants: WidgetPanelModel = {
-  widget: WidgetLabels.NewApplicants,
+  widget: WidgetComponents.NewApplicants,
   title: 'New Applicant',
   description: 'A chart indicating the list of new applicant',
   initials: 'NA',
@@ -75,10 +79,10 @@ const widget_new_applicants: WidgetPanelModel = {
   widgetFilters: [],
 };
 
-export const CHART_WIDGET: Record<WidgetLabels, WidgetPanelModel> = {
-  [WidgetLabels.JobApplicants]: widget_jobs_applicants,
-  [WidgetLabels.ApplicantTable]: widget_applicants_table,
-  [WidgetLabels.ApplicantBySource]: widget_applicants_by_source,
-  [WidgetLabels.RecruitingStageExited]: widget_recruiting_stage_exited,
-  [WidgetLabels.NewApplicants]: widget_new_applicants,
+export const CHART_WIDGET: Record<WidgetComponents, WidgetPanelModel> = {
+  [WidgetComponents.JobApplicants]: widget_jobs_applicants,
+  [WidgetComponents.ApplicantsTable]: widget_applicants_table,
+  [WidgetComponents.ApplicantsBySource]: widget_applicants_by_source,
+  [WidgetComponents.RecruitingStageExited]: widget_recruiting_stage_exited,
+  [WidgetComponents.NewApplicants]: widget_new_applicants,
 };

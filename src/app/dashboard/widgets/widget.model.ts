@@ -6,7 +6,7 @@ import { WidgetNewApplicantsComponent } from './widget-new-applicants/widget-new
 import { WidgetRecruitingStageExitedComponent } from './widget-recruiting-stage-exited/widget-recruiting-stage-exited.component';
 
 export interface WidgetConfig {
-  component: WidgetLabels;
+  component: WidgetComponents;
   filters?: WidgetFilterUnion[];
   /**
    * allow fullscreen mode
@@ -46,14 +46,6 @@ export enum WidgetComponents {
   ApplicantsBySource = 'widget-applicants-by-source',
 }
 
-export enum WidgetLabels {
-  RecruitingStageExited = 'widget-recruiting-stage-exited',
-  JobApplicants = 'widget-jobs-applicants',
-  NewApplicants = 'widget-new-applicants',
-  ApplicantTable = 'widget-applicants-table',
-  ApplicantBySource = 'widget-applicants-by-source',
-}
-
 export enum WidgetFilterTypes {
   DateInterval = 'date-interval',
   SelectJob = 'select-job',
@@ -70,26 +62,27 @@ export type WidgetFilterUnion =
   | WidgetFilterInputText;
 
 export type EntryComponents = {
-  [WidgetLabels.RecruitingStageExited]: WidgetRecruitingStageExitedComponent;
-  [WidgetLabels.JobApplicants]: WidgetJobsApplicantsComponent;
-  [WidgetLabels.NewApplicants]: WidgetNewApplicantsComponent;
-  [WidgetLabels.ApplicantTable]: WidgetApplicantsTableComponent;
-  [WidgetLabels.ApplicantBySource]: WidgetApplicantsBySourceComponent;
+  [WidgetComponents.RecruitingStageExited]: WidgetRecruitingStageExitedComponent;
+  [WidgetComponents.JobApplicants]: WidgetJobsApplicantsComponent;
+  [WidgetComponents.NewApplicants]: WidgetNewApplicantsComponent;
+  [WidgetComponents.ApplicantsTable]: WidgetApplicantsTableComponent;
+  [WidgetComponents.ApplicantsBySource]: WidgetApplicantsBySourceComponent;
 };
 
 export type EntryComponentsUnion = EntryComponents[keyof EntryComponents];
 
 export const entryComponents = {
-  [WidgetLabels.RecruitingStageExited]: WidgetRecruitingStageExitedComponent,
-  [WidgetLabels.JobApplicants]: WidgetJobsApplicantsComponent,
-  [WidgetLabels.NewApplicants]: WidgetNewApplicantsComponent,
-  [WidgetLabels.ApplicantTable]: WidgetApplicantsTableComponent,
-  [WidgetLabels.ApplicantBySource]: WidgetApplicantsBySourceComponent,
+  [WidgetComponents.RecruitingStageExited]:
+    WidgetRecruitingStageExitedComponent,
+  [WidgetComponents.JobApplicants]: WidgetJobsApplicantsComponent,
+  [WidgetComponents.NewApplicants]: WidgetNewApplicantsComponent,
+  [WidgetComponents.ApplicantsTable]: WidgetApplicantsTableComponent,
+  [WidgetComponents.ApplicantsBySource]: WidgetApplicantsBySourceComponent,
 };
 
 export const defaultWidgetConfig: WidgetConfig = {
   fullscreen: false,
-  component: WidgetLabels.RecruitingStageExited,
+  component: WidgetComponents.RecruitingStageExited,
   filters: [],
   id: 'default',
 };

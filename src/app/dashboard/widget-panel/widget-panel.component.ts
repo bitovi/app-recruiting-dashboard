@@ -4,7 +4,7 @@ import {
   EntryComponents,
   entryComponents,
   WidgetConfig,
-  WidgetLabels,
+  WidgetComponents,
 } from '../widgets/widget.model';
 
 @Component({
@@ -15,7 +15,7 @@ import {
 export class WidgetPanelComponent implements OnInit {
   @Input() openPanel = false;
   @Input() addedWidgetConfig: WidgetConfig[] = [];
-  @Output() dragStart = new EventEmitter<WidgetLabels>();
+  @Output() dragStart = new EventEmitter<WidgetComponents>();
   widgetList: WidgetPanelModel[] = [];
 
   constructor() {}

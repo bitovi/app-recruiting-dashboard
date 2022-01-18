@@ -4,7 +4,11 @@ import { FilterDateState, FilterStore } from './store/filter.store';
 import { ApplicantsStore } from './store/applicants.store';
 import { ChartsStore } from './store/charts.store';
 import { JobsStore } from './store/jobs.store';
-import { WidgetConfig, WidgetLabels } from './widgets/widget.model';
+import {
+  WidgetConfig,
+  WidgetComponents,
+  WidgetFilterTypes,
+} from './widgets/widget.model';
 import { WidgetPanelModel } from './widget-panel/widget-panel-model';
 import {
   WidgetDragAction,
@@ -82,7 +86,7 @@ export class DashboardComponent {
     },
   ];
 
-  draggedWidget!: WidgetLabels;
+  draggedWidget!: WidgetComponents;
 
   constructor(
     private readonly filterStore: FilterStore,
@@ -124,8 +128,7 @@ export class DashboardComponent {
     this.widgetConfigs = this.widgetConfigs.filter((w) => w.id !== widgetId);
   }
 
-  onWidgetDragStart(widget: WidgetLabels): void {
-    console.info('DragStart', { widget, oldValue: this.draggedWidget });
+  onWidgetDragStart(widget: WidgetComponents): void {
     this.draggedWidget = widget;
   }
 
