@@ -8,6 +8,7 @@ import { FilterInputTextComponent } from './filter-input-text/filter-input-text.
 import { NglInputModule } from 'ng-lightning';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FilterSelectStageComponent } from './filter-select-stage/filter-select-stage.component';
+import { FilterSelectSourceComponent } from './filter-select-source/filter-select-source.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { FilterSelectStageComponent } from './filter-select-stage/filter-select-
     FilterSelectJobComponent,
     FilterSelectStageComponent,
     FilterInputTextComponent,
+    FilterSelectSourceComponent,
   ],
   exports: [
     WidgetFilterComponent,

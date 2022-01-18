@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { IApplicantsBySourceResponse } from '../../../../core/interfaces';
 import { ChartsStore } from '../../../store/charts.store';
-import { WidgetFilterSelectJob } from '../../widget.model';
+import { WidgetFilterSelectSource } from '../../widget.model';
 
 @Component({
   selector: 'brd-filter-select-source',
@@ -11,21 +11,23 @@ import { WidgetFilterSelectJob } from '../../widget.model';
   styleUrls: ['./filter-select-source.component.scss'],
 })
 export class FilterSelectSourceComponent {
-  @Input() filter: WidgetFilterSelectJob;
-  @Output() changed = new EventEmitter<WidgetFilterSelectJob>();
+  @Input() filter: WidgetFilterSelectSource;
+  @Output() changed = new EventEmitter<WidgetFilterSelectSource>();
   readonly sources$: Observable<string[]> =
     this.chartsStore.applicantsBySource$.pipe(
       map((applicantsBySourceResponse: IApplicantsBySourceResponse[]) =>
-        applicantsBySourceResponse.map(
-          (applicantsBySource: IApplicantsBySourceResponse) =>
-            applicantsBySource.source
-        )
+        applicantsBySourceResponse
+          .map(
+            (applicantsBySource: IApplicantsBySourceResponse) =>
+              applicantsBySource.source
+          )
+          .filter((source: string) => !!source.length)
       )
     );
 
   constructor(private readonly chartsStore: ChartsStore) {}
 
-  onItemSelected(items: string[]) {
+  public onItemSelected(items: string[]) {
     this.changed.emit({
       ...this.filter,
       value: items,

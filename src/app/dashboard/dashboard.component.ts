@@ -60,6 +60,11 @@ export class DashboardComponent implements OnInit {
           value: [],
         },
         {
+          id: 'select-source',
+          type: WidgetFilterTypes.SelectSource,
+          value: [],
+        },
+        {
           id: 'input-text',
           type: WidgetFilterTypes.InputText,
           value: '',

@@ -5,21 +5,31 @@
     [endDate]="filter.value.endDate"
     (dateChanged)="filterDateIntervalChange($event, filter)"
   ></brd-date-picker>
+
   <brd-filter-select-job
     class="u-w-100"
     *ngIf="filter.type === WidgetFilterTypes.SelectJob"
     [filter]="filter"
     (changed)="filterChange($event)"
   ></brd-filter-select-job>
+
   <brd-filter-select-stage
     *ngIf="filter.type === WidgetFilterTypes.SelectStage"
     [filter]="filter"
     (changed)="filterChange($event)"
   ></brd-filter-select-stage>
+
   <brd-filter-input-text
     class="u-w-100"
     *ngIf="filter.type === WidgetFilterTypes.InputText"
     [filter]="filter"
     (changed)="filterChange($event)"
   ></brd-filter-input-text>
+
+  <brd-filter-select-source
+    *ngIf="filter.type === WidgetFilterTypes.SelectSource"
+    (changed)="filterChange($event)"
+    [filter]="filter"
+  >
+  </brd-filter-select-source>
 </div>

@@ -15,6 +15,7 @@ import {
   WidgetFilter,
   WidgetFilterInputText,
   WidgetFilterSelectJob,
+  WidgetFilterSelectSource,
   WidgetFilterSelectStage,
   WidgetFilterUnion,
 } from '../widgets/widget.model';
@@ -81,6 +82,13 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
     ),
     distinctUntilChanged()
   );
+  public readonly sourceFilter$: Observable<string[]> = this.filters$.pipe(
+    map(
+      (filters) =>
+        (filters?.get('select-source') as WidgetFilterSelectSource)?.value
+    ),
+    distinctUntilChanged()
+  );
   public readonly applicantNameFilter$: Observable<string> = this.filters$.pipe(
     map(
       (filters) => (filters?.get('input-text') as WidgetFilterInputText)?.value
@@ -96,6 +104,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
     this.stageFilter$,
     this.dateFilters$,
     this.applicantNameFilter$,
+    this.sourceFilter$,
     (
       pageSize,
       currentPage,
@@ -103,7 +112,8 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
       positionFilter,
       stageFilter,
       dateFilters,
-      applicantNameFilter
+      applicantNameFilter,
+      sourceFilter
     ) => ({
       pageSize,
       currentPage,
@@ -112,6 +122,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
       stageFilter,
       dateFilters,
       applicantNameFilter,
+      sourceFilter,
     }),
     { debounce: true }
   );
@@ -187,6 +198,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
         stageFilter: string[];
         dateFilters: [Date, Date];
         applicantNameFilter: string;
+        sourceFilter: string[];
       }>
     ) => {
       return data$.pipe(
@@ -199,6 +211,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
             stageFilter,
             dateFilters,
             applicantNameFilter,
+            sourceFilter,
           }) => {
             const params: HttpParams = this.applicantService.getHttpParams(
               pageSize,
@@ -207,7 +220,8 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
               positionFilter,
               stageFilter,
               dateFilters,
-              applicantNameFilter
+              applicantNameFilter,
+              sourceFilter
             );
 
             this.updateLoading(true);

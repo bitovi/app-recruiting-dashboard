@@ -22,7 +22,8 @@ export class ApplicantService {
     position: string[],
     stage: string[],
     [startDate, endDate]: [Date, Date],
-    applicantName: string
+    applicantName: string,
+    sourceFilter: string[]
   ): HttpParams {
     let params = new HttpParams()
       .set('$limit', pageSize)
@@ -48,6 +49,12 @@ export class ApplicantService {
 
     if (applicantName?.length) {
       params = params.set('full_name[$search]', `${applicantName}`);
+    }
+
+    if (sourceFilter?.length) {
+      sourceFilter.forEach((source: string) => {
+        params = params.append(`source[$in][]`, source);
+      });
     }
 
     return params;
