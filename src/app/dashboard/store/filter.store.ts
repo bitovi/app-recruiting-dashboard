@@ -36,7 +36,7 @@ export class FilterStore extends ComponentStore<FilterState> {
     });
   }
 
-  public setDates(startDate: Date, endDate: Date) {
+  public setDates(startDate: Date, endDate: Date): void {
     this.setState((state) => ({
       ...state,
       startDate: moment(startDate).startOf('day').toDate(),
@@ -44,7 +44,7 @@ export class FilterStore extends ComponentStore<FilterState> {
     }));
   }
 
-  setWidgetFilters(id: string, filters: WidgetFilterUnion[]) {
+  setWidgetFilters(id: string, filters: WidgetFilterUnion[]): void {
     this.setState((state) => ({
       ...state,
       widgetFilters: new Map(
@@ -56,7 +56,7 @@ export class FilterStore extends ComponentStore<FilterState> {
     }));
   }
 
-  setWidgetFilter(id: string, filter: WidgetFilterUnion) {
+  setWidgetFilter(id: string, filter: WidgetFilterUnion): void {
     this.setState((state) => ({
       ...state,
       widgetFilters: new Map(

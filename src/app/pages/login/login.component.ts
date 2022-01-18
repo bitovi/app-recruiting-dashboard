@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 export class LoginComponent {
   constructor(public authService: AuthService, private router: Router) {}
 
-  login() {
+  login(): void {
     this.router.navigateByUrl(`/dashboard`);
   }
 

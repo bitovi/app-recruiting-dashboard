@@ -30,11 +30,11 @@ export class DashboardComponent {
 
   widgetConfigs: WidgetConfig[] = [
     {
-      component: WidgetLabels.ApplicantTable,
+      component: WidgetComponents.ApplicantsTable,
       filters: [
         {
           id: 'date-interval',
-          type: 'date-interval',
+          type: WidgetFilterTypes.DateInterval,
           value: {
             startDate: null,
             endDate: null,
@@ -42,36 +42,42 @@ export class DashboardComponent {
         },
         {
           id: 'select-job',
-          type: 'select-job',
+          type: WidgetFilterTypes.SelectJob,
+          value: [],
+        },
+        {
+          id: 'select-stage',
+          type: WidgetFilterTypes.SelectStage,
           value: [],
         },
         {
           id: 'input-text',
-          type: 'input-text',
+          type: WidgetFilterTypes.InputText,
           value: '',
+          label: 'Name',
         },
       ],
       fullscreen: true,
       id: crypto.randomUUID(),
     },
     {
-      component: WidgetLabels.RecruitingStageExited,
+      component: WidgetComponents.RecruitingStageExited,
       fullscreen: true,
       id: crypto.randomUUID(),
     },
     {
-      component: WidgetLabels.JobApplicants,
+      component: WidgetComponents.JobApplicants,
       fullscreen: true,
       id: crypto.randomUUID(),
     },
     {
-      component: WidgetLabels.NewApplicants,
       fullscreen: true,
+      component: WidgetComponents.NewApplicants,
       id: crypto.randomUUID(),
     },
     {
-      component: WidgetLabels.ApplicantBySource,
       fullscreen: true,
+      component: WidgetComponents.ApplicantsBySource,
       id: crypto.randomUUID(),
     },
   ];
@@ -110,7 +116,7 @@ export class DashboardComponent {
     this.widgetConfigs = [...tempArray];
   }
 
-  setFilterState(state: FilterDateState) {
+  public setFilterState(state: FilterDateState): void {
     this.filterStore.setDates(state.startDate, state.endDate);
   }
 

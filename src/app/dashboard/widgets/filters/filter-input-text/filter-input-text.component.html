@@ -1,11 +1,4 @@
-<label class="slds-form-element__label" for="text-input-id-1">{{
-  label
-}}</label>
-<input
-  ngl
-  [formControl]="input"
-  [placeholder]="label"
-  type="text"
-  id="text-input-id-1"
-/>
+<ngl-input [label]="filter.label || 'Input Text'">
+  <input ngl [formControl]="input" type="text" />
+</ngl-input>
 <ng-container *ngIf="inputChanged$ | async"></ng-container>

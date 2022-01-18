@@ -15,6 +15,7 @@ import {
   WidgetFilter,
   WidgetFilterInputText,
   WidgetFilterSelectJob,
+  WidgetFilterSelectStage,
   WidgetFilterUnion,
 } from '../widgets/widget.model';
 import { ApplicantService } from '../services/applicants-api.service';
@@ -73,6 +74,13 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
     ),
     distinctUntilChanged()
   );
+  public readonly stageFilter$: Observable<string[]> = this.filters$.pipe(
+    map(
+      (filters) =>
+        (filters?.get('select-stage') as WidgetFilterSelectStage)?.value
+    ),
+    distinctUntilChanged()
+  );
   public readonly applicantNameFilter$: Observable<string> = this.filters$.pipe(
     map(
       (filters) => (filters?.get('input-text') as WidgetFilterInputText)?.value
@@ -85,6 +93,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
     this.currentPage$,
     this.sort$,
     this.positionFilter$,
+    this.stageFilter$,
     this.dateFilters$,
     this.applicantNameFilter$,
     (
@@ -92,6 +101,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
       currentPage,
       sort,
       positionFilter,
+      stageFilter,
       dateFilters,
       applicantNameFilter
     ) => ({
@@ -99,6 +109,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
       currentPage,
       sort,
       positionFilter,
+      stageFilter,
       dateFilters,
       applicantNameFilter,
     }),
@@ -173,6 +184,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
         currentPage: number;
         sort: INglDatatableSort;
         positionFilter: string[];
+        stageFilter: string[];
         dateFilters: [Date, Date];
         applicantNameFilter: string;
       }>
@@ -184,6 +196,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
             currentPage,
             sort,
             positionFilter,
+            stageFilter,
             dateFilters,
             applicantNameFilter,
           }) => {
@@ -192,6 +205,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
               currentPage,
               sort,
               positionFilter,
+              stageFilter,
               dateFilters,
               applicantNameFilter
             );

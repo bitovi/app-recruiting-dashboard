@@ -47,15 +47,16 @@ export class WidgetWrapperComponent implements OnChanges {
   public openedFilter = false;
 
   public loading$: Observable<boolean> = of(true);
-  public filters$ = this.filterStore.widgetFilters$.pipe(
-    map((widgetFilters) => widgetFilters.get(this.config.id))
-  );
+  public filters$: Observable<Map<string, WidgetFilterUnion>> =
+    this.filterStore.widgetFilters$.pipe(
+      map((widgetFilters) => widgetFilters.get(this.config.id))
+    );
+
   /** Controls whether widget is draggable */
   moveButtonPressed = false;
   /** Controls whether widget is fullscreen */
   fullscreen = false;
   chartWidget = CHART_WIDGET;
-
   private componentRef: ComponentRef<EntryComponentsUnion>;
 
   // #region [Drag State]
@@ -131,7 +132,7 @@ export class WidgetWrapperComponent implements OnChanges {
     this.removeWidget.emit(this.config.id);
   }
 
-  public filterChange(filter: WidgetFilterUnion) {
+  public filterChange(filter: WidgetFilterUnion): void {
     this.filterStore.setWidgetFilter(this.config.id, filter);
   }
 

@@ -50,13 +50,17 @@ export class ChartApiService {
     );
   }
 
+  public getStages(): Observable<string[]> {
+    return this.http.get<string[]>(`${environment.api}/charts/stages`);
+  }
+
   public getHttpParams(
     { startDate, endDate }: IDateFilter,
     globalCombinedDates: [Date, Date]
   ): HttpParams {
     const [globalStartDate, globalEndDate] = globalCombinedDates;
 
-    let params = new HttpParams()
+    const params = new HttpParams()
       .set(
         'apply_date_date[$gte]',
         startDate ? startDate.toISOString() : globalStartDate.toISOString()

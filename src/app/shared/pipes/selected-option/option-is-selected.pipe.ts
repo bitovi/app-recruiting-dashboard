@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'isSelected',
 })
 export class OptionIsSelectedPipe implements PipeTransform {
-  transform(value: any, args: { count: number; selected: any[] }): boolean {
+  transform<T>(value: T, args: { count: number; selected: T[] }): boolean {
     if (!args.count) {
       return false;
     }

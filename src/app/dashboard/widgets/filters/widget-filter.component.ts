@@ -1,7 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DateSide } from 'src/app/core/enums';
 import { IDatePickerEvent } from 'src/app/core/interfaces/date-picker-event.interface';
-import { WidgetFilterDateInterval, WidgetFilterUnion } from '../widget.model';
+import {
+  WidgetFilterDateInterval,
+  WidgetFilterTypes,
+  WidgetFilterUnion,
+} from '../widget.model';
 
 @Component({
   selector: 'brd-widget-filter',
@@ -11,11 +15,12 @@ import { WidgetFilterDateInterval, WidgetFilterUnion } from '../widget.model';
 export class WidgetFilterComponent {
   @Input() filter: WidgetFilterUnion;
   @Output() changed = new EventEmitter<WidgetFilterUnion>();
+  public WidgetFilterTypes = WidgetFilterTypes;
 
-  filterDateIntervalChange(
+  public filterDateIntervalChange(
     datePickerEvent: IDatePickerEvent,
     currentFilter: WidgetFilterDateInterval
-  ) {
+  ): void {
     const isStartDate = datePickerEvent.dateSide === DateSide.StartDate;
     this.changed.emit({
       ...currentFilter,
@@ -30,7 +35,7 @@ export class WidgetFilterComponent {
     });
   }
 
-  filterChange(filter: WidgetFilterUnion) {
+  public filterChange(filter: WidgetFilterUnion): void {
     this.changed.emit(filter);
   }
 }

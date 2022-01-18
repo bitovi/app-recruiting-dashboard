@@ -43,21 +43,21 @@ export class WidgetApplicantsTableComponent
     this.applicantsStore.setId(this.id);
   }
 
-  public onSort(event: INglDatatableSort) {
+  public onSort(event: INglDatatableSort): void {
     this.applicantsStore.setSort(event);
   }
 
-  public onPageChange(page: number) {
+  public onPageChange(page: number): void {
     if (page) {
       this.applicantsStore.setPage(page);
     }
   }
 
-  public onClickInfo(id: string) {
+  public onClickInfo(id: string): void {
     this.selectedId$.next(id);
   }
 
-  public closeUserInfoModal() {
+  public closeUserInfoModal(): void {
     this.selectedId$.next('');
   }
 }
