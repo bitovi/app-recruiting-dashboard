@@ -1,7 +1,8 @@
 <brd-combobox
   class="u-w-100"
-  label="Select Option"
+  label="Select Job"
   [options]="jobs$ | async"
   (selectionChanged)="onItemSelected($event)"
   [selections]="filter.value"
+  [isLoading$]="isLoading$"
 ></brd-combobox>

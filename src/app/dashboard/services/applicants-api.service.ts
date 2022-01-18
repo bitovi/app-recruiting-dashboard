@@ -20,6 +20,7 @@ export class ApplicantService {
     currentPage: number,
     sort: INglDatatableSort,
     position: string[],
+    stage: string[],
     [startDate, endDate]: [Date, Date],
     applicantName: string
   ): HttpParams {
@@ -36,6 +37,12 @@ export class ApplicantService {
     if (position?.length) {
       position.forEach((pos) => {
         params = params.append(`jobs.job_title[$in][]`, pos);
+      });
+    }
+
+    if (stage?.length) {
+      stage.forEach((pos) => {
+        params = params.append(`jobs.applicant_progress[$in][]`, pos);
       });
     }
 

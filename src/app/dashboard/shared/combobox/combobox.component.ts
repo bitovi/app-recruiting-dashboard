@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Observable, of } from 'rxjs';
 import { ComboboxAction } from './combobox-model';
 
 @Component({
@@ -12,6 +13,7 @@ export class ComboboxComponent {
   @Input() public selections: string[] = [];
   @Input() public label!: string;
   @Input() public options: string[] | null = [];
+  @Input() isLoading$: Observable<boolean> = of(false);
   @Output() public selectionChanged = new EventEmitter<string[]>();
 
   public onItemAction(option: string, type: ComboboxAction): void {

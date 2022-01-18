@@ -64,7 +64,7 @@
 <ng-template #widgetFilter>
   <div
     *ngIf="config.filters?.length > 0"
-    class="slds-p-around_small slds-grid slds-wrap slds-p-bottom--large"
+    class="slds-p-around_small flex flex-column"
   >
     <ng-container *ngIf="filters$ | async as filters">
       <brd-widget-filter

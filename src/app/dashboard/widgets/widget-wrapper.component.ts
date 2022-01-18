@@ -35,9 +35,10 @@ export class WidgetWrapperComponent implements OnChanges {
 
   public openedFilter = false;
   public loading$: Observable<boolean> = of(true);
-  public filters$ = this.filterStore.widgetFilters$.pipe(
-    map((widgetFilters) => widgetFilters.get(this.config.id))
-  );
+  public filters$: Observable<Map<string, WidgetFilterUnion>> =
+    this.filterStore.widgetFilters$.pipe(
+      map((widgetFilters) => widgetFilters.get(this.config.id))
+    );
 
   private componentRef: ComponentRef<EntryComponentsUnion>;
 

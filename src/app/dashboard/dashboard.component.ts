@@ -10,7 +10,12 @@ import {
   GridsterItem,
   GridType,
 } from 'angular-gridster2';
-import { EntryComponents, WidgetConfig } from './widgets/widget.model';
+import {
+  EntryComponents,
+  WidgetComponents,
+  WidgetConfig,
+  WidgetFilterTypes,
+} from './widgets/widget.model';
 
 @Component({
   selector: 'brd-dashboard',
@@ -34,11 +39,11 @@ export class DashboardComponent implements OnInit {
   ];
   public widgetConfigs: WidgetConfig[] = [
     {
-      component: 'widget-applicants-table',
+      component: WidgetComponents.ApplicantsTable,
       filters: [
         {
           id: 'date-interval',
-          type: 'date-interval',
+          type: WidgetFilterTypes.DateInterval,
           value: {
             startDate: null,
             endDate: null,
@@ -46,35 +51,41 @@ export class DashboardComponent implements OnInit {
         },
         {
           id: 'select-job',
-          type: 'select-job',
+          type: WidgetFilterTypes.SelectJob,
+          value: [],
+        },
+        {
+          id: 'select-stage',
+          type: WidgetFilterTypes.SelectStage,
           value: [],
         },
         {
           id: 'input-text',
-          type: 'input-text',
+          type: WidgetFilterTypes.InputText,
           value: '',
+          label: 'Name',
         },
       ],
       fullscreen: true,
       id: crypto.randomUUID(),
     },
     {
-      component: 'widget-recruiting-stage-exited',
+      component: WidgetComponents.RecruitingStageExited,
       fullscreen: true,
       id: crypto.randomUUID(),
     },
     {
-      component: 'widget-jobs-applicants',
+      component: WidgetComponents.JobApplicants,
       fullscreen: true,
       id: crypto.randomUUID(),
     },
     {
-      component: 'widget-new-applicants',
+      component: WidgetComponents.NewApplicants,
       fullscreen: true,
       id: crypto.randomUUID(),
     },
     {
-      component: 'widget-applicants-by-source',
+      component: WidgetComponents.ApplicantsBySource,
       fullscreen: true,
       id: crypto.randomUUID(),
     },
