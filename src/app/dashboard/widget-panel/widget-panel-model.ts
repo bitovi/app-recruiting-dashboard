@@ -65,7 +65,7 @@ const widget_recruiting_stage_exited: WidgetPanelModel = {
   title: 'Recruiting Stage Exited',
   description:
     'A Datatable Indicating list of applicant and the position they applied to',
-  initials: 'AT',
+  initials: 'RSE',
   columnSpan: 1,
   widgetFilters: [],
 };
