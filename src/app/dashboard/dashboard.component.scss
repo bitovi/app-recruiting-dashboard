@@ -1,4 +1,4 @@
-@use '../../styles/vars' as vars;
+@use "../../styles/vars" as vars;
 
 $transition-speed: 250ms;
 
@@ -13,10 +13,4 @@ $transition-speed: 250ms;
 
 .other-info {
   min-height: 60vh;
-}
-
-.placeholder {
-  height: vars.$table-widget-height;
-  width: calc(calc(var(--size, 0) / 3) * 100%);
-  transition: width $transition-speed ease-in-out;
 }
