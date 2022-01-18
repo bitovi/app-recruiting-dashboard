@@ -1,0 +1,69 @@
+<div
+  *ngIf="openPanel"
+  [class.slds-is-open]="openPanel"
+  class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right slds-panel_drawer side-panel"
+>
+  <div class="slds-panel__header">
+    <h2
+      class="slds-panel__header-title slds-text-heading_small slds-truncate"
+      title="Panel Header"
+    >
+      Choose Widget
+    </h2>
+  </div>
+  <div class="slds-panel__body">
+    <section tabindex="-1" class="slds-app-launcher">
+      <div class="slds-app-launcher__content slds-p-around_medium">
+        <div
+          class="slds-assistive-text"
+          id="drag-region"
+          aria-live="assertive"
+        ></div>
+        <ul class="slds-grid slds-grid_pull-padded slds-wrap">
+          <ng-container *ngFor="let widget of widgetList">
+            <li class="slds-size_1-of-1" style="position: relative">
+              <div
+                class="disabled-widget"
+                *ngIf="addedWidgetConfig | disableWidgetList: widget.widget"
+              ></div>
+
+              <div
+                (dragstart)="onDrag($event, widget)"
+                draggable="true"
+                class="slds-app-launcher__tile slds-text-link_reset slds-is-draggable"
+              >
+                <div class="slds-app-launcher__tile-figure">
+                  <span class="slds-avatar slds-avatar_large">
+                    <abbr
+                      class="slds-avatar__initials slds-icon-custom-27"
+                      title="Sales Cloud"
+                      >{{ widget.initials }}</abbr
+                    >
+                  </span>
+                  <div class="slds-m-top_xxx-small">
+                    <button
+                      class="slds-button slds-button_icon"
+                      aria-pressed="false"
+                      title="Drag"
+                    >
+                      <ngl-icon
+                        alternativeText="Filter"
+                        iconName="utility:drag"
+                        size="small"
+                      ></ngl-icon>
+                      <span class="slds-assistive-text">Drag</span>
+                    </button>
+                  </div>
+                </div>
+                <div class="slds-app-launcher__tile-body">
+                  <a href="#">{{ widget.title }} </a>
+                  <p>{{ widget.description }}</p>
+                </div>
+              </div>
+            </li>
+          </ng-container>
+        </ul>
+      </div>
+    </section>
+  </div>
+</div>

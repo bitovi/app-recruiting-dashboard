@@ -1,14 +1,24 @@
+@use "./vars" as vars;
+
 /* App Container */
 section.app-container {
   position: absolute;
   right: 0;
   left: 0;
   top: 90px;
+  height: calc(100% - 90px);
+  bottom: 0;
+}
+
+section.container-shrink {
+  width: calc(100vw - 300px);
+
 }
 
 // override context bar
 .slds-context-bar {
   border-bottom: 3px solid var(--color-bitovi-red);
+  padding-right: 3rem;
 }
 
 .logo-img {
@@ -58,8 +68,7 @@ section.app-container {
     @extend %table-fix-header;
 
     display: block;
-    height: calc(40vh - 80px);
-    max-height: calc(40vh - 80px);
+    height: calc(vars.$table-widget-height - 150px);
     overflow-y: scroll;
   }
 
@@ -114,11 +123,29 @@ section.app-container {
   border: 0;
   right: 0;
   left: 0;
-  z-index: 115;
+  z-index: 12000;
   background: rgb(0 0 0 / 60%);
 
+  .card-container {
+    max-width: vars.$modal-view-width;
+    min-width: vars.$modal-view-width;
+  }
   tbody {
     height: calc(85vh - 80px);
     max-height: calc(85vh - 80px);
   }
 }
+
+.side-panel {
+  position: fixed;
+  z-index: vars.$overlay-z-index;
+  right: 0;
+  top: vars.$header-height + 3px;
+  bottom: 0;
+  height: unset;
+  max-width: 300px;
+}
+.svg-edit-color{
+  fill: #fff !important;
+}
+

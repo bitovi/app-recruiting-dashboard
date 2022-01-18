@@ -1,5 +1,12 @@
+@use "../../styles/vars" as vars;
+
 .table {
   min-height: 40.4vh;
+}
+
+.slds-grid_flex-start {
+  align-content: flex-start;
+  min-height: calc(90vh - 110px);
 }
 
 .other-info {
