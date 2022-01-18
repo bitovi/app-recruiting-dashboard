@@ -1,0 +1,13 @@
+.disabled-widget {
+  border-color: #c9c9c9;
+  background-color: #f3f3f3;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 2;
+  right: 0;
+  opacity: 0.5;
+  margin: .5rem 0;
+  cursor: not-allowed;
+}

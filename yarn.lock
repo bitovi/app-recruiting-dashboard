@@ -219,7 +219,7 @@
     "symbol-observable" "4.0.0"
     "uuid" "8.3.2"
 
-"@angular/common@^12.0.0 || ^13.0.0-0", "@angular/common@^13.0.0", "@angular/common@^9.0.0", "@angular/common@>=7.2.0", "@angular/common@>=9 <=12", "@angular/common@~13.0.3", "@angular/common@13.0.3":
+"@angular/common@^12.0.0 || ^13.0.0-0", "@angular/common@^9.0.0", "@angular/common@>=7.2.0", "@angular/common@>=9 <=12", "@angular/common@~13.0.3", "@angular/common@13.0.3":
   "integrity" "sha512-xxQIQD5rWWHafKRPCgvkWvy53b+QkbJ9yAf3qYTp0gXZJMg/Cx3Ylc8LA2o1kyVJxCI/amXf5k4rr1S9yU7zxw=="
   "resolved" "https://registry.npmjs.org/@angular/common/-/common-13.0.3.tgz"
   "version" "13.0.3"
@@ -2066,13 +2066,6 @@
     "json-schema-traverse" "^1.0.0"
     "require-from-string" "^2.0.2"
     "uri-js" "^4.2.2"
-
-"angular-gridster2@^13.1.0":
-  "integrity" "sha512-TF6n9HI01+HhMXSHtnGpWtBqVHl3zV4PXhQ8HhDtBDZN22q5SuX9S41bztYOHlTVOwZbVPq7VaI7NMqH1ulNCA=="
-  "resolved" "https://registry.npmjs.org/angular-gridster2/-/angular-gridster2-13.1.1.tgz"
-  "version" "13.1.1"
-  dependencies:
-    "tslib" "^2.3.0"
 
 "ansi-colors@^4.1.1", "ansi-colors@4.1.1":
   "integrity" "sha512-JoX0apGbHaUJBNl6yF+p6JAFYZ666/hhCGKN5t9QFjbJQKUU/g8MNbFDbvfrgKXvI1QpZplPOnwIo99lX/AAmA=="

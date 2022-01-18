@@ -19,6 +19,7 @@ import { FilterComponent } from '../filter.component';
 })
 export class FilterInputTextComponent implements FilterComponent, OnChanges {
   @Input() filter: WidgetFilterInputText;
+  @Input() label!: string;
   @Output() changed = new EventEmitter<WidgetFilterInputText>();
   readonly input = this.fb.control('');
   readonly inputChanged$: Observable<string> = this.input.valueChanges.pipe(

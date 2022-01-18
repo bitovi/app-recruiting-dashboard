@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ChartPickerComponent } from './chart-picker.component';
+import { WidgetPanelComponent } from './widget-panel.component';
 
-describe('ChartPickerComponent', () => {
-  let component: ChartPickerComponent;
-  let fixture: ComponentFixture<ChartPickerComponent>;
+describe('WidgetPanelComponent', () => {
+  let component: WidgetPanelComponent;
+  let fixture: ComponentFixture<WidgetPanelComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ChartPickerComponent ]
+      declarations: [ WidgetPanelComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ChartPickerComponent);
+    fixture = TestBed.createComponent(WidgetPanelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

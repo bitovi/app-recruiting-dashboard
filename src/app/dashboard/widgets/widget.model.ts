@@ -6,7 +6,7 @@ import { WidgetNewApplicantsComponent } from './widget-new-applicants/widget-new
 import { WidgetRecruitingStageExitedComponent } from './widget-recruiting-stage-exited/widget-recruiting-stage-exited.component';
 
 export interface WidgetConfig {
-  component: keyof EntryComponents;
+  component: WidgetComponents;
   filters?: WidgetFilterUnion[];
   /**
    * allow fullscreen mode
@@ -68,26 +68,27 @@ export type WidgetFilterUnion =
   | WidgetFilterSelectSource;
 
 export type EntryComponents = {
-  'widget-recruiting-stage-exited': WidgetRecruitingStageExitedComponent;
-  'widget-jobs-applicants': WidgetJobsApplicantsComponent;
-  'widget-new-applicants': WidgetNewApplicantsComponent;
-  'widget-applicants-table': WidgetApplicantsTableComponent;
-  'widget-applicants-by-source': WidgetApplicantsBySourceComponent;
+  [WidgetComponents.RecruitingStageExited]: WidgetRecruitingStageExitedComponent;
+  [WidgetComponents.JobApplicants]: WidgetJobsApplicantsComponent;
+  [WidgetComponents.NewApplicants]: WidgetNewApplicantsComponent;
+  [WidgetComponents.ApplicantsTable]: WidgetApplicantsTableComponent;
+  [WidgetComponents.ApplicantsBySource]: WidgetApplicantsBySourceComponent;
 };
 
 export type EntryComponentsUnion = EntryComponents[keyof EntryComponents];
 
 export const entryComponents = {
-  'widget-recruiting-stage-exited': WidgetRecruitingStageExitedComponent,
-  'widget-jobs-applicants': WidgetJobsApplicantsComponent,
-  'widget-new-applicants': WidgetNewApplicantsComponent,
-  'widget-applicants-table': WidgetApplicantsTableComponent,
-  'widget-applicants-by-source': WidgetApplicantsBySourceComponent,
+  [WidgetComponents.RecruitingStageExited]:
+    WidgetRecruitingStageExitedComponent,
+  [WidgetComponents.JobApplicants]: WidgetJobsApplicantsComponent,
+  [WidgetComponents.NewApplicants]: WidgetNewApplicantsComponent,
+  [WidgetComponents.ApplicantsTable]: WidgetApplicantsTableComponent,
+  [WidgetComponents.ApplicantsBySource]: WidgetApplicantsBySourceComponent,
 };
 
 export const defaultWidgetConfig: WidgetConfig = {
   fullscreen: false,
-  component: 'widget-recruiting-stage-exited',
+  component: WidgetComponents.RecruitingStageExited,
   filters: [],
   id: 'default',
 };

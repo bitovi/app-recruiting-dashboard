@@ -1,3 +1,5 @@
+@use '../../../styles/vars' as vars;
+
 .loader-overlay {
   display: flex;
   background: rgb(255 255 255 / 70%);
@@ -11,7 +13,26 @@
   justify-content: center;
 }
 
+.card-container {
+  min-height: vars.$table-widget-height;
+}
+
 .chart-container {
   width: 100%;
-  height: calc(100% - 3rem);
+  // height: calc(100% - 3rem);
+
 }
+
+.component-name {
+
+}
+
+element.style {
+}
+
+.slds-drop-zone__actions {
+  left: 0;
+  right: auto;
+}
+
+

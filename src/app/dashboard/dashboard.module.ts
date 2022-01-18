@@ -11,12 +11,12 @@ import { ApplicantService } from './services/applicants-api.service';
 import { ChartApiService } from './services/charts-api.service';
 import { JobsApiService } from './services/jobs-api.service';
 import {
+  DisableWidgetListPipeModule,
   LabelToArrayPipeModule,
   SelectedOptionPipeModule,
 } from '../shared/pipes';
 import { BRDDatePickerModule } from '../shared/components/date-picker/date-picker.module';
 import { ApplicantDetailsModule } from '../shared/components';
-import { GridsterModule } from 'angular-gridster2';
 import { WidgetWrapperComponent } from './widgets/widget-wrapper.component';
 import { WidgetRecruitingStageExitedComponent } from './widgets/widget-recruiting-stage-exited/widget-recruiting-stage-exited.component';
 import { WidgetJobsApplicantsComponent } from './widgets/widget-jobs-applicants/widget-jobs-applicants.component';
@@ -25,7 +25,8 @@ import { WidgetApplicantsTableComponent } from './widgets/widget-applicants-tabl
 import { WidgetFilterModule } from './widgets/filters/widget-filter.module';
 import { ComboboxModule } from './shared/combobox/combobox.module';
 import { WidgetApplicantsBySourceComponent } from './widgets/widget-applicants-by-source/widget-applicants-by-source.component';
-import { ChartPickerComponent } from './chart-picker/chart-picker.component';
+import { WidgetPanelComponent } from './widget-panel/widget-panel.component';
+import { WidgetGridSizeClassPipeModule } from '../shared/pipes/widget-grid-size-class/widget-grid-size-class-pipe.module';
 
 const routes: Routes = [{ path: '', component: DashboardComponent }];
 
@@ -40,7 +41,7 @@ const routes: Routes = [{ path: '', component: DashboardComponent }];
     WidgetNewApplicantsComponent,
     WidgetApplicantsTableComponent,
     WidgetApplicantsBySourceComponent,
-    ChartPickerComponent,
+    WidgetPanelComponent,
   ],
   imports: [
     CommonModule,
@@ -53,9 +54,10 @@ const routes: Routes = [{ path: '', component: DashboardComponent }];
     SelectedOptionPipeModule,
     BRDDatePickerModule,
     ApplicantDetailsModule,
-    GridsterModule,
     ComboboxModule,
     WidgetFilterModule,
+    DisableWidgetListPipeModule,
+    WidgetGridSizeClassPipeModule,
   ],
   providers: [ApplicantService, ChartApiService, JobsApiService],
 })

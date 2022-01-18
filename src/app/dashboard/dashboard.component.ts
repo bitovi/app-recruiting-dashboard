@@ -1,21 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FilterDateState, FilterStore } from './store/filter.store';
 import { ApplicantsStore } from './store/applicants.store';
 import { ChartsStore } from './store/charts.store';
 import { JobsStore } from './store/jobs.store';
 import {
-  DisplayGrid,
-  GridsterConfig,
-  GridsterItem,
-  GridType,
-} from 'angular-gridster2';
-import {
-  EntryComponents,
-  WidgetComponents,
   WidgetConfig,
+  WidgetComponents,
   WidgetFilterTypes,
 } from './widgets/widget.model';
+import { WidgetPanelModel } from './widget-panel/widget-panel-model';
+import {
+  WidgetDragAction,
+  WidgetDragActionEvent,
+} from './widgets/widget-wrapper.model';
 
 @Component({
   selector: 'brd-dashboard',
@@ -23,21 +21,18 @@ import {
   styleUrls: ['./dashboard.component.scss'],
   providers: [FilterStore, ApplicantsStore, ChartsStore, JobsStore],
 })
-export class DashboardComponent implements OnInit {
-  public readonly totalApplicants$ = this.applicantsStore.totalApplicants$;
-  public readonly startDate$: Observable<Date> = this.filterStore.startDate$;
-  public readonly endDate$: Observable<Date> = this.filterStore.endDate$;
+export class DashboardComponent {
+  @ViewChild('gridSection') gridSectionElement: ElementRef<HTMLElement>;
 
-  public selectedFullscreenWidget: WidgetConfig = null;
-  public gridOptions: GridsterConfig;
-  public initialGridItems: GridsterItem[] = [
-    { cols: 2, rows: 5, x: 0, y: 0 },
-    { cols: 2, rows: 3, x: 2, y: 0 },
-    { cols: 2, rows: 4, x: 0, y: 2 },
-    { cols: 2, rows: 4, x: 2, y: 2 },
-    { cols: 2, rows: 4, x: 0, y: 4 },
-  ];
-  public widgetConfigs: WidgetConfig[] = [
+  readonly totalApplicants$ = this.applicantsStore.totalApplicants$;
+  readonly startDate$: Observable<Date> = this.filterStore.startDate$;
+  readonly endDate$: Observable<Date> = this.filterStore.endDate$;
+
+  selectedFullscreenWidget: WidgetConfig = null;
+
+  isOpenedWidgetPanel = false;
+
+  widgetConfigs: WidgetConfig[] = [
     {
       component: WidgetComponents.ApplicantsTable,
       filters: [
@@ -85,80 +80,94 @@ export class DashboardComponent implements OnInit {
       id: crypto.randomUUID(),
     },
     {
-      component: WidgetComponents.NewApplicants,
       fullscreen: true,
+      component: WidgetComponents.NewApplicants,
       id: crypto.randomUUID(),
     },
     {
-      component: WidgetComponents.ApplicantsBySource,
       fullscreen: true,
+      component: WidgetComponents.ApplicantsBySource,
       id: crypto.randomUUID(),
     },
   ];
 
-  private draggedWidget: keyof EntryComponents = null;
-  private defaultWidgetRows = 2;
-  private defaultWidgetColumns = 2;
+  draggedWidget!: WidgetComponents;
 
   constructor(
     private readonly filterStore: FilterStore,
     private readonly applicantsStore: ApplicantsStore
   ) {}
 
-  public ngOnInit(): void {
-    this.gridOptions = {
-      gridType: GridType.VerticalFixed,
-      fixedRowHeight: 90,
-      compactType: 'compactUp',
-      displayGrid: DisplayGrid.Always,
-      pushItems: true,
-      swap: true,
-      swapWhileDragging: false,
-      draggable: {
-        enabled: true,
-      },
-      enableOccupiedCellDrop: true,
-      enableEmptyCellDrop: true,
-      emptyCellDropCallback: (event: DragEvent, item: GridsterItem) =>
-        this.addWidgetToBoard(event, item),
-    };
+  reArrangeWidgetItems(index: number, position: number) {
+    const tempArray = [...this.widgetConfigs];
+    const draggedWidgetConfig = this.widgetConfigs.find(
+      (value) => value.component === this.draggedWidget
+    );
+    const draggedItemIndex = this.widgetConfigs.indexOf(draggedWidgetConfig);
+
+    if (
+      !this.isOpenedWidgetPanel ||
+      draggedItemIndex === index ||
+      draggedItemIndex < 0
+    ) {
+      return;
+    }
+
+    // Remove drag item from array
+    tempArray.splice(draggedItemIndex, 1);
+    // calculate adjusted destination location
+    const destIndex = index + Math.max(0, position);
+    const adjustedDestIndex =
+      destIndex + (destIndex > draggedItemIndex ? -1 : 0);
+    // insert dragged item at destination
+    tempArray.splice(adjustedDestIndex, 0, draggedWidgetConfig);
+    // update config array
+    this.widgetConfigs = [...tempArray];
   }
 
   public setFilterState(state: FilterDateState): void {
     this.filterStore.setDates(state.startDate, state.endDate);
   }
 
-  public setDraggedElement(widget: keyof EntryComponents): void {
+  removeWidget(widgetId: string): void {
+    this.widgetConfigs = this.widgetConfigs.filter((w) => w.id !== widgetId);
+  }
+
+  onWidgetDragStart(widget: WidgetComponents): void {
     this.draggedWidget = widget;
   }
 
-  public setFullScreenWidget(widgetConfig: WidgetConfig): void {
-    this.selectedFullscreenWidget = widgetConfig;
+  onWidgetDragAction(index: number, event: WidgetDragActionEvent): void {
+    if (
+      event.action === WidgetDragAction.Enter ||
+      event.action === WidgetDragAction.Change
+    ) {
+      this.reArrangeWidgetItems(index, event.position);
+    }
   }
 
-  public removeWidget(widgetId: string): void {
-    const widgetIndex: number = this.widgetConfigs.findIndex(
-      (widget: WidgetConfig) => widget.id === widgetId
+  onWidgetDrop(dragEvent: DragEvent) {
+    const widgetName = dragEvent.dataTransfer.getData('widget-component');
+    const dropZoneContainsEvent = this.widgetConfigs.findIndex(
+      (value) => value.component === widgetName
     );
-
-    this.widgetConfigs.splice(widgetIndex, 1);
-    this.initialGridItems.splice(widgetIndex, 1);
+    if (dropZoneContainsEvent > -1) {
+      return;
+    }
+    const data = dragEvent.dataTransfer.getData('widget-item');
+    if (data) {
+      const widgetItem: WidgetPanelModel = JSON.parse(data);
+      const widgetToAdd: WidgetConfig = {
+        component: widgetItem.widget,
+        fullscreen: true,
+        filters: widgetItem.widgetFilters,
+        id: crypto.randomUUID(),
+      };
+      this.widgetConfigs = [...this.widgetConfigs, widgetToAdd];
+    }
   }
 
-  private addWidgetToBoard(event: DragEvent, item: GridsterItem): void {
-    const widgetToAdd: WidgetConfig = {
-      component: this.draggedWidget,
-      fullscreen: true,
-      id: crypto.randomUUID(),
-    };
-    this.widgetConfigs = [...this.widgetConfigs, widgetToAdd];
-
-    const itemConfig: GridsterItem = {
-      ...item,
-      rows: this.defaultWidgetRows,
-      cols: this.defaultWidgetColumns,
-    };
-
-    this.initialGridItems = [...this.initialGridItems, itemConfig];
+  onDragOver(ev: DragEvent) {
+    ev.preventDefault();
   }
 }
