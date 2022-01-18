@@ -108,38 +108,31 @@ export class DashboardComponent implements AfterViewInit {
       'afterend',
       this.placeholderAfterElement.nativeElement
     );
-    // this.reArrangeWidgetItems(index, position);
+    this.reArrangeWidgetItems(index, position);
   }
 
   reArrangeWidgetItems(index: number, position: number) {
-    if (!this.isOpenedWidgetPanel) {
-      return;
-    }
-    const getNodes = document.querySelectorAll('brd-widget-wrapper');
     const tempArray = [...this.widgetConfigs];
-    const newArray: [] = [];
-
     const draggedWidgetConfig = this.widgetConfigs.find(
       (value) => value.component === this.draggedWidget
     );
     const draggedItemIndex = this.widgetConfigs.indexOf(draggedWidgetConfig);
-    const indexOfItemToReplaced = this.widgetConfigs.indexOf(tempArray[index]);
-    const newPosition = indexOfItemToReplaced + position;
+    const itemToBeReplaced = this.widgetConfigs[index];
+    if (!this.isOpenedWidgetPanel || draggedItemIndex === index) {
+      return;
+    }
+    const countUpOrDown = index < draggedItemIndex ? -1 : 1;
 
-    console.log(
-      tempArray[draggedItemIndex].component,
-      'is currently over',
-      tempArray[index].component
-    );
-    console.log(
-      'indexOfItemToReplaced',
-      indexOfItemToReplaced,
-      'index of dragged item',
-      draggedItemIndex,
-      'replaced item new position',
-      newPosition
-    );
-    console.log(getNodes);
+    for (let i = draggedItemIndex; i !== index; i += countUpOrDown) {
+      tempArray[i] = tempArray[i + countUpOrDown];
+    }
+    tempArray[index] = draggedWidgetConfig;
+    if (position < 0) {
+      const currentIndex = tempArray.indexOf(itemToBeReplaced);
+      tempArray[index] = itemToBeReplaced;
+      tempArray[currentIndex] = draggedWidgetConfig;
+    }
+    this.widgetConfigs = [...tempArray];
   }
 
   setPlaceholderWidths(before: number | string, after: number | string): void {
@@ -176,7 +169,6 @@ export class DashboardComponent implements AfterViewInit {
         } else {
           this.setPlaceholderWidths(colSize, 0);
         }
-        this.reArrangeWidgetItems(index, event.position);
         break;
       case WidgetDragAction.Change:
         this.setPlaceholderWidths(

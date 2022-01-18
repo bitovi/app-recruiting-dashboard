@@ -27,7 +27,6 @@ import { WidgetFilterModule } from './widgets/filters/widget-filter.module';
 import { ComboboxModule } from './shared/combobox/combobox.module';
 import { WidgetApplicantsBySourceComponent } from './widgets/widget-applicants-by-source/widget-applicants-by-source.component';
 import { WidgetPanelComponent } from './widget-panel/widget-panel.component';
-import { ChartPickerComponent } from './chart-picker/chart-picker.component';
 import { WidgetGridSizeClassPipeModule } from '../shared/pipes/widget-grid-size-class/widget-grid-size-class-pipe.module';
 
 const routes: Routes = [{ path: '', component: DashboardComponent }];
@@ -45,7 +44,6 @@ const routes: Routes = [{ path: '', component: DashboardComponent }];
     WidgetApplicantsTableComponent,
     WidgetApplicantsBySourceComponent,
     WidgetPanelComponent,
-    ChartPickerComponent,
   ],
   imports: [
     CommonModule,
@@ -61,7 +59,7 @@ const routes: Routes = [{ path: '', component: DashboardComponent }];
     ComboboxModule,
     WidgetFilterModule,
     DisableWidgetListPipeModule,
-    WidgetGridSizeClassPipeModule
+    WidgetGridSizeClassPipeModule,
   ],
   providers: [ApplicantService, ChartApiService, JobsApiService],
 })
