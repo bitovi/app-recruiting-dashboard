@@ -1,9 +1,4 @@
-import {
-  AfterContentChecked,
-  Component,
-  ElementRef,
-  ViewChild,
-} from '@angular/core';
+import { Component } from '@angular/core';
 import { ChartOptions, ChartType } from 'chart.js';
 import { filter, map } from 'rxjs/operators';
 import { ChartsStore } from '../../store/charts.store';
@@ -14,15 +9,7 @@ import { DefaultWidgetComponent } from '../default-widget.component';
   templateUrl: './widget-recruiting-stage-exited.component.html',
   styleUrls: ['./widget-recruiting-stage-exited.component.scss'],
 })
-export class WidgetRecruitingStageExitedComponent
-  extends DefaultWidgetComponent
-  implements AfterContentChecked
-{
-  @ViewChild('chartContainer')
-  public chartContainer: ElementRef;
-
-  public chartHeight: number;
-
+export class WidgetRecruitingStageExitedComponent extends DefaultWidgetComponent {
   readonly data$ = this.chartsStore.recruitingStageExited$.pipe(
     filter((data) => data.length !== 0),
     map((recruitingStageExitedResponse) => ({
@@ -69,15 +56,5 @@ export class WidgetRecruitingStageExitedComponent
 
   constructor(private readonly chartsStore: ChartsStore) {
     super();
-  }
-
-  public ngAfterContentChecked(): void {
-    const containerHeight: number =
-      this.chartContainer?.nativeElement.offsetHeight;
-    const containerWidth: number =
-      this.chartContainer?.nativeElement.offsetWidth;
-    const isWider: boolean = containerHeight < containerWidth;
-
-    this.chartHeight = isWider ? containerHeight : containerWidth;
   }
 }
