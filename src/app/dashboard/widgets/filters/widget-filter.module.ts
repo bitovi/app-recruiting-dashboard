@@ -18,12 +18,7 @@ import { FilterSelectSourceComponent } from './filter-select-source/filter-selec
     FilterInputTextComponent,
     FilterSelectSourceComponent,
   ],
-  exports: [
-    WidgetFilterComponent,
-    FilterSelectJobComponent,
-    FilterSelectStageComponent,
-    FilterInputTextComponent,
-  ],
+  exports: [WidgetFilterComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
