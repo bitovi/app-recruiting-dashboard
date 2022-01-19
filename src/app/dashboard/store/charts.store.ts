@@ -21,6 +21,7 @@ import {
   WidgetFilterSelectStage,
   WidgetFilterUnion,
 } from '../widgets/widget.model';
+import { HttpHelperService } from '../services/http-helper.service';
 
 export interface ChartLoading {
   recruitingStageExited: number;
@@ -91,7 +92,8 @@ export class ChartsStore extends ComponentStore<ChartsState> {
 
   constructor(
     private chartApiService: ChartApiService,
-    private filterStore: FilterStore
+    private filterStore: FilterStore,
+    private httpHelperService: HttpHelperService
   ) {
     super({
       id: '',
@@ -183,10 +185,12 @@ export class ChartsStore extends ComponentStore<ChartsState> {
     ) => {
       return data$.pipe(
         concatMap(({ filter, globalCombinedDates }) => {
-          const params: HttpParams = this.chartApiService.getHttpParams(
-            filter,
-            globalCombinedDates
-          );
+          const params: HttpParams = this.httpHelperService.getHttpParams({
+            startDate: filter.startDate
+              ? filter.startDate
+              : globalCombinedDates[0],
+            endDate: filter.endDate ? filter.endDate : globalCombinedDates[1],
+          });
 
           this.updateLoading({ key: 'recruitingStageExited', loading: true });
 
@@ -215,10 +219,12 @@ export class ChartsStore extends ComponentStore<ChartsState> {
     ) => {
       return data$.pipe(
         concatMap(({ filter, globalCombinedDates }) => {
-          const params: HttpParams = this.chartApiService.getHttpParams(
-            filter,
-            globalCombinedDates
-          );
+          const params: HttpParams = this.httpHelperService.getHttpParams({
+            startDate: filter.startDate
+              ? filter.startDate
+              : globalCombinedDates[0],
+            endDate: filter.endDate ? filter.endDate : globalCombinedDates[1],
+          });
           this.updateLoading({ key: 'newApplicants', loading: true });
 
           return this.chartApiService.getNewApplicants(params).pipe(
@@ -246,10 +252,12 @@ export class ChartsStore extends ComponentStore<ChartsState> {
     ) => {
       return data$.pipe(
         concatMap(({ filter, globalCombinedDates }) => {
-          const params: HttpParams = this.chartApiService.getHttpParams(
-            filter,
-            globalCombinedDates
-          );
+          const params: HttpParams = this.httpHelperService.getHttpParams({
+            startDate: filter.startDate
+              ? filter.startDate
+              : globalCombinedDates[0],
+            endDate: filter.endDate ? filter.endDate : globalCombinedDates[1],
+          });
           this.updateLoading({ key: 'jobsApplicants', loading: true });
 
           return this.chartApiService.getApplicantJobs(params).pipe(
