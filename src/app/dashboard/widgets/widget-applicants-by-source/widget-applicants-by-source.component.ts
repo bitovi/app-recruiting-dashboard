@@ -1,19 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartOptions, ChartType } from 'chart.js';
 import { map } from 'rxjs/operators';
-import { ChartsStore } from '../../store/charts.store';
+import { ApplicantsBySourceStore } from '../../store/applicants-by-source.store';
 import { DefaultWidgetComponent } from '../default-widget.component';
 
 @Component({
   selector: 'brd-widget-applicants-by-source',
   templateUrl: './widget-applicants-by-source.component.html',
   styleUrls: ['./widget-applicants-by-source.component.scss'],
+  providers: [ApplicantsBySourceStore],
 })
 export class WidgetApplicantsBySourceComponent
   extends DefaultWidgetComponent
   implements OnInit
 {
-  readonly data$ = this.chartsStore.applicantsBySource$.pipe(
+  readonly data$ = this.applicantsBySourceStore.applicantsBySource$.pipe(
     map((applicantsBySourceData) => {
       const labels = applicantsBySourceData.map(
         (applicantsBySource) => applicantsBySource.source
@@ -37,7 +38,7 @@ export class WidgetApplicantsBySourceComponent
       };
     })
   );
-  readonly loading$ = this.chartsStore.loadingApplicantsBySource$;
+  readonly loading$ = this.applicantsBySourceStore.loadingApplicantsBySource$;
 
   public barChartOptions: ChartOptions = {
     responsive: true,
@@ -63,11 +64,13 @@ export class WidgetApplicantsBySourceComponent
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
 
-  constructor(private readonly chartsStore: ChartsStore) {
+  constructor(
+    private readonly applicantsBySourceStore: ApplicantsBySourceStore
+  ) {
     super();
   }
 
   ngOnInit(): void {
-    this.chartsStore.setId(this.id);
+    this.applicantsBySourceStore.setId(this.id);
   }
 }

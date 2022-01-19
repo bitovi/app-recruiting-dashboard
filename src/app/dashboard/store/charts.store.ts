@@ -11,7 +11,6 @@ import {
 } from 'rxjs/operators';
 import { FilterStore } from './filter.store';
 import {
-  IApplicantsBySourceResponse,
   IDateFilter,
   IJobsApplicantsResponse,
   INewApplicantsResponse,
@@ -27,7 +26,6 @@ export interface ChartLoading {
   recruitingStageExited: number;
   newApplicants: number;
   jobsApplicants: number;
-  applicantsBySource: number;
   stages: number;
 }
 
@@ -36,7 +34,6 @@ export interface ChartsState {
   recruitingStageExited: IRecruitingStageExitedResponse[];
   newApplicants: INewApplicantsResponse[];
   jobsApplicants: IJobsApplicantsResponse[];
-  applicantsBySource: IApplicantsBySourceResponse[];
   stages: string[];
   loading: ChartLoading;
   filter: IDateFilter;
@@ -53,9 +50,6 @@ export class ChartsStore extends ComponentStore<ChartsState> {
   );
   readonly loadingJobsApplicants$ = this.loading$.pipe(
     map((loading: ChartLoading) => loading.jobsApplicants !== 0)
-  );
-  readonly loadingApplicantsBySource$ = this.loading$.pipe(
-    map((loading: ChartLoading) => loading.applicantsBySource !== 0)
   );
   readonly loadingStages$ = this.loading$.pipe(
     map((loading: ChartLoading) => loading.stages !== 0)
@@ -76,9 +70,6 @@ export class ChartsStore extends ComponentStore<ChartsState> {
   readonly jobsApplicants$ = this.select(
     (state: ChartsState) => state.jobsApplicants
   );
-  readonly applicantsBySource$ = this.select(
-    (state: ChartsState) => state.applicantsBySource
-  );
   readonly stages$ = this.select((state: ChartsState) => state.stages);
   public readonly stageFilter$: Observable<string[]> = this.filters$.pipe(
     map(
@@ -98,18 +89,6 @@ export class ChartsStore extends ComponentStore<ChartsState> {
     { debounce: true }
   );
 
-  private readonly fetchApplicantsBySourceChartsData$ = this.select(
-    this.filter$,
-    this.globalCombinedDates$,
-    this.stageFilter$,
-    (filter, globalCombinedDates, stageFilter) => ({
-      filter,
-      globalCombinedDates,
-      stageFilter,
-    }),
-    { debounce: true }
-  );
-
   constructor(
     private chartApiService: ChartApiService,
     private filterStore: FilterStore
@@ -119,13 +98,11 @@ export class ChartsStore extends ComponentStore<ChartsState> {
       recruitingStageExited: [],
       newApplicants: [],
       jobsApplicants: [],
-      applicantsBySource: [],
       stages: [],
       loading: {
         recruitingStageExited: 0,
         newApplicants: 0,
         jobsApplicants: 0,
-        applicantsBySource: 0,
         stages: 0,
       },
       filter: { startDate: null, endDate: null },
@@ -134,7 +111,6 @@ export class ChartsStore extends ComponentStore<ChartsState> {
     this.fetchRecruitingStageExited(this.fetchChartsData$);
     this.fetchNewApplicants(this.fetchChartsData$);
     this.fetchJobsApplicants(this.fetchChartsData$);
-    this.fetchApplicantsBySource(this.fetchApplicantsBySourceChartsData$);
     this.fetchStages();
   }
 
@@ -188,16 +164,6 @@ export class ChartsStore extends ComponentStore<ChartsState> {
     (state, jobsApplicants: IJobsApplicantsResponse[]): ChartsState => ({
       ...state,
       jobsApplicants,
-    })
-  );
-
-  private readonly updateApplicantsBySource = this.updater(
-    (
-      state,
-      applicantsBySource: IApplicantsBySourceResponse[]
-    ): ChartsState => ({
-      ...state,
-      applicantsBySource,
     })
   );
 
@@ -293,39 +259,6 @@ export class ChartsStore extends ComponentStore<ChartsState> {
             finalize(() =>
               this.updateLoading({
                 key: 'jobsApplicants',
-                loading: false,
-              })
-            )
-          );
-        })
-      );
-    }
-  );
-
-  private readonly fetchApplicantsBySource = this.effect(
-    (
-      data$: Observable<{
-        filter: IDateFilter;
-        globalCombinedDates: [Date, Date];
-        stageFilter: string[];
-      }>
-    ) => {
-      return data$.pipe(
-        concatMap(({ filter, globalCombinedDates, stageFilter }) => {
-          const params: HttpParams = this.chartApiService.getHttpParams(
-            filter,
-            globalCombinedDates,
-            stageFilter
-          );
-          this.updateLoading({ key: 'applicantsBySource', loading: true });
-
-          return this.chartApiService.getApplicantsBySource(params).pipe(
-            tap((result: IApplicantsBySourceResponse[]) =>
-              this.updateApplicantsBySource(result)
-            ),
-            finalize(() =>
-              this.updateLoading({
-                key: 'applicantsBySource',
                 loading: false,
               })
             )
