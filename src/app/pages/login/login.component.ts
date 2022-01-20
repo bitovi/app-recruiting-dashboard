@@ -18,8 +18,7 @@ export class LoginComponent {
   }
 
   onSubmit(): void {
-    this.authService.loginWithRedirect().subscribe((resp) => {
-      console.log('response', resp);
+    this.authService.loginWithRedirect().subscribe(() => {
       this.router.navigate([`dashboard`]).then();
     });
   }
