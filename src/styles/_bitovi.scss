@@ -12,7 +12,6 @@ section.app-container {
 
 section.container-shrink {
   width: calc(100vw - 300px);
-
 }
 
 // override context bar
@@ -123,7 +122,7 @@ section.container-shrink {
   border: 0;
   right: 0;
   left: 0;
-  z-index: 12000;
+  z-index: 10;
   background: rgb(0 0 0 / 60%);
 
   .card-container {
@@ -145,7 +144,6 @@ section.container-shrink {
   height: unset;
   max-width: 300px;
 }
-.svg-edit-color{
+.svg-edit-color {
   fill: #fff !important;
 }
-
