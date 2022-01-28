@@ -80,13 +80,20 @@ export class DashboardComponent {
       id: crypto.randomUUID(),
     },
     {
-      fullscreen: true,
       component: WidgetComponents.NewApplicants,
+      fullscreen: true,
       id: crypto.randomUUID(),
     },
     {
-      fullscreen: true,
       component: WidgetComponents.ApplicantsBySource,
+      filters: [
+        {
+          id: 'select-stage',
+          type: WidgetFilterTypes.SelectStage,
+          value: [],
+        },
+      ],
+      fullscreen: true,
       id: crypto.randomUUID(),
     },
   ];

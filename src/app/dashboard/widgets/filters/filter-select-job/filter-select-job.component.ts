@@ -25,7 +25,7 @@ export class FilterSelectJobComponent implements FilterComponent {
   public onItemSelected(items: string[]): void {
     this.changed.emit({
       ...this.filter,
-      value: items,
+      value: [...items],
     });
   }
 }

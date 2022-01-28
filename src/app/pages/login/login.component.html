@@ -29,65 +29,65 @@
         </header>
       </div>
 
-      <div class="slds-card__body slds-card__body_inner slds-align_absolute-center">
-        <div
-          class="slds-grid slds-grid_pull-padded slds-grid_vertical"
-        >
+      <div
+        class="slds-card__body slds-card__body_inner slds-align_absolute-center"
+      >
+        <div class="slds-grid slds-grid_pull-padded slds-grid_vertical">
           <div class="slds-col_padded slds-m-vertical_medium">
-          <div class="slds-text-heading_large">Welcome back.</div>
+            <div class="slds-text-heading_large">Welcome back.</div>
           </div>
 
-          <div class="slds-col_padded slds-m-vertical_medium slds-grid_vertical slds-m-vertical_xx-large">
-
-            <span
-                      (click)="onSubmit()"
-                      class="slds-box sso-sign-in"
-                    >
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="32" viewBox="0 0 32 32" fill="none"><g clip-path="url(#clip0)"><style>path{fill:#000}@media (prefers-color-scheme:dark){path{fill:#fff}}</style><path fill-rule="evenodd" clip-rule="evenodd" d="M16.03 0H5.633L2.42 9.988h10.398L16.03 0zm13.61 9.988l-8.41 6.111 3.212 9.888c5.415-3.934 7.184-9.888 5.199-15.999zM16.03 32l-8.41-6.013C2.206 22.053.434 16.1 2.419 9.988l8.412 6.111-3.212 9.888 8.411-6.111 8.412 6.111L16.03 32zM26.428 0l3.213 9.988H19.244L16.03 0h10.398z"/></g><defs><clipPath id="clip0"><path fill="#fff" d="M0 0h32v32H0z"/></clipPath></defs></svg>
-          Sign In With SSO
-        </span>
-
+          <div
+            class="slds-col_padded slds-m-vertical_medium slds-grid_vertical slds-m-vertical_xx-large"
+          >
+            <span (click)="onSubmit()" class="slds-box sso-sign-in">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="32"
+                viewBox="0 0 32 32"
+                fill="none"
+              >
+                <g clip-path="url(#clip0)">
+                  <style>
+                    path {
+                      fill: #000;
+                    }
+                    @media (prefers-color-scheme: dark) {
+                      path {
+                        fill: #fff;
+                      }
+                    }
+                  </style>
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M16.03 0H5.633L2.42 9.988h10.398L16.03 0zm13.61 9.988l-8.41 6.111 3.212 9.888c5.415-3.934 7.184-9.888 5.199-15.999zM16.03 32l-8.41-6.013C2.206 22.053.434 16.1 2.419 9.988l8.412 6.111-3.212 9.888 8.411-6.111 8.412 6.111L16.03 32zM26.428 0l3.213 9.988H19.244L16.03 0h10.398z"
+                  />
+                </g>
+                <defs>
+                  <clipPath id="clip0">
+                    <path fill="#fff" d="M0 0h32v32H0z" />
+                  </clipPath>
+                </defs>
+              </svg>
+              Sign In With SSO
+            </span>
           </div>
-<!--          <div class="slds-col_padded slds-m-vertical_medium">-->
-<!--            <ng-template #labelUsername><i> Username </i></ng-template>-->
-<!--            <ngl-input [label]="labelUsername" fieldLevelHelpTooltip="Username">-->
-<!--              <input ngl placeholder="Username" required type="text" />-->
-<!--            </ngl-input>-->
-<!--          </div>-->
-<!--          <div class="slds-col_padded">-->
-<!--            <ng-template #customInput><i> Password </i></ng-template>-->
-<!--            <ngl-input [label]="customInput">-->
-<!--              <input ngl placeholder="*********" required type="password" />-->
-<!--            </ngl-input>-->
-<!--          </div>-->
         </div>
-
-<!--        <div class="slds-align&#45;&#45;absolute-center sdl_outline-button-bitovi">-->
-<!--          <span-->
-<!--            (click)="login()"-->
-<!--            class="slds-box slds-box_x-small slds-icon-standard-thanks login-submit"-->
-<!--          >-->
-<!--            &nbsp; Submit &nbsp;</span-->
-<!--          >-->
-<!--        </div>-->
       </div>
-<!--      <div-->
-<!--        class="sdl-col slds-align&#45;&#45;absolute-center slds-p-around&#45;&#45;x-small or-other-login"-->
-<!--      >-->
       <div
         class="sdl-col slds-align--absolute-center slds-p-around--x-small"
-      >
-<!--        <i class="slds-p-top&#45;&#45;x-small or-section">&nbsp; OR &nbsp; </i>-->
-      </div>
+      ></div>
       <div
+        *ngIf="errorMessage$ | async as error"
         class="sdl-col slds-align--absolute-center slds-size_12-of-12 slds-p-around--medium"
       >
-<!--        <span-->
-<!--          (click)="onSubmit()"-->
-<!--          class="slds-box slds-box_x-small slds-card__footer-action sso-sign-in"-->
-<!--        >-->
-<!--          SignIn With SSO-->
-<!--        </span>-->
+        <ngl-toast variant="error" iconName="utility:error" class="error-login">
+          <h2 class="slds-text-heading_small">
+            {{ error.message }}
+          </h2>
+        </ngl-toast>
       </div>
     </div>
   </div>

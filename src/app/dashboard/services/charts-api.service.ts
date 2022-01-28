@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import {
   IApplicantsBySourceResponse,
-  IDateFilter,
   IJobsApplicantsResponse,
   INewApplicantsResponse,
   IRecruitingStageExitedResponse,
@@ -52,24 +51,5 @@ export class ChartApiService {
 
   public getStages(): Observable<string[]> {
     return this.http.get<string[]>(`${environment.api}/charts/stages`);
-  }
-
-  public getHttpParams(
-    { startDate, endDate }: IDateFilter,
-    globalCombinedDates: [Date, Date]
-  ): HttpParams {
-    const [globalStartDate, globalEndDate] = globalCombinedDates;
-
-    const params = new HttpParams()
-      .set(
-        'apply_date_date[$gte]',
-        startDate ? startDate.toISOString() : globalStartDate.toISOString()
-      )
-      .set(
-        'apply_date_date[$lte]',
-        endDate ? endDate.toISOString() : globalEndDate.toISOString()
-      );
-
-    return params;
   }
 }

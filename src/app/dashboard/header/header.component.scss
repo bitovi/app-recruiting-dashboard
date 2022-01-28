@@ -1,7 +1,7 @@
-@use '../../../styles/vars' as vars;
+@use "../../../styles/vars" as vars;
 
 .slds-global-header_container {
-  z-index: vars.$overlay-z-index + 1;
+  z-index: 1;
 }
 
 header {
