@@ -1,5 +1,6 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import moment from 'moment';
 import { INglDatatableSort } from 'ng-lightning';
 
 export interface RecruitingDashboardHttpParams {
@@ -92,8 +93,6 @@ export class HttpHelperService {
   }
 
   private getDateMinusDays(date: Date, days: number): Date {
-    return new Date(
-      new Date(date.setHours(0, 0, 0, 0)).setDate(date.getDate() - days)
-    );
+    return moment(date).subtract(days, 'days').startOf('day').toDate();
   }
 }
