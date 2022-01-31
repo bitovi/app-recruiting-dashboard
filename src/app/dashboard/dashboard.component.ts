@@ -65,6 +65,12 @@ export class DashboardComponent {
           value: '',
           label: 'Name',
         },
+        {
+          id: 'input-text-days-inactive',
+          type: WidgetFilterTypes.InputText,
+          value: '',
+          label: 'Days Inactive',
+        },
       ],
       fullscreen: true,
       id: crypto.randomUUID(),

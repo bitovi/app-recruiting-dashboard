@@ -1,5 +1,6 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import moment from 'moment';
 import { INglDatatableSort } from 'ng-lightning';
 
 export interface RecruitingDashboardHttpParams {
@@ -20,6 +21,9 @@ export interface RecruitingDashboardHttpParams {
 
   // applicant name
   applicantName?: string;
+
+  // applicant's inactivity in days
+  daysInactive?: number;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -74,6 +78,21 @@ export class HttpHelperService {
       params = params.set('full_name[$search]', `${httpParams.applicantName}`);
     }
 
+    if (httpParams.daysInactive) {
+      const lastActivityDate: Date = this.getDateMinusDays(
+        new Date(),
+        httpParams.daysInactive
+      );
+      params = params.set(
+        'last_activity_date[$lt]',
+        lastActivityDate.toISOString()
+      );
+    }
+
     return params;
+  }
+
+  private getDateMinusDays(date: Date, days: number): Date {
+    return moment(date).subtract(days, 'days').startOf('day').toDate();
   }
 }
