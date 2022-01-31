@@ -20,6 +20,7 @@ import {
 } from '../widgets/widget.model';
 import { ApplicantService } from '../services/applicants-api.service';
 import { FilterStore } from './filter.store';
+import { HttpHelperService } from '../services/http-helper.service';
 
 export interface ApplicantsState {
   id: string;
@@ -118,6 +119,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
 
   constructor(
     private applicantService: ApplicantService,
+    private httpHelperService: HttpHelperService,
     private filterStore: FilterStore
   ) {
     super({
@@ -200,15 +202,16 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
             dateFilters,
             applicantNameFilter,
           }) => {
-            const params: HttpParams = this.applicantService.getHttpParams(
+            const params: HttpParams = this.httpHelperService.getHttpParams({
               pageSize,
               currentPage,
               sort,
-              positionFilter,
-              stageFilter,
-              dateFilters,
-              applicantNameFilter
-            );
+              position: positionFilter,
+              stage: stageFilter,
+              startDate: dateFilters[0],
+              endDate: dateFilters[1],
+              applicantName: applicantNameFilter,
+            });
 
             this.updateLoading(true);
 
