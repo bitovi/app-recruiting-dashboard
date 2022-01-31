@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { IApplicantsBySourceResponse } from '../../../../core/interfaces';
-import { ChartsStore } from '../../../store/charts.store';
+import { ApplicantsBySourceStore } from '../../../store/applicants-by-source.store';
 import { WidgetFilterSelectSource } from '../../widget.model';
 import { FilterComponent } from '../filter.component';
 
@@ -10,13 +10,14 @@ import { FilterComponent } from '../filter.component';
   selector: 'brd-filter-select-source',
   templateUrl: './filter-select-source.component.html',
   styleUrls: ['./filter-select-source.component.scss'],
+  providers: [ApplicantsBySourceStore],
 })
 export class FilterSelectSourceComponent implements FilterComponent {
   @Input() filter: WidgetFilterSelectSource;
   @Output() changed = new EventEmitter<WidgetFilterSelectSource>();
 
   readonly sources$: Observable<string[]> =
-    this.chartsStore.applicantsBySource$.pipe(
+    this.applicantsBySourceStore.applicantsBySource$.pipe(
       map((applicantsBySourceResponse: IApplicantsBySourceResponse[]) =>
         applicantsBySourceResponse
           .map(
@@ -27,7 +28,9 @@ export class FilterSelectSourceComponent implements FilterComponent {
       )
     );
 
-  constructor(private readonly chartsStore: ChartsStore) {}
+  constructor(
+    private readonly applicantsBySourceStore: ApplicantsBySourceStore
+  ) {}
 
   public onItemSelected(items: string[]) {
     this.changed.emit({
