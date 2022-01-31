@@ -87,8 +87,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
     map(
       (filters) =>
         (filters?.get('select-source') as WidgetFilterSelectSource)?.value
-    ),
-    distinctUntilChanged()
+    )
   );
   public readonly applicantNameFilter$: Observable<string> = this.filters$.pipe(
     map(
@@ -124,7 +123,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
       stageFilter,
       dateFilters,
       applicantNameFilter,
-      sourceFilter
+      sourceFilter,
       daysInactiveFilter
     ) => ({
       pageSize,
@@ -233,18 +232,13 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
               pageSize,
               currentPage,
               sort,
-              positionFilter,
-              stageFilter,
-              dateFilters,
-              applicantNameFilter,
-              sourceFilter
-            );
               position: positionFilter,
               stage: stageFilter,
               startDate: dateFilters[0],
               endDate: dateFilters[1],
               applicantName: applicantNameFilter,
               daysInactive: daysInactiveFilter,
+              source: sourceFilter,
             });
 
             this.updateLoading(true);

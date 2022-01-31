@@ -24,6 +24,9 @@ export interface RecruitingDashboardHttpParams {
 
   // applicant's inactivity in days
   daysInactive?: number;
+
+  // applicant source
+  source?: string[];
 }
 
 @Injectable({ providedIn: 'root' })
@@ -87,6 +90,12 @@ export class HttpHelperService {
         'last_activity_date[$lt]',
         lastActivityDate.toISOString()
       );
+    }
+
+    if (httpParams.source) {
+      httpParams.source.forEach((sources) => {
+        params = params.append(`source[$in][]`, sources);
+      });
     }
 
     return params;
