@@ -20,6 +20,7 @@ import {
 } from '../widgets/widget.model';
 import { ApplicantService } from '../services/applicants-api.service';
 import { FilterStore } from './filter.store';
+import { HttpHelperService } from '../services/http-helper.service';
 
 export interface ApplicantsState {
   id: string;
@@ -87,6 +88,15 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
     ),
     distinctUntilChanged()
   );
+  public readonly daysInactiveFilter$: Observable<number> = this.filters$.pipe(
+    map(
+      (filters) =>
+        (filters?.get('input-text-days-inactive') as WidgetFilterInputText)
+          ?.value
+    ),
+    distinctUntilChanged(),
+    map((daysInactive) => parseInt(daysInactive))
+  );
 
   private readonly fetchApplicantsData$ = this.select(
     this.pageSize$,
@@ -96,6 +106,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
     this.stageFilter$,
     this.dateFilters$,
     this.applicantNameFilter$,
+    this.daysInactiveFilter$,
     (
       pageSize,
       currentPage,
@@ -103,7 +114,8 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
       positionFilter,
       stageFilter,
       dateFilters,
-      applicantNameFilter
+      applicantNameFilter,
+      daysInactiveFilter
     ) => ({
       pageSize,
       currentPage,
@@ -112,12 +124,14 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
       stageFilter,
       dateFilters,
       applicantNameFilter,
+      daysInactiveFilter,
     }),
     { debounce: true }
   );
 
   constructor(
     private applicantService: ApplicantService,
+    private httpHelperService: HttpHelperService,
     private filterStore: FilterStore
   ) {
     super({
@@ -187,6 +201,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
         stageFilter: string[];
         dateFilters: [Date, Date];
         applicantNameFilter: string;
+        daysInactiveFilter: number;
       }>
     ) => {
       return data$.pipe(
@@ -199,16 +214,19 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
             stageFilter,
             dateFilters,
             applicantNameFilter,
+            daysInactiveFilter,
           }) => {
-            const params: HttpParams = this.applicantService.getHttpParams(
+            const params: HttpParams = this.httpHelperService.getHttpParams({
               pageSize,
               currentPage,
               sort,
-              positionFilter,
-              stageFilter,
-              dateFilters,
-              applicantNameFilter
-            );
+              position: positionFilter,
+              stage: stageFilter,
+              startDate: dateFilters[0],
+              endDate: dateFilters[1],
+              applicantName: applicantNameFilter,
+              daysInactive: daysInactiveFilter,
+            });
 
             this.updateLoading(true);
 
