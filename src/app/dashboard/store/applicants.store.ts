@@ -88,6 +88,15 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
     ),
     distinctUntilChanged()
   );
+  public readonly daysInactiveFilter$: Observable<number> = this.filters$.pipe(
+    map(
+      (filters) =>
+        (filters?.get('input-text-days-inactive') as WidgetFilterInputText)
+          ?.value
+    ),
+    distinctUntilChanged(),
+    map((daysInactive) => parseInt(daysInactive))
+  );
 
   private readonly fetchApplicantsData$ = this.select(
     this.pageSize$,
@@ -97,6 +106,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
     this.stageFilter$,
     this.dateFilters$,
     this.applicantNameFilter$,
+    this.daysInactiveFilter$,
     (
       pageSize,
       currentPage,
@@ -104,7 +114,8 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
       positionFilter,
       stageFilter,
       dateFilters,
-      applicantNameFilter
+      applicantNameFilter,
+      daysInactiveFilter
     ) => ({
       pageSize,
       currentPage,
@@ -113,6 +124,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
       stageFilter,
       dateFilters,
       applicantNameFilter,
+      daysInactiveFilter,
     }),
     { debounce: true }
   );
@@ -189,6 +201,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
         stageFilter: string[];
         dateFilters: [Date, Date];
         applicantNameFilter: string;
+        daysInactiveFilter: number;
       }>
     ) => {
       return data$.pipe(
@@ -201,6 +214,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
             stageFilter,
             dateFilters,
             applicantNameFilter,
+            daysInactiveFilter,
           }) => {
             const params: HttpParams = this.httpHelperService.getHttpParams({
               pageSize,
@@ -211,6 +225,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
               startDate: dateFilters[0],
               endDate: dateFilters[1],
               applicantName: applicantNameFilter,
+              daysInactive: daysInactiveFilter,
             });
 
             this.updateLoading(true);
