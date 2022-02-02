@@ -2,6 +2,7 @@
 <section
   class="slds-container_fluid app-container"
   [class.container-shrink]="isOpenedWidgetPanel"
+  *ngIf="!isLoadingWidgets; else loadingBlock"
 >
   <div style="position: relative; display: flex; flex-direction: row-reverse">
     <brd-widget-panel
@@ -40,3 +41,11 @@
     </div>
   </div>
 </section>
+
+<ng-template #loadingBlock>
+  <ngl-spinner
+    size="large"
+    variant="brand"
+    alternativeText="Loading"
+  ></ngl-spinner
+></ng-template>
