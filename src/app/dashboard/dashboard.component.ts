@@ -32,6 +32,7 @@ export class DashboardComponent implements OnInit {
   public isLoadingWidgets = false;
 
   private draggedWidget!: WidgetComponents;
+  private draggedWidget!: WidgetComponents | string;
 
   constructor(
     private readonly filterStore: FilterStore,
@@ -66,12 +67,14 @@ export class DashboardComponent implements OnInit {
 
   public onWidgetDrop(dragEvent: DragEvent) {
     const widgetName = dragEvent.dataTransfer.getData('widget-component');
-    const dropZoneContainsEvent = this.widgetConfigs.findIndex(
-      (value) => value.component === widgetName
-    );
-    if (dropZoneContainsEvent > -1) {
+    const widgetComponentSelector: string[] = Object.values(WidgetComponents);
+    const isWidgetSelector: boolean =
+      widgetComponentSelector.includes(widgetName);
+
+    if (!isWidgetSelector) {
       return;
     }
+
     const data = dragEvent.dataTransfer.getData('widget-item');
     if (data) {
       const widgetItem: WidgetPanelModel = JSON.parse(data);
