@@ -99,7 +99,7 @@ export class DashboardComponent {
     },
   ];
 
-  draggedWidget!: WidgetComponents;
+  private draggedWidget!: WidgetComponents | string;
 
   constructor(
     private readonly filterStore: FilterStore,
@@ -107,9 +107,18 @@ export class DashboardComponent {
   ) {}
 
   reArrangeWidgetItems(index: number, position: number) {
+    const widgetComponentSelector: string[] = Object.values(WidgetComponents);
+    const isWidgetSelector: boolean = widgetComponentSelector.includes(
+      this.draggedWidget
+    );
+
+    if (isWidgetSelector) {
+      return;
+    }
+
     const tempArray = [...this.widgetConfigs];
     const draggedWidgetConfig = this.widgetConfigs.find(
-      (value) => value.component === this.draggedWidget
+      (config: WidgetConfig) => config.id === this.draggedWidget
     );
     const draggedItemIndex = this.widgetConfigs.indexOf(draggedWidgetConfig);
 
@@ -131,6 +140,8 @@ export class DashboardComponent {
     tempArray.splice(adjustedDestIndex, 0, draggedWidgetConfig);
     // update config array
     this.widgetConfigs = [...tempArray];
+
+    return;
   }
 
   public setFilterState(state: FilterDateState): void {
@@ -141,7 +152,7 @@ export class DashboardComponent {
     this.widgetConfigs = this.widgetConfigs.filter((w) => w.id !== widgetId);
   }
 
-  onWidgetDragStart(widget: WidgetComponents): void {
+  onWidgetDragStart(widget: WidgetComponents | string): void {
     this.draggedWidget = widget;
   }
 
@@ -156,12 +167,14 @@ export class DashboardComponent {
 
   onWidgetDrop(dragEvent: DragEvent) {
     const widgetName = dragEvent.dataTransfer.getData('widget-component');
-    const dropZoneContainsEvent = this.widgetConfigs.findIndex(
-      (value) => value.component === widgetName
-    );
-    if (dropZoneContainsEvent > -1) {
+    const widgetComponentSelector: string[] = Object.values(WidgetComponents);
+    const isWidgetSelector: boolean =
+      widgetComponentSelector.includes(widgetName);
+
+    if (!isWidgetSelector) {
       return;
     }
+
     const data = dragEvent.dataTransfer.getData('widget-item');
     if (data) {
       const widgetItem: WidgetPanelModel = JSON.parse(data);

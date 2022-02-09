@@ -23,7 +23,6 @@ import {
   EntryComponentsUnion,
   WidgetConfig,
   WidgetFilterUnion,
-  WidgetComponents,
 } from './widget.model';
 import { CHART_WIDGET } from '../widget-panel/widget-panel-model';
 
@@ -37,7 +36,7 @@ export class WidgetWrapperComponent implements OnChanges {
   @Input() widgetInEditMode = false;
   @Output() removeWidget = new EventEmitter<string>();
   @Output() dragAction = new EventEmitter<WidgetDragActionEvent>();
-  @Output() dragStart = new EventEmitter<WidgetComponents>();
+  @Output() dragStart = new EventEmitter<string>();
 
   @ViewChild('container', { static: true })
   containerRef: ElementRef<HTMLDivElement>;
@@ -86,7 +85,7 @@ export class WidgetWrapperComponent implements OnChanges {
   }
 
   onDragStart(): void {
-    this.dragStart.emit(this.config.component);
+    this.dragStart.emit(this.config.id);
   }
 
   onDragEnter(ev: DragEvent): void {
