@@ -21,7 +21,7 @@
         (dragover)="onDragOver($event)"
         (drop)="onWidgetDrop($event)"
         [ngClass]="{ 'slds-drop-zone ': isOpenedWidgetPanel }"
-        class="slds-container_fluid slds-grid slds-grid_flex-start slds-wrap slds-gutters slds-gutters_xxx-small"
+        class="slds-container_fluid slds-grid slds-grid_flex-start slds-wrap slds-gutters slds-gutters_xxx-small z-0"
         [class.slds-drop-zone]="isOpenedWidgetPanel"
       >
         <ng-container
