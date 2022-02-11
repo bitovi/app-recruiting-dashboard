@@ -87,7 +87,8 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
     map(
       (filters) =>
         (filters?.get('select-source') as WidgetFilterSelectSource)?.value
-    )
+    ),
+    distinctUntilChanged()
   );
   public readonly applicantNameFilter$: Observable<string> = this.filters$.pipe(
     map(

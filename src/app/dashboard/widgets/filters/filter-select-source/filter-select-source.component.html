@@ -3,5 +3,6 @@
   label="Select Source"
   [options]="sources$ | async"
   (selectionChanged)="onItemSelected($event)"
-  [selections]="[]"
+  [selections]="filter.value"
+  [isLoading$]="isLoading$"
 ></brd-combobox>

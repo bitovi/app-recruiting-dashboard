@@ -294,11 +294,7 @@ export class ChartsStore extends ComponentStore<ChartsState> {
 
     return this.chartApiService.getStages().pipe(
       tap((result: string[]) => {
-        const nonEmptyResults: string[] = result.filter(
-          (stage: string) => stage?.length
-        );
-
-        this.updateStages(nonEmptyResults);
+        this.updateStages(result);
       }),
       finalize(() =>
         this.updateLoading({
@@ -314,11 +310,7 @@ export class ChartsStore extends ComponentStore<ChartsState> {
 
     return this.chartApiService.getSources().pipe(
       tap((result: string[]) => {
-        const nonEmptyResults: string[] = result.filter(
-          (source: string) => source?.length
-        );
-
-        this.updateSources(nonEmptyResults);
+        this.updateSources(result);
       }),
       finalize(() =>
         this.updateLoading({
