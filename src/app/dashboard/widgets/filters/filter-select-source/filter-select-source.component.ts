@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { IApplicantsBySourceResponse } from '../../../../core/interfaces';
 import { ApplicantsBySourceStore } from '../../../store/applicants-by-source.store';
+import { ChartsStore } from '../../../store/charts.store';
 import { WidgetFilterSelectSource } from '../../widget.model';
 import { FilterComponent } from '../filter.component';
 
@@ -16,21 +15,9 @@ export class FilterSelectSourceComponent implements FilterComponent {
   @Input() filter: WidgetFilterSelectSource;
   @Output() changed = new EventEmitter<WidgetFilterSelectSource>();
 
-  readonly sources$: Observable<string[]> =
-    this.applicantsBySourceStore.applicantsBySource$.pipe(
-      map((applicantsBySourceResponse: IApplicantsBySourceResponse[]) =>
-        applicantsBySourceResponse
-          .map(
-            (applicantsBySource: IApplicantsBySourceResponse) =>
-              applicantsBySource.source
-          )
-          .filter((source: string) => !!source.length)
-      )
-    );
+  readonly sources$: Observable<string[]> = this.chartsStore.sources$;
 
-  constructor(
-    private readonly applicantsBySourceStore: ApplicantsBySourceStore
-  ) {}
+  constructor(private readonly chartsStore: ChartsStore) {}
 
   public onItemSelected(items: string[]) {
     this.changed.emit({
