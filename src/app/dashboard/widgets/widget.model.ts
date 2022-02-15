@@ -38,6 +38,10 @@ export interface WidgetFilterInputText extends WidgetFilter<string> {
   type: WidgetFilterTypes.InputText;
 }
 
+export interface WidgetFilterSelectSource extends WidgetFilter<string[]> {
+  type: WidgetFilterTypes.SelectSource;
+}
+
 export enum WidgetComponents {
   RecruitingStageExited = 'widget-recruiting-stage-exited',
   JobApplicants = 'widget-jobs-applicants',
@@ -51,6 +55,7 @@ export enum WidgetFilterTypes {
   SelectJob = 'select-job',
   SelectStage = 'select-stage',
   InputText = 'input-text',
+  SelectSource = 'select-source',
 }
 
 export type WidgetFilterTypeUnion = `${WidgetFilterTypes}`;
@@ -59,7 +64,8 @@ export type WidgetFilterUnion =
   | WidgetFilterDateInterval
   | WidgetFilterSelectJob
   | WidgetFilterSelectStage
-  | WidgetFilterInputText;
+  | WidgetFilterInputText
+  | WidgetFilterSelectSource;
 
 export type EntryComponents = {
   [WidgetComponents.RecruitingStageExited]: WidgetRecruitingStageExitedComponent;

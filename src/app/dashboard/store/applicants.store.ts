@@ -15,6 +15,7 @@ import {
   WidgetFilter,
   WidgetFilterInputText,
   WidgetFilterSelectJob,
+  WidgetFilterSelectSource,
   WidgetFilterSelectStage,
   WidgetFilterUnion,
 } from '../widgets/widget.model';
@@ -82,6 +83,13 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
     ),
     distinctUntilChanged()
   );
+  public readonly sourceFilter$: Observable<string[]> = this.filters$.pipe(
+    map(
+      (filters) =>
+        (filters?.get('select-source') as WidgetFilterSelectSource)?.value
+    ),
+    distinctUntilChanged()
+  );
   public readonly applicantNameFilter$: Observable<string> = this.filters$.pipe(
     map(
       (filters) => (filters?.get('input-text') as WidgetFilterInputText)?.value
@@ -106,6 +114,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
     this.stageFilter$,
     this.dateFilters$,
     this.applicantNameFilter$,
+    this.sourceFilter$,
     this.daysInactiveFilter$,
     (
       pageSize,
@@ -115,6 +124,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
       stageFilter,
       dateFilters,
       applicantNameFilter,
+      sourceFilter,
       daysInactiveFilter
     ) => ({
       pageSize,
@@ -124,6 +134,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
       stageFilter,
       dateFilters,
       applicantNameFilter,
+      sourceFilter,
       daysInactiveFilter,
     }),
     { debounce: true }
@@ -201,6 +212,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
         stageFilter: string[];
         dateFilters: [Date, Date];
         applicantNameFilter: string;
+        sourceFilter: string[];
         daysInactiveFilter: number;
       }>
     ) => {
@@ -214,6 +226,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
             stageFilter,
             dateFilters,
             applicantNameFilter,
+            sourceFilter,
             daysInactiveFilter,
           }) => {
             const params: HttpParams = this.httpHelperService.getHttpParams({
@@ -226,6 +239,7 @@ export class ApplicantsStore extends ComponentStore<ApplicantsState> {
               endDate: dateFilters[1],
               applicantName: applicantNameFilter,
               daysInactive: daysInactiveFilter,
+              source: sourceFilter,
             });
 
             this.updateLoading(true);
