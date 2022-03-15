@@ -6,6 +6,7 @@ import {
   WidgetConfig,
   WidgetComponents,
 } from '../widgets/widget.model';
+import { SocketService } from 'src/app/dashboard/services/socket/socket.service';
 
 @Component({
   selector: 'brd-widget-panel',
@@ -18,10 +19,13 @@ export class WidgetPanelComponent implements OnInit {
   @Output() dragStart = new EventEmitter<WidgetComponents>();
   widgetList: WidgetPanelModel[] = [];
 
-  constructor() {}
+  constructor(private socket: SocketService) {}
 
   ngOnInit(): void {
     this.initAllWidget();
+    console.log('hit')
+    this.socket.connect();
+
   }
 
   initAllWidget() {

@@ -27,6 +27,7 @@ import { ComboboxModule } from './shared/combobox/combobox.module';
 import { WidgetApplicantsBySourceComponent } from './widgets/widget-applicants-by-source/widget-applicants-by-source.component';
 import { WidgetPanelComponent } from './widget-panel/widget-panel.component';
 import { WidgetGridSizeClassPipeModule } from '../shared/pipes/widget-grid-size-class/widget-grid-size-class-pipe.module';
+import { SocketService } from './services/socket/socket.service';
 
 const routes: Routes = [{ path: '', component: DashboardComponent }];
 
@@ -59,6 +60,6 @@ const routes: Routes = [{ path: '', component: DashboardComponent }];
     DisableWidgetListPipeModule,
     WidgetGridSizeClassPipeModule,
   ],
-  providers: [ApplicantService, ChartApiService, JobsApiService],
+  providers: [ApplicantService, ChartApiService, JobsApiService, SocketService],
 })
 export class DashboardModule {}
